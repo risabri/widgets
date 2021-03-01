@@ -1,7 +1,7 @@
 {
-  "name": "@prifina-widgets/watchr",
+  "name": "@prifina-widgets/hello",
   "version": "0.0.0",
-  "description": "Prifina Watch widget",
+  "description": "Prifina Hello widget",
   "author": "Tero <tero@prifina.com>",
   "license": "MIT",
   "main": "dist/esm/index.js",
