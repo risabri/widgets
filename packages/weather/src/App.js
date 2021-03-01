@@ -6,7 +6,7 @@ import { API_KEY, API_BASE_URL } from "./apis/config";
 //import { Container } from "react-bootstrap";
 
 const App = () => {
-  const city = "san fransisco";
+  const city = "san francisco";
   /*
   const { data, error, isLoading, setUrl } = useFetch(
     `${API_BASE_URL}/data/2.5/forecast?q=${city}&cnt=5&units=metric&appid=${API_KEY}`
