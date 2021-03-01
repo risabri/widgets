@@ -54,7 +54,6 @@ const WeatherCard = ({ dt, temp_min, temp_max, main, icon }) =>
             width: "200px",
             height: "200px",
             padding: "5px",
-            border: "1px solid black",
           }}
         >
           <div style={{ textAlign: "center", textTransform: "capitalize" }}>
