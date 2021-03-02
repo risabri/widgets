@@ -6,7 +6,6 @@ import { API_KEY, API_BASE_URL } from "./apis/config";
 //import { Container } from "react-bootstrap";
 
 const App = (props) => {
-  console.log("WEATHER PROPS ");
   const city = "san francisco";
   /*
   const { data, error, isLoading, setUrl } = useFetch(
