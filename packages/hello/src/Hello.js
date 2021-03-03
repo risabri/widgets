@@ -13,7 +13,7 @@ const Hello = (props) => {
   console.log("HELLO PROPS ", props);
   const { msg, data } = props;
 
-  const msgText = msg || "Hello";
+  const msgText = msg || "Hello, Tero";
   const [helloText, setHelloText] = useState(msgText);
 
   useEffect(() => {
