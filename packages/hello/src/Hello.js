@@ -9,9 +9,9 @@ const Container = styled.div`
   width: 200px;
 `;
 
-const Hello = (props) => {
-  console.log("HELLO PROPS ", props);
-  return <Container>Hello</Container>;
+const Hello = (msg = "Hello") => {
+  console.log("HELLO PROPS ", msg);
+  return <Container>{msg}</Container>;
 };
 
 export default Hello;
