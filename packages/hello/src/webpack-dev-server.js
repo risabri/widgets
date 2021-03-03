@@ -13,4 +13,4 @@ const node = document.getElementById("app");
 
 const App = (props) => <LocalComponent {...props} />;
 
-ReactDOM.render(<App />, node);
+ReactDOM.render(<App msg={"Hello, Tero"} />, node);
