@@ -9,8 +9,9 @@ const Container = styled.div`
   width: 200px;
 `;
 
-const Hello = ({ msg = "Hello" }) => {
-  console.log("HELLO PROPS ", msg);
+const Hello = (props) => {
+  console.log("HELLO PROPS ", props);
+  const msg = props.msg || "Hello";
   return <Container>{msg}</Container>;
 };
 
