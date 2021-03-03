@@ -9,7 +9,7 @@ const Container = styled.div`
   width: 200px;
 `;
 
-const Hello = (msg = "Hello") => {
+const Hello = ({ msg = "Hello" }) => {
   console.log("HELLO PROPS ", msg);
   return <Container>{msg}</Container>;
 };
