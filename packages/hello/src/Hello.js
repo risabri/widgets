@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,8 +11,19 @@ const Container = styled.div`
 
 const Hello = (props) => {
   console.log("HELLO PROPS ", props);
-  const msg = props.msg || "Hello";
-  return <Container>{msg}</Container>;
+  const { msg, data } = props;
+
+  const msgText = msg || "Hello";
+  const [helloText, setHelloText] = useState(msgText);
+
+  useEffect(() => {
+    console.log("UPDATE DATA ", data);
+    if (data.msg) {
+      setHelloText(data.msg);
+    }
+  }, [data]);
+
+  return <Container>{helloText}</Container>;
 };
 
 export default Hello;
