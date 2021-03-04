@@ -25,5 +25,6 @@ const Hello = (props) => {
 
   return <Container>{helloText}</Container>;
 };
+Hello.displayName = "Hello";
 
 export default Hello;
