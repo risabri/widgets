@@ -1,6 +1,6 @@
 /**
  * Entrypoint of the Remote Component.
  */
-import Hello from "./Hello";
+import { App } from "./App";
 
-export default Hello;
+export default App;

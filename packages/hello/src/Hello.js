@@ -14,7 +14,7 @@ const Hello = (props) => {
   console.log("HELLO PROPS ", props);
   const { msg, data } = props;
 
-  const { currentUser, onUpdate } = usePrifina({ appID: "HelloWidget" });
+  const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
   console.log("Logged in user ", currentUser);
 
   const msgText = msg || "Hello, " + currentUser.name;
@@ -24,10 +24,14 @@ const Hello = (props) => {
     console.log("HELLO HERE ", data);
   });
 
+  console.log(onUpdate, typeof onUpdate);
+  console.log(check());
   useEffect(() => {
     console.log("UPDATE DATA ", data);
-    if (data.msg) {
-      setHelloText(data.msg);
+    if (typeof data !== "undefined") {
+      if (data.msg) {
+        setHelloText(data.msg);
+      }
     }
   }, [data]);
 

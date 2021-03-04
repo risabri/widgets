@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import App from "../src/Hello";
+import { App } from "../src/App";
 
 export default { title: "Test" };
 
 export const app = () => {
+  /*
   const [onUpdate, set] = useState({});
   useEffect(() => {
     let timer = null;
@@ -14,8 +15,9 @@ export const app = () => {
 
     return () => clearTimeout(timer);
   }, []);
+  */
 
-  return <App msg={"Hello, Tero"} data={onUpdate} />;
+  return <App msg={"Hello, Tero"} />;
 };
 app.story = {
   name: "App",
