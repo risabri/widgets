@@ -16,6 +16,7 @@ const Hello = (props) => {
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
   const prifina = useHooks();
+  console.log("HELLO HOOK ", prifina);
   //console.log("Logged in user ", currentUser);
   const msgText = msg || "Hello, ";
   //const msgText = msg || "Hello, " + currentUser.name;
