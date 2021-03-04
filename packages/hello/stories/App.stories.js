@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { App } from "../src/App";
+import App from "../src/Hello";
 
 export default { title: "Test" };
 
