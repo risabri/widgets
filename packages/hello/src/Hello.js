@@ -23,12 +23,15 @@ const Hello = ({ Context, ...props }) => {
   const [helloText, setHelloText] = useState(msgText);
   const [helloText2, setHelloText2] = useState("");
   const [helloData, setData] = useState(data);
+
+  const dataUpdate = (data) => {
+    console.log("HELLO HERE ", data);
+    //setData(data);
+    setHelloText2(data.msg);
+  };
   useEffect(() => {
-    prifina.onUpdate((data) => {
-      console.log("HELLO HERE ", data);
-      //setData(data);
-      setHelloText2(data.msg);
-    });
+    console.log("HELLO UPDATE INIT ");
+    prifina.onUpdate("helloWidget", dataUpdate);
   }, []);
 
   //console.log(onUpdate, typeof onUpdate);
