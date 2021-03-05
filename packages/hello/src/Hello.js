@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Hello = ({ Context, ...props }) => {
-  console.log("HELLO PROPS 5", props);
+  console.log("HELLO PROPS 6", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
@@ -23,12 +23,13 @@ const Hello = ({ Context, ...props }) => {
   const [helloText, setHelloText] = useState(msgText);
   const [helloText2, setHelloText2] = useState("");
   const [helloData, setData] = useState(data);
-
-  prifina.onUpdate((data) => {
-    console.log("HELLO HERE ", data);
-    //setData(data);
-    setHelloText2(data.msg);
-  });
+  useEffect(() => {
+    prifina.onUpdate((data) => {
+      console.log("HELLO HERE ", data);
+      //setData(data);
+      setHelloText2(data.msg);
+    });
+  }, []);
 
   //console.log(onUpdate, typeof onUpdate);
   //console.log(check());
