@@ -21,21 +21,23 @@ const Hello = ({ Context, ...props }) => {
   const msgText = msg || "Hello, ";
   //const msgText = msg || "Hello, " + currentUser.name;
   const [helloText, setHelloText] = useState(msgText);
+  const [helloData, setData] = useState(data);
 
   prifina.onUpdate((data) => {
     console.log("HELLO HERE ", data);
+    setData(data);
   });
 
   //console.log(onUpdate, typeof onUpdate);
   //console.log(check());
   useEffect(() => {
-    console.log("UPDATE DATA ", data);
-    if (typeof data !== "undefined") {
-      if (data.msg) {
-        setHelloText(data.msg);
+    console.log("UPDATE DATA ", helloData);
+    if (typeof helloData !== "undefined") {
+      if (helloData.msg) {
+        setHelloText(helloData.msg);
       }
     }
-  }, [data]);
+  }, [helloData]);
 
   return <Container>{helloText}</Container>;
 };
