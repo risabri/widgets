@@ -21,11 +21,11 @@ const Hello = ({ Context, ...props }) => {
   const msgText = msg || "Hello, ";
   //const msgText = msg || "Hello, " + currentUser.name;
   const [helloText, setHelloText] = useState(msgText);
-  /*
-  onUpdate((data) => {
+
+  prifina.onUpdate((data) => {
     console.log("HELLO HERE ", data);
   });
-*/
+
   //console.log(onUpdate, typeof onUpdate);
   //console.log(check());
   useEffect(() => {
