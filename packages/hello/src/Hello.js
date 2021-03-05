@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Hello = ({ Context, ...props }) => {
-  console.log("HELLO PROPS 3", props);
+  console.log("HELLO PROPS 4", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
@@ -25,7 +25,8 @@ const Hello = ({ Context, ...props }) => {
 
   prifina.onUpdate((data) => {
     console.log("HELLO HERE ", data);
-    setData(data);
+    //setData(data);
+    setHelloText(data.msg);
   });
 
   //console.log(onUpdate, typeof onUpdate);
