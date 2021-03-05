@@ -10,12 +10,12 @@ const Container = styled.div`
   width: 200px;
 `;
 
-const Hello = (props) => {
+const Hello = ({ Context, ...props }) => {
   console.log("HELLO PROPS ", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
-  const prifina = useHooks();
+  const prifina = useHooks(Context);
   console.log("HELLO HOOK ", prifina);
   //console.log("Logged in user ", currentUser);
   const msgText = msg || "Hello, ";
