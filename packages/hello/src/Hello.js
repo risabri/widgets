@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Hello = ({ Context, ...props }) => {
-  console.log("HELLO PROPS 6", props);
+  console.log("HELLO PROPS 7", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
