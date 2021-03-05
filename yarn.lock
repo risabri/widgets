@@ -2222,10 +2222,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.8.6.tgz#ad75ebe8dbecfa145af3c7e4d0ae98016458d005"
   integrity sha512-1oXH2bAFXz9SttE1v/0Jp+2ZVePsPEAPGIuPKrmljWZcS3FPBEn2Q4WcANozZC0YiCjTWOF55k0g6rbSZS39ew==
 
-"@prifina/hooks@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.12.tgz#6a035b7d1940f63df3bed7ba481516c5eceab2f0"
-  integrity sha512-jIvkkEQcjy4XxhmJ0G1KnRui2zWF4Zux65vcfwBZLNiYtsKse48w/sp4n9a/jyF63Bgkt4H0eI4dyY/YTLSCpQ==
+"@prifina/hooks@latest":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.14.tgz#79d9920bc2333f51a978f6106ddfb3e08d49bd1b"
+  integrity sha512-D2Mw3Tejwt4kiHgW3AorFda7s6i4gRRmhNri13Ymg0PuCk9s+vPHnjYImoE35t8t582l92x8QU9jPDqOFouiSQ==
   dependencies:
     short-uuid "^4.1.0"
 
