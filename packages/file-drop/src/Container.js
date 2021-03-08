@@ -5,11 +5,13 @@ import { useDrop } from "react-dnd";
 //import { FileList } from './FileList';
 
 const style = {
-  border: "1px solid gray",
-  height: "15rem",
-  width: "15rem",
-  padding: "2rem",
-  textAlign: "center",
+  height: "200px",
+  fontSize: "16px",
+  width: "200px",
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 const TargetBox = (props) => {
   const { onDrop } = props;
