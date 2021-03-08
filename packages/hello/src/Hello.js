@@ -45,8 +45,10 @@ const Hello = ({ Context, ...props }) => {
 
   return (
     <Container>
-      <div>{helloText}</div>
-      <div>{currentUser}</div>
+      <div>
+        <div>{helloText}</div>
+        <div>{currentUser}</div>
+      </div>
     </Container>
   );
 };
