@@ -1,6 +1,5 @@
 /* global localStorage */
-
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { NativeTypes } from "react-dnd-html5-backend";
 import { useDrop } from "react-dnd";
 //import { FileList } from './FileList';
@@ -47,10 +46,34 @@ export const Container = () => {
     if (monitor) {
       const files = monitor.getItem().files;
       console.log("FILES ", files);
+      // file is only a handler to the file... this will create base64 encoded file object
+      const reader = new FileReader();
+      reader.onload = (res) => {
+        // log to console
+        // logs data:<type>;base64,wL2dvYWwgbW9yZ...
+
+        if (res.target.readyState === 2) {
+          //console.log(res.target.result);
+          localStorage.setItem(
+            "WidgetImage",
+            JSON.stringify({ image: res.target.result })
+          );
+        }
+      };
+      reader.readAsDataURL(files[0]);
+
+      /*
+      const images = files.map((file, index) => {
+        return { image: URL.createObjectURL(file) };
+      });
+      */
+      /*
       localStorage.setItem(
         "WidgetImage",
         JSON.stringify({ image: URL.createObjectURL(files[0]) })
       );
+      */
+
       setDroppedFiles(files);
     }
   }, []);
@@ -73,7 +96,7 @@ export const Container = () => {
             image = URL.createObjectURL(file);
           }
           return (
-            <div key={file.name}>
+            <div key={"file-" + index}>
               <div>
                 {isImageFile && (
                   <img
