@@ -23,6 +23,7 @@ const Hello = ({ Context, ...props }) => {
   const [helloText, setHelloText] = useState(msgText);
   const [helloData, setData] = useState(data);
 
+  const currentUser = typeof data.currentUser ? data.currentUser.name : "";
   const dataUpdate = (data) => {
     console.log("HELLO UPDATE ", data);
 
@@ -35,14 +36,19 @@ const Hello = ({ Context, ...props }) => {
 
   useEffect(() => {
     console.log("UPDATE HELLO DATA ", helloData);
-    if (typeof helloData !== "undefined") {
-      if (helloData.msg) {
-        setHelloText(helloData.msg);
+    if (typeof helloData.settings !== "undefined") {
+      if (helloData.settings.msg) {
+        setHelloText(helloData.settings.msg);
       }
     }
   }, [helloData]);
 
-  return <Container>{helloText}</Container>;
+  return (
+    <Container>
+      <div>{helloText}</div>
+      <div>{currentUser}</div>
+    </Container>
+  );
 };
 Hello.displayName = "Hello";
 
