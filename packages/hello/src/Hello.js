@@ -5,7 +5,7 @@ import { usePrifina, useHooks } from "@prifina/hooks";
 const Container = styled.div`
   height: 200px;
   font-size: 16px;
-  line-height: 200px;
+
   text-align: center;
   width: 200px;
 `;
