@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.19",
+    "@prifina/hooks": "^0.0.45",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-docs": "^6.1.17",
     "@storybook/addon-knobs": "^6.1.17",
@@ -49,7 +49,8 @@
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
     "react-dnd": "^13.1.0",
-    "react-dnd-html5-backend": "^12.1.1"
+    "react-dnd-html5-backend": "^12.1.1",
+    "@paciolan/remote-component": "^2.11.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
@@ -58,11 +59,12 @@
     "storybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
-    "@prifina/hooks": "latest",
+    "@prifina/hooks": "^0.0.45",
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
     "react-dnd": "^13.1.0",
-    "react-dnd-html5-backend": "^12.1.1"
+    "react-dnd-html5-backend": "^12.1.1",
+    "@paciolan/remote-component": "^2.11.0"
   }
 }
