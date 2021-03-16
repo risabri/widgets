@@ -1,7 +1,7 @@
 {
-  "name": "@prifina-widgets/hello",
+  "name": "@prifina-widgets/chat",
   "version": "0.0.0",
-  "description": "Prifina Hello widget",
+  "description": "Prifina Chat widget",
   "author": "Tero <tero@prifina.com>",
   "license": "MIT",
   "main": "dist/esm/index.js",
@@ -11,7 +11,9 @@
   "files": [
     "dist"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "react-chat-ui": "^0.4.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
     "@babel/core": "^7.12.13",
@@ -20,7 +22,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.45",
+    "@prifina/hooks": "^0.0.40",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-docs": "^6.1.17",
     "@storybook/addon-knobs": "^6.1.17",

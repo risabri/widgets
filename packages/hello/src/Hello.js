@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { usePrifina, useHooks } from "@prifina/hooks";
+import { usePrifina } from "@prifina/hooks";
 
 const Container = styled.div`
   height: 200px;
@@ -11,13 +11,14 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
+const appID = "helloWidget";
 const Hello = ({ Context, ...props }) => {
   console.log("HELLO PROPS", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
-  const prifina = usePrifina({ appID: "helloWidget" });
+  const { onUpdate, Prifina } = usePrifina();
+  const prifina = new Prifina({ appiD: appID });
   console.log("HELLO HOOK ", prifina);
   //console.log("Logged in user ", currentUser);
   const msgText = msg || "Hello, ";
@@ -33,7 +34,7 @@ const Hello = ({ Context, ...props }) => {
   };
   useEffect(() => {
     console.log("HELLO UPDATE INIT ");
-    prifina.onUpdate("helloWidget", dataUpdate);
+    onUpdate(appID, dataUpdate);
   }, []);
 
   useEffect(() => {
