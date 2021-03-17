@@ -8,6 +8,5 @@ module.exports = {
     react: require("react"),
     "styled-components": require("styled-components"),
     "@prifina/hooks": require("@prifina/hooks"),
-    "@paciolan/remote-component": require("@paciolan/remote-component"),
   },
 };
