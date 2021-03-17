@@ -12,8 +12,8 @@ const Container = styled.div`
   align-items: center;
 `;
 const appID = "helloWidget";
-const Hello = ({ Context, ...props }) => {
-  console.log("HELLO PROPS", props);
+const Hello = (props) => {
+  console.log("HELLO PROPS 2 ", props);
   const { msg, data } = props;
 
   //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
