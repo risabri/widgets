@@ -5,9 +5,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-//import { PrifinaProvider } from "@prifina/hooks";
-
-import LocalComponent from "./index.js";
+import { LocalComponent } from "./App.js";
 
 const node = document.getElementById("app");
 

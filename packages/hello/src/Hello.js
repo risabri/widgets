@@ -11,18 +11,20 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+// unique appID for the widget....
 const appID = "helloWidget";
+
 const Hello = (props) => {
-  console.log("HELLO PROPS 2 ", props);
   const { msg, data } = props;
 
-  //const { currentUser, onUpdate, check } = usePrifina({ appID: "HelloWidget" });
+  // init hook and get provider api services...
   const { onUpdate, Prifina } = usePrifina();
+
+  // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
-  console.log("HELLO HOOK ", prifina);
-  //console.log("Logged in user ", currentUser);
+
   const msgText = msg || "Hello, ";
-  //const msgText = msg || "Hello, " + currentUser.name;
   const [helloText, setHelloText] = useState(msgText);
   const [helloData, setData] = useState(data);
 
@@ -30,18 +32,18 @@ const Hello = (props) => {
     typeof data !== "undefined" && typeof data.currentUser !== "undefined"
       ? data.currentUser.name
       : "";
-  const dataUpdate = (data) => {
-    console.log("HELLO UPDATE ", data);
 
+  const dataUpdate = (data) => {
+    // should check the data payload... :)
     setHelloText(data.msg);
   };
+
   useEffect(() => {
-    console.log("HELLO UPDATE INIT ");
+    // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
   }, []);
 
   useEffect(() => {
-    console.log("UPDATE HELLO DATA ", helloData);
     if (
       typeof helloData !== "undefined" &&
       typeof helloData.settings !== "undefined"
