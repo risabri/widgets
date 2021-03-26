@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
+import moment from "moment";
+import "moment-timezone";
 
 /*
 $primary: black;
@@ -8,6 +10,11 @@ $secondary: gray;
 $accent: red;
 $clock-border: 10px;
 */
+const TzText = styled.div`
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+`;
 const Container = styled.div`
   padding: 10px;
   height: 200px;
@@ -25,6 +32,8 @@ const Clock = styled.div`
   height: ${(props) => props.size};
   display: flex;
   position: relative;
+  margin-left: 5%;
+  margin-right: 5%;
   box-shadow: inset 0 0 20px gray;
   border: 4px solid black;
 
@@ -152,9 +161,27 @@ function useIsMountedRef() {
   return isMountedRef;
 }
 
-const Watch = () => {
+const Watch = ({ offset = 0, tz = "" }) => {
+  //moment.tz.guess()
+  //console.log("MOMENT ", moment.tz.names());
+  /*
+  var select = document.getElementById('timezones');
+moment.tz.names().forEach(function(timezone){
+	var option = document.createElement('option');
+  option.textContent = timezone + ': ' + moment.tz(timezone).format('Z');
+  select.appendChild(option);
+});
+*/
+  moment.tz.names().forEach(function (timezone) {
+    //console.log(moment.tz(timezone).utcOffset());
+  });
+  //console.log(moment.tz.names());
   const isMountedRef = useIsMountedRef();
-  const [clockSize, setClockSize] = useState("100%");
+  const [tzInfo, setTzInfo] = useState({
+    offset: offset,
+    tz: tz === "" ? moment.tz.guess() : tz,
+  });
+  const [clockSize, setClockSize] = useState("90%");
   const [dialHour, setDialHour] = useState([]);
   const [handPivot, setHandPivot] = useState({ top: 0, left: 0 });
   const [hoursHand, setHoursHand] = useState({
@@ -259,8 +286,15 @@ const Watch = () => {
 
       const dt = new Date();
       const secsElpased = dt.getSeconds();
-      const minsElapsed = dt.getMinutes() + secsElpased / 60;
-      const hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+      let minsElapsed = dt.getMinutes() + secsElpased / 60;
+      let hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+      const offsetMod = tzInfo.offset % 60;
+      if (offsetMod !== 0) {
+        minsElapsed += offsetMod;
+      }
+      if (tzInfo.offset !== 0) {
+        hrsElapsed += (tzInfo.offset - offsetMod) / 60;
+      }
 
       const rotate = (elm, deg) => {
         elm.style.transform = `rotate(${deg}deg)`;
@@ -332,6 +366,7 @@ const Watch = () => {
           }
         })}
       </Clock>
+      <TzText>{tzInfo.tz}</TzText>
     </Container>
   );
 };

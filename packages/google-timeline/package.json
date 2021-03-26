@@ -1,7 +1,7 @@
 {
-  "name": "@prifina-widgets/search",
+  "name": "@prifina-widgets/google-timeline",
   "version": "0.0.0",
-  "description": "Prifina Search Widget",
+  "description": "Prifina Google timeline widget",
   "author": "Tero <tero@prifina.com>",
   "license": "MIT",
   "main": "dist/esm/index.js",
@@ -12,6 +12,7 @@
     "dist"
   ],
   "dependencies": {
+    "@prifina/google-timeline":"latest"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
@@ -21,6 +22,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
+    "@prifina/hooks": "^0.0.54",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-docs": "^6.1.17",
     "@storybook/addon-knobs": "^6.1.17",
@@ -47,7 +49,10 @@
     "webpack-assets-manifest": "^5.0.1",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "https-browserify": "^1.0.0",
+    "stream-http": "^3.1.1",
+    "short-uuid": "^4.1.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
@@ -56,6 +61,7 @@
     "storybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
+    "@prifina/hooks": "^0.0.54",
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"

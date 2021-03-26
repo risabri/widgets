@@ -9,16 +9,20 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
+    "@prifina/hooks": "^0.0.51",
     "@styled-system/theme-get": "^5.1.2",
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "cross-env": "^7.0.2",
     "lerna": "^3.20.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "short-uuid": "^4.1.0",
     "styled-components": "^5.1.0",
     "styled-system": "^5.1.5",
-    "webpack": "^4.43.0",
-    "terser": "^5.5.1"
+    "terser": "^5.5.1",
+    "webpack": "^4.43.0"
   }
 }
