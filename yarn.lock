@@ -2260,10 +2260,10 @@
     "@paciolan/remote-component" "^2.11.0"
     short-uuid "^4.1.0"
 
-"@prifina/hooks@^0.0.54":
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.54.tgz#c153aef7b45978dd6535b59591c2b57290dbbf67"
-  integrity sha512-aaaaylS0qrRt4U9BACeFS/s/hsdVsMq5gnx5wCyymvHJKli3xjNIplSewXnv7m2cGUgL2pqeevBN7wL0CC9chA==
+"@prifina/hooks@latest":
+  version "0.0.56"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.56.tgz#aa74df2b78c80bc8d4f30cebbe98ed24dd2fc422"
+  integrity sha512-OPCO31y/30+GMiWzMVZCc0oMajXVweowssyadLGhUUqgXlpm/Li0GdCtzzd9Zzpwi258Oln03Nm7J4JzaU7Yrw==
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
 

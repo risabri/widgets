@@ -29,6 +29,7 @@ const TimeLine = (props) => {
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
+    /*
     console.log("UPDATE ", data.data.queryActivities.data);
     let activities = {};
     for (let i = 0; i < data.data.queryActivities.data.length; i++) {
@@ -49,6 +50,7 @@ const TimeLine = (props) => {
     }
     //console.log(sorted);
     setTimeLineData(sorted);
+    */
   };
 
   useEffect(async () => {
@@ -57,7 +59,13 @@ const TimeLine = (props) => {
     // register datasource modules
     registerHooks(appID, [GoogleTimeline]);
     // get
-    await API[appID].queryActivities({ year: 2021, month: 2 });
+    const data = await API[appID].GoogleTimeline.queryActivities({});
+    console.log("DATA ", data);
+    /*
+    await API[appID].GoogleTimeline.queryActivities({
+      fields: ["datetimex", "type", "confidence"],
+    })
+    */
   }, []);
 
   return (
