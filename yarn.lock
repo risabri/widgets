@@ -2234,10 +2234,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
-"@prifina/google-timeline@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.8.tgz#05d242cb4cb36ec3029007d7394332d6bec8d9c1"
-  integrity sha512-/nRp/XFXBf8POugvthji31XhnXrzegYMsDDggtLcxm1kWiDbaJwk3A1peRXoCYk3blloGrxkv1i8MhqFBYI7oA==
+"@prifina/google-timeline@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.9.tgz#b305b7e7391feb4a79bcce42ba2d8a50b8fd41ad"
+  integrity sha512-Moq5PIX7TomDf49/gzjG017pD0X1zJQcTP9PEudHL6W7VpzXYh2NtKd2M4BrJnXz23ePK64TK96EWNvpAU5T6w==
 
 "@prifina/hooks@^0.0.45":
   version "0.0.45"
