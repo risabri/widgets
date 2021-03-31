@@ -5,13 +5,13 @@
 
 # Resources 
 
-- Repository is so called monorepo, more informations here https://lerna.js.org/
+- Repository is a so called monorepo, [more information](https://lerna.js.org/)
 
-- Package client used is "Yarn" not npm,.... more informations here https://yarnpkg.com/ Using incorrect package manager will break the monorepo.
+- Package client used is "Yarn" not npm, [more information](https://yarnpkg.com/). Using the incorrect package manager will break the monorepo.
 
-- Get familiar with storybook, more informations here https://storybook.js.org/
+- Get familiar with Storybook, [more information](https://storybook.js.org/)
 
-## Your own package... component
+## Your own package, component
 
 - First run... 
 
@@ -19,9 +19,9 @@
 ```sh
 $ lerna create <your packagename>
 ```
-- New package is created under /packages folder.
+- The new package is created under /packages folder.
 
-- Modify default package.json... see example on core package. 
+- Modify the default package.json... see example on core package. 
 
 - Setup your own storybook environment.... see example on core package.
 
