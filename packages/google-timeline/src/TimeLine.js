@@ -81,7 +81,7 @@ const TimeLine = (props) => {
       //console.log(activities);
       //console.log(sortedKeys);
       let sorted = {};
-      for (let i = 0; i < Math.min(6, sortedKeys.length); i++) {
+      for (let i = 0; i < Math.min(5, sortedKeys.length); i++) {
         sorted[sortedKeys[i]] = activities[sortedKeys[i]];
       }
 
