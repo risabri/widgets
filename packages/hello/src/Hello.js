@@ -17,7 +17,7 @@ const appID = "helloWidget";
 
 const Hello = (props) => {
   const { msg, data } = props;
-
+  console.log("HELLO PROPS ", props);
   // init hook and get provider api services...
   const { onUpdate, Prifina } = usePrifina();
 
