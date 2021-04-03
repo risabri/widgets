@@ -68,6 +68,7 @@ const TimeLine = (props) => {
         2: {
           [Op.eq]: _fn("MONTH", "p_datetime"),
         },
+        100: { [Op.eq]: _fn("CAST", "p_confidence") },
       },
     };
 
