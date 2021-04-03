@@ -25,6 +25,7 @@ const Hello = (props) => {
   const prifina = new Prifina({ appId: appID });
 
   const msgText = msg || "Hello, ";
+
   const [helloText, setHelloText] = useState(msgText);
   const [helloData, setData] = useState(data);
 

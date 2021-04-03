@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.5/libexec/bin/yarn.js add @prifina/google-timeline@latest
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.5/libexec/bin/yarn.js add @prifina/hooks@latest -D
 
 PATH: 
   /usr/local/opt/python/libexec/bin:/usr/local/bin:/Users/Tero/Library/Python/3.4/bin:/Users/Tero/Library/Android/sdk//tools:/Users/Tero/Library/Android/sdk//platform-tools:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Applications/Wireshark.app/Contents/MacOS
@@ -41,7 +41,7 @@ npm manifest:
       "dist"
     ],
     "dependencies": {
-      "@prifina/google-timeline":"latest"
+      "@prifina/google-timeline":"^0.0.9"
     },
     "devDependencies": {
       "@babel/cli": "^7.12.13",
@@ -2337,10 +2337,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
     integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
   
-  "@prifina/google-timeline@latest":
-    version "0.0.1"
-    resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.1.tgz#9cf1ba4fa6c11be2a250aa9e0abb56d951a6e6ed"
-    integrity sha512-IdWikvZ63a2SHbGl4lbDjkx/ITdzwz8WYcNto6Tlkm1x6lKT4HxryR+DT29Ph16EtkpGuQY7/2vx3CQZCCK6Mw==
+  "@prifina/google-timeline@^0.0.9":
+    version "0.0.9"
+    resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.9.tgz#b305b7e7391feb4a79bcce42ba2d8a50b8fd41ad"
+    integrity sha512-Moq5PIX7TomDf49/gzjG017pD0X1zJQcTP9PEudHL6W7VpzXYh2NtKd2M4BrJnXz23ePK64TK96EWNvpAU5T6w==
   
   "@prifina/hooks@^0.0.45":
     version "0.0.45"

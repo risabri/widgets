@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { usePrifina } from "@prifina/hooks";
+import { usePrifina, Op, _fn, buildFilter } from "@prifina/hooks";
 import GoogleTimeline from "@prifina/google-timeline/";
 
 const Container = styled.div`
@@ -59,7 +59,24 @@ const TimeLine = (props) => {
     // register datasource modules
     registerHooks(appID, [GoogleTimeline]);
     // get
-    const data = await API[appID].GoogleTimeline.queryActivities({});
+
+    const filter = {
+      [Op.and]: {
+        2021: {
+          [Op.eq]: _fn("YEAR", "p_datetime"),
+        },
+        2: {
+          [Op.eq]: _fn("MONTH", "p_datetime"),
+        },
+      },
+    };
+
+    //console.log("FILTER ", filter);
+    //console.log("FILTER ", buildFilter(filter));
+
+    const data = await API[appID].GoogleTimeline.queryActivities({
+      filter: buildFilter(filter),
+    });
     console.log("DATA ", data.data.getS3Object.content);
     if (data.data.getS3Object.content.length > 0) {
       let activities = {};

@@ -2234,10 +2234,24 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
-"@prifina/google-timeline@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.9.tgz#b305b7e7391feb4a79bcce42ba2d8a50b8fd41ad"
-  integrity sha512-Moq5PIX7TomDf49/gzjG017pD0X1zJQcTP9PEudHL6W7VpzXYh2NtKd2M4BrJnXz23ePK64TK96EWNvpAU5T6w==
+"@prifina/google-timeline@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.10.tgz#8d70bbffa24583039ea3ba5216b5a6bd258ca0a5"
+  integrity sha512-wa1SOI3W65A6W8txCJTHUS64PrGvvfLzbkJRhlgaLGeAD+QGfZ+XDQLhYQMtJabEnH05Wh+Wye6+gkKpZs9HrQ==
+
+"@prifina/hooks@0.0.59":
+  version "0.0.59"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.59.tgz#4ed07c97185fbffa0409fd944ee8d567e6b3c1a3"
+  integrity sha512-QFKTODUiokfGGxNkH997DvV4VNkef/Nqrr6K8oI+UqfVB7B39RmAmFmEQfXmV2+jXlNRuzcsRaxgsUN0P4/Z6g==
+  dependencies:
+    "@paciolan/remote-component" "^2.11.0"
+
+"@prifina/hooks@0.0.61":
+  version "0.0.61"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.61.tgz#77107d4f92063f46fed71da93412efe02cfd4234"
+  integrity sha512-LmLWMc6w2EKE6aqOnhUoflsXJ70v2rbPuV7I2WSBL+h+t4zo+EQYA24SwcT3ha8pYaWzMlW9p1iVYDonMlOWXQ==
+  dependencies:
+    "@paciolan/remote-component" "^2.11.0"
 
 "@prifina/hooks@^0.0.45":
   version "0.0.45"
@@ -2251,21 +2265,6 @@
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
     axios "^0.21.1"
-
-"@prifina/hooks@^0.0.51":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.51.tgz#c88373d29089fd36aebc56d420bdbfdf40088170"
-  integrity sha512-WFnsy65OlZHDZZKH6HIShwE4TlvjkjRpDZHZJY/6wS2N63eCtkZZ8G7J/C5JSHBox7EFhXuOZQO3Io3fckx2fw==
-  dependencies:
-    "@paciolan/remote-component" "^2.11.0"
-    short-uuid "^4.1.0"
-
-"@prifina/hooks@latest":
-  version "0.0.56"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.56.tgz#aa74df2b78c80bc8d4f30cebbe98ed24dd2fc422"
-  integrity sha512-OPCO31y/30+GMiWzMVZCc0oMajXVweowssyadLGhUUqgXlpm/Li0GdCtzzd9Zzpwi258Oln03Nm7J4JzaU7Yrw==
-  dependencies:
-    "@paciolan/remote-component" "^2.11.0"
 
 "@reach/router@^1.3.3":
   version "1.3.4"
