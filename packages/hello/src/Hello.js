@@ -36,7 +36,10 @@ const Hello = (props) => {
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
-    setHelloText(data.msg);
+
+    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+      setHelloText(data.settings.msg);
+    }
   };
 
   useEffect(() => {
