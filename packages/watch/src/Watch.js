@@ -336,9 +336,8 @@ const Watch = ({ offset = 0, tz = "", ...props }) => {
 
   useEffect(() => {
     // init callback function for background updates/notifications
-    console.log("WATCH RENDER ", typeof onUpdate);
 
-    //onUpdate(appID, dataUpdate);
+    onUpdate(appID, dataUpdate);
   }, []);
 
   return (
