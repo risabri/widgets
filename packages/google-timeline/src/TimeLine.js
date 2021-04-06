@@ -91,18 +91,19 @@ const TimeLine = (props) => {
     registerHooks(appID, [GoogleTimeline]);
     // get
     console.log("TIMELINE PROPS DATA ", data);
+
+    const d = new Date();
+    const currentMonth = d.getMonth();
+    d.setMonth(d.getMonth() - 1);
+    while (d.getMonth() === currentMonth) {
+      d.setDate(d.getDate() - 1);
+    }
+    let year = d.getFullYear();
+    let month = d.getMonth();
+
     if (data.hasOwnProperty("settings")) {
-      const year = parseInt(data.settings.year);
-      const month = parseInt(data.settings.month);
-    } else {
-      const d = new Date();
-      const currentMonth = d.getMonth();
-      d.setMonth(d.getMonth() - 1);
-      while (d.getMonth() === currentMonth) {
-        d.setDate(d.getDate() - 1);
-      }
-      const year = d.getFullYear();
-      const month = d.getMonth();
+      year = parseInt(data.settings.year);
+      month = parseInt(data.settings.month);
     }
     const filter = {
       [Op.and]: {
