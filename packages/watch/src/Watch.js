@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
+
+import { usePrifina } from "@prifina/hooks";
 import moment from "moment";
 import "moment-timezone";
 
@@ -161,21 +163,16 @@ function useIsMountedRef() {
   return isMountedRef;
 }
 
-const Watch = ({ offset = 0, tz = "" }) => {
-  //moment.tz.guess()
-  //console.log("MOMENT ", moment.tz.names());
-  /*
-  var select = document.getElementById('timezones');
-moment.tz.names().forEach(function(timezone){
-	var option = document.createElement('option');
-  option.textContent = timezone + ': ' + moment.tz(timezone).format('Z');
-  select.appendChild(option);
-});
-*/
-  moment.tz.names().forEach(function (timezone) {
-    //console.log(moment.tz(timezone).utcOffset());
-  });
-  //console.log(moment.tz.names());
+// unique appID for the widget....
+const appID = "watchWidget";
+
+const Watch = ({ offset = 0, tz = "", ...props }) => {
+  // init hook and get provider api services...
+  const { onUpdate, Prifina } = usePrifina();
+
+  // init provider api with your appID
+  const prifina = new Prifina({ appId: appID });
+
   const isMountedRef = useIsMountedRef();
   const [tzInfo, setTzInfo] = useState({
     offset: offset,
@@ -326,6 +323,21 @@ moment.tz.names().forEach(function(timezone){
       clearInterval(intervalId);
     };
   }, [isMountedRef]);
+
+  const dataUpdate = (data) => {
+    // should check the data payload... :)
+    console.log("WATCH WIDGET UPDATE ", data);
+
+    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+      //
+      setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
+    }
+  };
+
+  useEffect(() => {
+    // init callback function for background updates/notifications
+    onUpdate(appID, dataUpdate);
+  }, []);
 
   return (
     <Container>
