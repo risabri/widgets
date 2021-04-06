@@ -37,6 +37,12 @@ module.exports = {
   externals: {
     ...externals,
   },
+  resolve: {
+    fallback: {
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
+    },
+  },
   module: {
     rules: [
       {
