@@ -90,17 +90,20 @@ const TimeLine = (props) => {
     // register datasource modules
     registerHooks(appID, [GoogleTimeline]);
     // get
-    console.log("PROPS DATA ", data);
-
-    const d = new Date();
-    const currentMonth = d.getMonth();
-    d.setMonth(d.getMonth() - 1);
-    while (d.getMonth() === currentMonth) {
-      d.setDate(d.getDate() - 1);
+    console.log("TIMELINE PROPS DATA ", data);
+    if (data.hasOwnProperty("settings")) {
+      const year = parseInt(data.settings.year);
+      const month = parseInt(data.settings.month);
+    } else {
+      const d = new Date();
+      const currentMonth = d.getMonth();
+      d.setMonth(d.getMonth() - 1);
+      while (d.getMonth() === currentMonth) {
+        d.setDate(d.getDate() - 1);
+      }
+      const year = d.getFullYear();
+      const month = d.getMonth();
     }
-    const year = d.getFullYear();
-    const month = d.getMonth();
-
     const filter = {
       [Op.and]: {
         [year]: {
