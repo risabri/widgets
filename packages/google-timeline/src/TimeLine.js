@@ -19,6 +19,7 @@ const Container = styled.div`
 const appID = "timelineWidget";
 
 const TimeLine = (props) => {
+  const { data } = props;
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
@@ -89,25 +90,37 @@ const TimeLine = (props) => {
     // register datasource modules
     registerHooks(appID, [GoogleTimeline]);
     // get
+    console.log("PROPS DATA ", data);
+
+    const d = new Date();
+    const currentMonth = d.getMonth();
+    d.setMonth(d.getMonth() - 1);
+    while (d.getMonth() === currentMonth) {
+      d.setDate(d.getDate() - 1);
+    }
+    const year = d.getFullYear();
+    const month = d.getMonth();
 
     const filter = {
       [Op.and]: {
-        2021: {
+        [year]: {
           [Op.eq]: _fn("YEAR", "p_datetime"),
         },
-        2: {
+        [month]: {
           [Op.eq]: _fn("MONTH", "p_datetime"),
         },
         100: { [Op.eq]: _fn("CAST", "p_confidence", "int") },
       },
     };
 
-    const data = await API[appID].GoogleTimeline.queryActivities({
+    console.log("FILTER ", filter);
+
+    const result = await API[appID].GoogleTimeline.queryActivities({
       filter: buildFilter(filter),
     });
-    console.log("DATA ", data.data.getS3Object.content);
-    if (data.data.getS3Object.content.length > 0) {
-      processData(data.data.getS3Object.content);
+    console.log("DATA ", result.data.getS3Object.content);
+    if (result.data.getS3Object.content.length > 0) {
+      processData(result.data.getS3Object.content);
     }
   }, []);
 
