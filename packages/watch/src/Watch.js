@@ -291,13 +291,16 @@ const Watch = (props) => {
       let timezoneHours = dt.getHours();
 
       if (tzInfo.offset !== 0) {
-        const offsetMod = tzInfo.offset % 60;
+        const localOffset = moment.tz(moment.tz.guess()).utcOffset();
+        const offsetDiff = tzInfo.offset - localOffset;
+
+        const offsetMod = offsetDiff % 60;
         if (offsetMod !== 0) {
           timezoneMins += offsetMod;
         }
-        timezoneHours += (tzInfo.offset - offsetMod) / 60;
+        timezoneHours += (offsetDiff - offsetMod) / 60;
 
-        console.log("TZ ", tzInfo.tz, dt);
+        console.log("TZ ", localOffset, offsetDiff, tzInfo.tz, dt);
         console.log("TZ ", timezoneHours, timezoneMins);
       }
 
