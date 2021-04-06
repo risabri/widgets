@@ -286,6 +286,7 @@ const Watch = (props) => {
       let dt = new Date();
       if (tzInfo.offset !== 0) {
         dt = moment.tz(tzInfo.tz).toDate();
+        console.log("TIMEZONE CHANGE ", dt);
       }
       const secsElpased = dt.getSeconds();
       let minsElapsed = dt.getMinutes() + secsElpased / 60;
