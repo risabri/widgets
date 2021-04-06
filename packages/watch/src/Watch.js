@@ -175,7 +175,7 @@ const Watch = (props) => {
   // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
   let tzDefault = { offset: offset, tz: tz === "" ? moment.tz.guess() : tz };
-  if (data.hasOwnProperty("settings")) {
+  if (typeof data !== "undefined" && data.hasOwnProperty("settings")) {
     tzDefault = { offset: data.settings.offset, tz: data.settings.tz };
     console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
   }

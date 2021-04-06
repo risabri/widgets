@@ -47,7 +47,10 @@
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
-    "@paciolan/remote-component": "^2.11.0"
+    "@prifina/hooks": "^0.0.61",
+    "@prifina/hooks": "^0.0.61",
+    "https-browserify": "^1.0.0",
+    "stream-http": "^3.1.1"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
@@ -59,6 +62,6 @@
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
-    "@paciolan/remote-component": "^2.11.0"
+    "@prifina/hooks": "^0.0.61"
   }
 }
