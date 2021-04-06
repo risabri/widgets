@@ -283,10 +283,14 @@ const Watch = (props) => {
         origin: `${secondsHandDims.width / 2}px ${secondsHandHeight}`,
       });
 
-      const dt = new Date();
+      let dt = new Date();
+      if (tzInfo.offset !== 0) {
+        dt = moment.tz(tzInfo.tz).toDate();
+      }
       const secsElpased = dt.getSeconds();
       let minsElapsed = dt.getMinutes() + secsElpased / 60;
       let hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+      /*
       const offsetMod = tzInfo.offset % 60;
       if (offsetMod !== 0) {
         minsElapsed += offsetMod;
@@ -294,7 +298,7 @@ const Watch = (props) => {
       if (tzInfo.offset !== 0) {
         hrsElapsed += (tzInfo.offset - offsetMod) / 60;
       }
-
+      */
       const rotate = (elm, deg) => {
         elm.style.transform = `rotate(${deg}deg)`;
       };
