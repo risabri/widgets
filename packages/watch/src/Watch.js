@@ -287,18 +287,32 @@ const Watch = (props) => {
       let dt = new Date();
 
       const secsElpased = dt.getSeconds();
-      let minsElapsed = dt.getMinutes() + secsElpased / 60;
-      let hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+      let timezoneMins = dt.getMinutes();
+      let timezoneHours = dt.getHours();
 
+      if (tzInfo.offset !== 0) {
+        const offsetMod = tzInfo.offset % 60;
+        if (offsetMod !== 0) {
+          timezoneMins += offsetMod;
+        }
+        timezoneHours += (tzInfo.offset - offsetMod) / 60;
+
+        console.log("TZ ", tzInfo.tz);
+      }
+
+      let minsElapsed = timezoneMins + secsElpased / 60;
+      let hrsElapsed = (timezoneHours % 12) + minsElapsed / 60;
+      /*
       if (tzInfo.offset !== 0) {
         const offsetMod = tzInfo.offset % 60;
         if (offsetMod !== 0) {
           minsElapsed += offsetMod;
         }
-        hrsElapsed += (tzInfo.offset - offsetMod) / 60;
+       // hrsElapsed += (tzInfo.offset - offsetMod) / 60;
+
         console.log("TZ ", tzInfo.tz);
       }
-
+*/
       /*
       const offsetMod = tzInfo.offset % 60;
       if (offsetMod !== 0) {
