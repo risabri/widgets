@@ -177,6 +177,7 @@ const Watch = (props) => {
   let tzDefault = { offset: offset, tz: tz === "" ? moment.tz.guess() : tz };
   if (data.hasOwnProperty("settings")) {
     tzDefault = { offset: data.settings.offset, tz: data.settings.tz };
+    console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
   }
   const isMountedRef = useIsMountedRef();
   const [tzInfo, setTzInfo] = useState(tzDefault);
@@ -286,7 +287,7 @@ const Watch = (props) => {
       let dt = new Date();
       if (tzInfo.offset !== 0) {
         dt = moment.tz(tzInfo.tz).toDate();
-        console.log("TIMEZONE CHANGE ", dt);
+        console.log("TIMEZONE CHANGE ", dt, new Date());
       }
       const secsElpased = dt.getSeconds();
       let minsElapsed = dt.getMinutes() + secsElpased / 60;
