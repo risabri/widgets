@@ -291,7 +291,7 @@ const Watch = (props) => {
       let timezoneHours = dt.getHours();
 
       const localOffset = moment.tz(moment.tz.guess()).utcOffset();
-      if (tzInfo.offset !== 0 && tzInfo.offset !== localOffset) {
+      if (tzInfo.offset !== localOffset) {
         const offsetDiff = tzInfo.offset - localOffset;
 
         const offsetMod = offsetDiff % 60;
