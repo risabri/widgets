@@ -297,7 +297,8 @@ const Watch = (props) => {
         }
         timezoneHours += (tzInfo.offset - offsetMod) / 60;
 
-        console.log("TZ ", tzInfo.tz);
+        console.log("TZ ", tzInfo.tz, dt);
+        console.log("TZ ", timezoneHours, timezoneMins);
       }
 
       let minsElapsed = timezoneMins + secsElpased / 60;
