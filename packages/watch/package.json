@@ -47,7 +47,7 @@
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
-
+    "@prifina/hooks": "^0.0.61",
     "https-browserify": "^1.0.0",
     "stream-http": "^3.1.1"
   },
@@ -61,6 +61,7 @@
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
+    "@prifina/hooks": "^0.0.61",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33"
   }
