@@ -285,13 +285,20 @@ const Watch = (props) => {
       });
 
       let dt = new Date();
-      if (tzInfo.offset !== 0) {
-        dt = moment.tz(tzInfo.tz).toDate();
-        console.log("TIMEZONE CHANGE ", dt, new Date());
-      }
+
       const secsElpased = dt.getSeconds();
       let minsElapsed = dt.getMinutes() + secsElpased / 60;
       let hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+
+      if (tzInfo.offset !== 0) {
+        const offsetMod = tzInfo.offset % 60;
+        if (offsetMod !== 0) {
+          minsElapsed += offsetMod;
+        }
+        hrsElapsed += (tzInfo.offset - offsetMod) / 60;
+        console.log("TZ ", tzInfo.tz);
+      }
+
       /*
       const offsetMod = tzInfo.offset % 60;
       if (offsetMod !== 0) {
