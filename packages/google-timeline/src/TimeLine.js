@@ -53,11 +53,10 @@ const TimeLine = (props) => {
   const dataUpdate = (data) => {
     // should check the data payload... :)
     console.log("TIMELINE UPDATE ", data);
-    if (
-      data.hasOwnProperty("settings") &&
-      typeof data.settings === "object" &&
-      data.settings.length === 2
-    ) {
+    console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
+    console.log("TIMELINE UPDATE ", typeof data.settings);
+
+    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
       console.log("TIMELINE ", data.settings);
     }
     /*
