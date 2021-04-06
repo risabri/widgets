@@ -355,7 +355,7 @@ const Watch = (props) => {
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [isMountedRef]);
+  }, [isMountedRef, tzInfo]);
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
