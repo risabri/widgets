@@ -27,8 +27,38 @@ const TimeLine = (props) => {
 
   const [timelineData, setTimeLineData] = useState({});
 
+  const processData = (data) => {
+    let activities = {};
+    data.forEach((d) => {
+      if (parseInt(d.p_confidence) === 100) {
+        if (!activities.hasOwnProperty(d.p_type)) {
+          activities[d.p_type] = 0;
+        }
+        activities[d.p_type] += 1;
+      }
+    });
+    const sortedKeys = Object.keys(activities).sort((a, b) =>
+      activities[a] > activities[b] ? -1 : activities[b] > activities[a] ? 1 : 0
+    );
+    //console.log(activities);
+    //console.log(sortedKeys);
+    let sorted = {};
+    for (let i = 0; i < Math.min(5, sortedKeys.length); i++) {
+      sorted[sortedKeys[i]] = activities[sortedKeys[i]];
+    }
+
+    setTimeLineData(sorted);
+  };
   const dataUpdate = (data) => {
     // should check the data payload... :)
+
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.length === 2
+    ) {
+      console.log("TIMELINE ", data.settings);
+    }
     /*
     console.log("UPDATE ", data.data.queryActivities.data);
     let activities = {};
@@ -72,52 +102,13 @@ const TimeLine = (props) => {
       },
     };
 
-    //console.log("FILTER ", filter);
-    //console.log("FILTER ", buildFilter(filter));
-
     const data = await API[appID].GoogleTimeline.queryActivities({
       filter: buildFilter(filter),
     });
     console.log("DATA ", data.data.getS3Object.content);
     if (data.data.getS3Object.content.length > 0) {
-      let activities = {};
-      data.data.getS3Object.content.forEach((d) => {
-        if (parseInt(d.p_confidence) === 100) {
-          if (!activities.hasOwnProperty(d.p_type)) {
-            activities[d.p_type] = 0;
-          }
-          activities[d.p_type] += 1;
-        }
-      });
-      const sortedKeys = Object.keys(activities).sort((a, b) =>
-        activities[a] > activities[b]
-          ? -1
-          : activities[b] > activities[a]
-          ? 1
-          : 0
-      );
-      //console.log(activities);
-      //console.log(sortedKeys);
-      let sorted = {};
-      for (let i = 0; i < Math.min(5, sortedKeys.length); i++) {
-        sorted[sortedKeys[i]] = activities[sortedKeys[i]];
-      }
-
-      setTimeLineData(sorted);
+      processData(data.data.getS3Object.content);
     }
-
-    /*
-    data.getS3Object.content
-    p_confidence: "87"
-p_datetime: "2014-12-03T03:20:31.121Z"
-p_timestamp: "1417576831121"
-p_type: "STILL"
-*/
-    /*
-    await API[appID].GoogleTimeline.queryActivities({
-      fields: ["datetimex", "type", "confidence"],
-    })
-    */
   }, []);
 
   return (
