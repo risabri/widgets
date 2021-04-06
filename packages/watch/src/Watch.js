@@ -336,7 +336,9 @@ const Watch = ({ offset = 0, tz = "", ...props }) => {
 
   useEffect(() => {
     // init callback function for background updates/notifications
-    onUpdate(appID, dataUpdate);
+    console.log("WATCH RENDER ", typeof onUpdate);
+
+    //onUpdate(appID, dataUpdate);
   }, []);
 
   return (
@@ -383,4 +385,5 @@ const Watch = ({ offset = 0, tz = "", ...props }) => {
   );
 };
 
+Watch.displayName = "Watch";
 export default Watch;
