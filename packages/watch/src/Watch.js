@@ -166,18 +166,20 @@ function useIsMountedRef() {
 // unique appID for the widget....
 const appID = "watchWidget";
 
-const Watch = ({ offset = 0, tz = "", ...props }) => {
+const Watch = (props) => {
+  console.log("WATCH PROPS ", props);
+  const { offset, tz, data } = props;
   // init hook and get provider api services...
   const { onUpdate, Prifina } = usePrifina();
 
   // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
-
+  let tzDefault = { offset: offset, tz: tz === "" ? moment.tz.guess() : tz };
+  if (data.hasOwnProperty("settings")) {
+    tzDefault = { offset: data.settings.offset, tz: data.settings.tz };
+  }
   const isMountedRef = useIsMountedRef();
-  const [tzInfo, setTzInfo] = useState({
-    offset: offset,
-    tz: tz === "" ? moment.tz.guess() : tz,
-  });
+  const [tzInfo, setTzInfo] = useState(tzDefault);
   const [clockSize, setClockSize] = useState("90%");
   const [dialHour, setDialHour] = useState([]);
   const [handPivot, setHandPivot] = useState({ top: 0, left: 0 });
@@ -382,6 +384,11 @@ const Watch = ({ offset = 0, tz = "", ...props }) => {
       <TzText>{tzInfo.tz}</TzText>
     </Container>
   );
+};
+
+Watch.defaultProps = {
+  offset: 0,
+  tz: "",
 };
 
 Watch.displayName = "Watch";
