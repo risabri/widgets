@@ -8,8 +8,10 @@ import { API_KEY, API_BASE_URL } from "./apis/config";
 const appID = "weatherWidget";
 
 const App = (props) => {
-  const { city, data } = props;
   console.log("WEATHER WIDGET PROPS ", props);
+
+  const { city, data } = props;
+
   //const city = "san francisco";
 
   // init hook and get provider api services...
