@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { usePrifina } from "@prifina/hooks";
 import moment from "moment";
 import "moment-timezone";
+import { useId } from "@reach/auto-id";
 
 /*
 $primary: black;
@@ -174,6 +175,9 @@ const Watch = (props) => {
 
   // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
+
+  const elementId = useId();
+
   const localTz = moment.tz.guess();
   const localOffset = moment.tz(localTz).utcOffset();
   let tzDefault = {
@@ -220,7 +224,7 @@ const Watch = (props) => {
     let timeoutId = null;
     let intervalId = null;
     if (isMountedRef.current) {
-      const clock = document.getElementById("clock");
+      const clock = document.getElementById("clock-" + elementId);
       //console.log("MOUNTED ", clock);
 
       const { height: boxH, width: boxW } = getDims(clock, false, false);
@@ -253,17 +257,25 @@ const Watch = (props) => {
       //console.log("DIAL ", _dialHours);
       setDialHour(_dialHours);
 
-      const handPivotElement = document.getElementById("hand-pivot");
+      const handPivotElement = document.getElementById(
+        "hand-pivot-" + elementId
+      );
       const pivotBoxDims = getDims(handPivotElement, false, false);
       setHandPivot({
         top: height / 2 - pivotBoxDims.height / 2,
         left: width / 2 - pivotBoxDims.width / 2,
       });
 
-      const hoursHandElement = document.getElementById("hours-hand");
+      const hoursHandElement = document.getElementById(
+        "hours-hand-" + elementId
+      );
 
-      const minutesHandElement = document.getElementById("minutes-hand");
-      const secondsHandElement = document.getElementById("seconds-hand");
+      const minutesHandElement = document.getElementById(
+        "minutes-hand-" + elementId
+      );
+      const secondsHandElement = document.getElementById(
+        "seconds-hand-" + elementId
+      );
       const offByPivot = 0.05 * height;
 
       const hoursHandDims = getDims(hoursHandElement, false, false);
@@ -388,23 +400,27 @@ const Watch = (props) => {
 
   return (
     <Container>
-      <Clock id="clock" size={clockSize}>
+      <Clock id={"clock-" + elementId} size={clockSize}>
         <HoursHand
           pos={hoursHand}
           className="hours-hand"
-          id="hours-hand"
+          id={"hours-hand-" + elementId}
         ></HoursHand>
         <MinutesHand
           pos={minutesHand}
           className="minutes-hand"
-          id="minutes-hand"
+          id={"minutes-hand-" + elementId}
         ></MinutesHand>
         <SecondsHand
           pos={secondsHand}
           className="seconds-hand"
-          id="seconds-hand"
+          id={"seconds-hand-" + elementId}
         ></SecondsHand>
-        <Pivot pos={handPivot} className="hand-pivot" id="hand-pivot"></Pivot>
+        <Pivot
+          pos={handPivot}
+          className="hand-pivot"
+          id={"hand-pivot-" + elementId}
+        ></Pivot>
         {[...Array(12)].map((x, i) => {
           if ((i + 1) % 3 === 0) {
             return (
