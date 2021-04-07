@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op, _fn, buildFilter } from "@prifina/hooks";
 import GoogleTimeline from "@prifina/google-timeline/";
@@ -27,7 +27,7 @@ const TimeLine = (props) => {
   const prifina = new Prifina({ appId: appID });
 
   const [timelineData, setTimeLineData] = useState({});
-
+  const period = useRef("");
   const processData = (data) => {
     let activities = {};
     data.forEach((d) => {
@@ -65,7 +65,7 @@ const TimeLine = (props) => {
 
       const year = parseInt(data.settings.year);
       const month = parseInt(data.settings.month);
-
+      period.current = year + "/" + month;
       const filter = {
         [Op.and]: {
           [year]: {
@@ -127,6 +127,7 @@ const TimeLine = (props) => {
       },
     };
 
+    period.current = year + "/" + month;
     console.log("FILTER ", filter);
 
     const result = await API[appID].GoogleTimeline.queryActivities({
@@ -141,7 +142,7 @@ const TimeLine = (props) => {
   return (
     <Container>
       <div>
-        <div>TOP 5 activities</div>
+        <div>TOP 5 activities {period.current}</div>
         {Object.keys(timelineData).length > 0 && (
           <ol>
             {Object.keys(timelineData).map((t, k) => {
