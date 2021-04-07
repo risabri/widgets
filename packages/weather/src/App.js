@@ -71,6 +71,7 @@ const App = (props) => {
     */
     //console.log(weatherData.weather);
     const icon = weatherData.weather[0].icon;
+    const weatherCity = weatherData.name;
     return (
       <React.Fragment>
         <div
@@ -81,7 +82,7 @@ const App = (props) => {
           }}
         >
           <div style={{ textAlign: "center", textTransform: "capitalize" }}>
-            {city}
+            {weatherCity}
           </div>
           <div
             style={{
