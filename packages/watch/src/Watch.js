@@ -174,13 +174,22 @@ const Watch = (props) => {
 
   // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
-  let tzDefault = { offset: offset, tz: tz === "" ? moment.tz.guess() : tz };
+  const localTz = moment.tz.guess();
+  const localOffset = moment.tz(localTz).utcOffset();
+  let tzDefault = {
+    offset: offset === -1 ? localOffset : offset,
+    tz: tz === "" ? localTz : tz,
+  };
   if (
     typeof data !== "undefined" &&
     data.hasOwnProperty("settings") &&
-    data.settings.hasOwnProperty("tz")
+    data.settings.hasOwnProperty("tz") &&
+    data.settings.tz !== ""
   ) {
-    tzDefault = { offset: data.settings.offset, tz: data.settings.tz };
+    tzDefault = {
+      offset: parseInt(data.settings.offset),
+      tz: data.settings.tz,
+    };
     console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
   }
   const isMountedRef = useIsMountedRef();
@@ -422,7 +431,7 @@ const Watch = (props) => {
 };
 
 Watch.defaultProps = {
-  offset: 0,
+  offset: -1,
   tz: "",
 };
 
