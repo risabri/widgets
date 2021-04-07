@@ -128,6 +128,9 @@ const App = (props) => {
     </div>
   );
 };
+App.defaultProps = {
+  city: "San Francisco",
+};
 App.displayName = "Weather";
 
 export default App;
