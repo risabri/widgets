@@ -24,7 +24,8 @@ const App = (props) => {
     typeof data !== "undefined" &&
     data.hasOwnProperty("settings") &&
     typeof data.settings === "object" &&
-    data.settings.hasOwnProperty("city")
+    data.settings.hasOwnProperty("city") &&
+    data.settings.city.length > 0
   ) {
     defaultCity = data.settings.city;
   }
