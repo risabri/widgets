@@ -103,7 +103,11 @@ const TimeLine = (props) => {
     let year = d.getFullYear();
     let month = d.getMonth();
 
-    if (data.hasOwnProperty("settings")) {
+    if (
+      data.hasOwnProperty("settings") &&
+      data.settings.hasOwnProperty("year") &&
+      data.settings.year !== ""
+    ) {
       year = parseInt(data.settings.year);
       month = parseInt(data.settings.month);
     }
