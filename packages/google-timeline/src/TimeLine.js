@@ -56,7 +56,11 @@ const TimeLine = (props) => {
     //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
     //console.log("TIMELINE UPDATE ", typeof data.settings);
 
-    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.year !== ""
+    ) {
       //console.log("TIMELINE ", data.settings);
 
       const year = parseInt(data.settings.year);
