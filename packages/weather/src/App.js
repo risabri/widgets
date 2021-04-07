@@ -33,7 +33,11 @@ const App = (props) => {
   const dataUpdate = (data) => {
     // should check the data payload... :)
 
-    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.hasOwnProperty("city")
+    ) {
       //setCity(data.settings.city);
       setUrl(
         `${API_BASE_URL}/data/2.5/weather?q=${data.settings.city}&units=metric&appid=${API_KEY}`

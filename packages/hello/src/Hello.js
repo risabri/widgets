@@ -37,7 +37,11 @@ const Hello = (props) => {
   const dataUpdate = (data) => {
     // should check the data payload... :)
 
-    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.hasOwnProperty("msg")
+    ) {
       setHelloText(data.settings.msg);
     }
   };
