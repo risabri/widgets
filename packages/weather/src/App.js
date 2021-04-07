@@ -23,7 +23,8 @@ const App = (props) => {
   if (
     typeof data !== "undefined" &&
     data.hasOwnProperty("settings") &&
-    typeof data.settings === "object"
+    typeof data.settings === "object" &&
+    data.settings.hasOwnProperty("city")
   ) {
     defaultCity = data.settings.city;
   }
