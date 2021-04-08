@@ -2234,6 +2234,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
+"@prifina/file-upload@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@prifina/file-upload/-/file-upload-0.0.2.tgz#aabf4b2a6a84f98292a7bba7b80a87d82229f65a"
+  integrity sha512-hmF9taHESdo76+AgZEtvaV816LF4XiReKkRrOBn0NLlpr/67r/lcx0ixHBTJxZLs219oOhJHbCPEFbZsUajJ+g==
+
 "@prifina/google-timeline@^0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.10.tgz#8d70bbffa24583039ea3ba5216b5a6bd258ca0a5"
