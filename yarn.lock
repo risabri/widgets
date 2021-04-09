@@ -2251,10 +2251,10 @@
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
 
-"@prifina/hooks@0.0.61", "@prifina/hooks@^0.0.61":
-  version "0.0.61"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.61.tgz#77107d4f92063f46fed71da93412efe02cfd4234"
-  integrity sha512-LmLWMc6w2EKE6aqOnhUoflsXJ70v2rbPuV7I2WSBL+h+t4zo+EQYA24SwcT3ha8pYaWzMlW9p1iVYDonMlOWXQ==
+"@prifina/hooks@0.0.62", "@prifina/hooks@^0.0.62":
+  version "0.0.62"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.62.tgz#bd02571d40566c9d0a8cb00d75862bf94e38eaca"
+  integrity sha512-Cs9VSZDXT7yf3HyRnerrbd9dKMUe9/hXWaUoEecjVXJQfqzN7+uutwf+jEX/YI/2MArMmbvMFJi0UuVM4tVb/Q==
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
 
