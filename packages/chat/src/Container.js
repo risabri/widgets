@@ -192,7 +192,7 @@ export const Container = () => {
               onClick={() => {
                 setSelectedContact(-1);
                 setShowContacts(true);
-                unSubscribe(appID, "addMessage");
+                unSubscribe(appID, onUpdateRef, "addMessage");
               }}
             />
           </StyledWrapper>
