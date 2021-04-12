@@ -2258,11 +2258,6 @@
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
 
-"@prifina/hooks@^0.0.45":
-  version "0.0.45"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.45.tgz#877f145cabe177da38abe9603451d2dcc82c808b"
-  integrity sha512-nJLeT+v+ZvzCGeOQZZaCggXwXSK5mFhutVQIJ3nBDN2yqe687MoHJK8pWUT5FNbpwi2hoBniksFbSOv/myTk0Q==
-
 "@reach/auto-id@^0.12.1":
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.12.1.tgz#2e4a7250d2067ec16a9b4ea732695bc75572405c"

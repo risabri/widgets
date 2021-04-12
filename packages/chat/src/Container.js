@@ -69,23 +69,23 @@ const AddressBook = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
 `;
-export const Container = () => {
-  const appID = "TESTING";
 
+const appID = "chatWidget";
+
+export const Container = () => {
+  // init hook and get provider api services...
   const {
-    currentUser,
-    queries,
-    subscriptions,
-    mutations,
+    Prifina,
+    registerHooks,
     onUpdate,
+    currentUser,
     subscriptionTest,
     unSubscribe,
-  } = usePrifina({
-    appID: appID,
-  });
+  } = usePrifina();
 
-  const username = currentUser.uuid;
-  //console.log(currentUser, queries);
+  // init provider api with your appID
+  const prifina = new Prifina({ appId: appID });
+
   const [showContacts, setShowContacts] = useState(true);
   const [messages, setMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -94,15 +94,16 @@ export const Container = () => {
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data);
     setMessages((prev) => [...prev, data]);
-    //setUpdate(data);
   };
 
   useEffect(async () => {
-    const addressBook = await queries(appID, "getAddressBook");
-    const contactList = addressBook.data.getAddressBook;
-    console.log(addressBook);
-    setContacts(contactList);
     onUpdate(appID, updateTest);
+    const addressBook = await prifina.core.queries.getAddressBook();
+    const contactList = addressBook.data.getAddressBook;
+    //console.log(addressBook);
+    setContacts(contactList);
+    //
+    console.log(prifina);
   }, []);
 
   const contactClick = useCallback(
@@ -110,36 +111,55 @@ export const Container = () => {
       //console.log("CLICK ", i, contacts);
       setSelectedContact(i);
       setShowContacts(false);
+      prifina.core.subscriptions
+        .addMessage({ receiver: "TEST" })
+        .then((subRes) => {
+          console.log("SUB RESULT ", subRes);
+        });
+      /*
       subscriptionTest(appID, {
         addMessage: [
           {
             messageId: 1,
             body: "Hello",
-            handle: contacts[i].name,
-            username: contacts[i].uuid,
+            receiver: currentUser.uuid,
+            sender: contacts[i].uuid,
           },
           {
             messageId: 3,
             body: "Something",
-            handle: contacts[i].name,
-            username: contacts[i].uuid,
+            receiver: currentUser.uuid,
+            sender: contacts[i].uuid,
           },
           {
             messageId: 2,
             body: "Testing",
-            handle: contacts[i].name,
-            username: contacts[i].uuid,
+            receiver: currentUser.uuid,
+            sender: contacts[i].uuid,
           },
         ],
       });
+      */
     },
     [contacts]
   );
 
   const sendMessage = async (msg) => {
     console.log("MSG ", msg);
-    await mutations(appID, "createMessage", { body: msg, username: username });
-    setMessages((prev) => [...prev, { body: msg, username: username }]);
+    console.log("CONTACT ", contacts[selectedContact].name);
+    await prifina.core.mutations.createMessage({
+      body: msg,
+      rceiver: contacts[selectedContact].uuid,
+    });
+    setMessages((prev) => [
+      ...prev,
+      {
+        body: msg,
+        sender: currentUser.uuid,
+        receiver: contacts[selectedContact].uuid,
+      },
+    ]);
+
     //setMessages({ body: msg, handle: currentUser.name, username: username });
   };
   return (
@@ -176,7 +196,12 @@ export const Container = () => {
           </StyledWrapper>
           <MessageBox>
             {messages.length > 0 && (
-              <MessageList messages={messages} username={username} />
+              <MessageList
+                messages={messages}
+                sender={currentUser.uuid}
+                senderName={currentUser.name}
+                receiverName={contacts[selectedContact].name}
+              />
             )}
           </MessageBox>
           <SendMessage onCreate={sendMessage} />
