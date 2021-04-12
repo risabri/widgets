@@ -111,11 +111,9 @@ export const Container = () => {
       //console.log("CLICK ", i, contacts);
       setSelectedContact(i);
       setShowContacts(false);
-      prifina.core.subscriptions
-        .addMessage({ receiver: "TEST" })
-        .then((subRes) => {
-          console.log("SUB RESULT ", subRes);
-        });
+      prifina.core.subscriptions.addMessage().then((subRes) => {
+        console.log("SUB RESULT ", subRes);
+      });
       /*
       subscriptionTest(appID, {
         addMessage: [
