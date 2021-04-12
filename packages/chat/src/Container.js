@@ -1,6 +1,6 @@
 /* global localStorage */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
 import SendMessage from "./SendMessage";
 import MessageList from "./MessagesList";
@@ -91,13 +91,15 @@ export const Container = () => {
   const [contacts, setContacts] = useState([]);
   const [selectedContact, setSelectedContact] = useState(-1);
 
+  const onUpdateRef = useRef();
+
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data);
     setMessages((prev) => [...prev, data]);
   };
 
   useEffect(async () => {
-    onUpdate(appID, updateTest);
+    onUpdateRef.current = onUpdate(appID, updateTest);
     const addressBook = await prifina.core.queries.getAddressBook();
     const contactList = addressBook.data.getAddressBook;
     //console.log(addressBook);
@@ -108,12 +110,14 @@ export const Container = () => {
 
   const contactClick = useCallback(
     (i) => {
-      //console.log("CLICK ", i, contacts);
+      console.log("CLICK ", i, contacts, onUpdateRef);
       setSelectedContact(i);
       setShowContacts(false);
-      prifina.core.subscriptions.addMessage().then((subRes) => {
-        console.log("SUB RESULT ", subRes);
-      });
+      prifina.core.subscriptions
+        .addMessage(onUpdateRef.current)
+        .then((subRes) => {
+          console.log("SUB RESULT ", subRes);
+        });
       /*
       subscriptionTest(appID, {
         addMessage: [
