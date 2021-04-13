@@ -100,7 +100,14 @@ export const Container = () => {
 
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data);
-    setMessages((prev) => [...prev, data]);
+    if (data.hasOwnProperty("data")) {
+      // subscription update...
+      if (data.data.hasOwnProperty("addMessage")) {
+        setMessages((prev) => [...prev, data.data.addMessage]);
+      }
+    } else {
+      setMessages((prev) => [...prev, data]);
+    }
   };
 
   useEffect(async () => {
