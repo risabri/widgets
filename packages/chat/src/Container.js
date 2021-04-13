@@ -156,7 +156,8 @@ export const Container = () => {
     console.log("CONTACT ", contacts[selectedContact].name);
     await prifina.core.mutations.createMessage({
       body: msg,
-      rceiver: contacts[selectedContact].uuid,
+      sender: currentUser.uuid,
+      receiver: contacts[selectedContact].uuid,
     });
     setMessages((prev) => [
       ...prev,
