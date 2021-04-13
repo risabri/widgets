@@ -29,7 +29,7 @@ export default ({ onCreate }) => {
           border: "none",
           borderTop: "1px solid #ddd",
           fontSize: "16px",
-          padding: "30px",
+          padding: "10px",
           width: "100%",
         }}
       />
