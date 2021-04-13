@@ -26,6 +26,7 @@ const StyledClose = styled.div`
 
   &:hover {
     opacity: 1;
+    cursor: pointer;
   }
   ::before,
   ::after {
