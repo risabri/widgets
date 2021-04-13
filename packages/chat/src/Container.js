@@ -173,7 +173,7 @@ export const Container = () => {
     <>
       {showContacts && contacts.length > 0 && (
         <AddressBook>
-          <h3>Contacts</h3>
+          <h3 style={{ textAlign: "center" }}>Contacts</h3>
           <hr />
           <ul>
             {contacts.map((c, i) => {
