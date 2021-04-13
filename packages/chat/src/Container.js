@@ -48,7 +48,10 @@ const StyledClose = styled.div`
 const StyledBox = styled.div`
   /* */
   width: 400px;
-  height: calc(400px - 79px);
+  height: calc(600px - 79px);
+
+  position: relative;
+  top: 0px;
   /*
   display: flex;
   justify-content: flex-end;
@@ -65,7 +68,7 @@ const MessageBox = styled.div`
 const AddressBook = styled.div`
   /* */
   width: 400px;
-  height: 400px;
+  height: 600px;
   overflow-y: scroll;
   overflow-x: hidden;
 `;
