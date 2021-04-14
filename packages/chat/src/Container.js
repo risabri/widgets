@@ -232,7 +232,7 @@ export const Container = () => {
                       <span style={{ paddingLeft: "5px" }}>
                         (
                         <span style={{ color: "red" }}>
-                          messageCount.current[c.uuid]
+                          {messageCount.current[c.uuid]}
                         </span>
                         )
                       </span>
