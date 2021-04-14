@@ -252,6 +252,9 @@ export const Container = () => {
                 setShowContacts(true);
                 setMessages([]);
                 //unSubscribe(appID, onUpdateRef, "addMessage");
+                contacts.forEach((c) => {
+                  messageCount.current[c.uuid] = 0;
+                });
               }}
             />
           </StyledWrapper>
