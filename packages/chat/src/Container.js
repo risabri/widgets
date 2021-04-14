@@ -110,6 +110,7 @@ export const Container = () => {
         } else {
           setMessages((prev) => [...prev, data.data.addMessage]);
         }
+        console.log("MESSAGE COUNT ", messageCount.current);
       }
     } else {
       setMessages((prev) => [...prev, data]);
