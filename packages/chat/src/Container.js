@@ -121,7 +121,7 @@ export const Container = () => {
           console.log("UPDATE MESSAGE STATUS ", msg);
           prifina.core.mutations
             .updateMessageStatus({
-              created_at: msg.created_at,
+              createdAt: msg.created_at,
               sender: msg.sender,
               messageId: msg.messageId,
               status: 1,
