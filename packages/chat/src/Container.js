@@ -229,8 +229,12 @@ export const Container = () => {
                   {c.name}{" "}
                   {Object.keys(messageCount.current).length > 0 &&
                     messageCount.current[c.uuid] > 0 && (
-                      <span style={{ paddingLeft: "5px", color: "red" }}>
-                        (messageCount.current[c.uuid])
+                      <span style={{ paddingLeft: "5px" }}>
+                        (
+                        <span style={{ color: "red" }}>
+                          messageCount.current[c.uuid]
+                        </span>
+                        )
                       </span>
                     )}
                 </li>
