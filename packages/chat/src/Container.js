@@ -230,7 +230,7 @@ export const Container = () => {
                   {c.name}{" "}
                   {Object.keys(messageCount.current).length > 0 &&
                     messageCount.current[c.uuid] > 0 &&
-                    messageCount.current[uuid]}
+                    messageCount.current[c.uuid]}
                 </li>
               );
             })}
