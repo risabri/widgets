@@ -130,13 +130,13 @@ export const Container = () => {
       );
       setContacts(contactList);
       contactList.forEach((c) => {
-        messageCount.current[c] = 0;
+        messageCount.current[c.uuid] = 0;
       });
     } else {
       const contactList = addressBook.data.getUserAddressBook;
       setContacts(contactList);
       contactList.forEach((c) => {
-        messageCount.current[c] = 0;
+        messageCount.current[c.uuid] = 0;
       });
     }
 
