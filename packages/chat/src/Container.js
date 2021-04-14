@@ -133,7 +133,6 @@ export const Container = () => {
         addressBook.data.getUserAddressBook.addressBook
       );
       contactList.forEach((c) => {
-        console.log("MSG COUNT ", c.uuid);
         messageCount.current[c.uuid] = 0;
       });
       setContacts(contactList);
@@ -229,8 +228,11 @@ export const Container = () => {
                 >
                   {c.name}{" "}
                   {Object.keys(messageCount.current).length > 0 &&
-                    messageCount.current[c.uuid] > 0 &&
-                    messageCount.current[c.uuid]}
+                    messageCount.current[c.uuid] > 0 && (
+                      <span style={{ paddingLeft: "5px", color: "red" }}>
+                        (messageCount.current[c.uuid])
+                      </span>
+                    )}
                 </li>
               );
             })}
