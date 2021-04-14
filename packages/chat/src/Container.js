@@ -114,7 +114,17 @@ export const Container = () => {
 
           setMessages((prev) => [...prev, data.data.addMessage]);
         } else {
-          setMessages((prev) => [...prev, data.data.addMessage]);
+          // can change status to 1===read
+          prifina.core.mutations
+            .updateMessageStatus({
+              created_at: msg.created_at,
+              sender: msg.sender,
+              messageId: msg.messageId,
+              status: 1,
+            })
+            .then(() => {
+              setMessages((prev) => [...prev, data.data.addMessage]);
+            });
         }
         console.log("MESSAGE COUNT ", messageCount.current);
       }
@@ -155,8 +165,8 @@ export const Container = () => {
   const contactClick = useCallback(
     (i) => {
       console.log("CLICK ", i, contacts, onUpdateRef);
+      // if messages>0 .... update status to 1===read
       setSelectedContact(i);
-
       setShowContacts(false);
       /*
       prifina.core.subscriptions
