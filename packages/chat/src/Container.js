@@ -104,8 +104,9 @@ export const Container = () => {
       // subscription update...
       console.log("UPDATE TEST PAYLOAD FOUND ", Object.keys(data.data));
       if (data.data.hasOwnProperty("addMessage")) {
-        console.log("UPDATE TEST ADD MESSAGE FOUND");
+        console.log("UPDATE TEST ADD MESSAGE FOUND ");
         if (selectedContact === -1) {
+          console.log("UPDATE TEST SENDER FOUND ", data.data.addMessage.sender);
           messageCount.current[data.data.addMessage.sender]++;
 
           setMessages((prev) => [...prev, data.data.addMessage]);
@@ -128,16 +129,17 @@ export const Container = () => {
       const contactList = JSON.parse(
         addressBook.data.getUserAddressBook.addressBook
       );
-      setContacts(contactList);
       contactList.forEach((c) => {
+        console.log("MSG COUNT ", c.uuid);
         messageCount.current[c.uuid] = 0;
       });
+      setContacts(contactList);
     } else {
       const contactList = addressBook.data.getUserAddressBook;
-      setContacts(contactList);
       contactList.forEach((c) => {
         messageCount.current[c.uuid] = 0;
       });
+      setContacts(contactList);
     }
 
     //console.log(addressBook);
