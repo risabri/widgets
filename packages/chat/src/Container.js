@@ -94,12 +94,14 @@ export const Container = () => {
   const [showContacts, setShowContacts] = useState(true);
   const [messages, setMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const [selectedContact, setSelectedContact] = useState(-1);
 
+  //const [selectedContact, setSelectedContact] = useState(-1);
+  const selectedContact = useRef(-1);
   const onUpdateRef = useRef();
   const messageCount = useRef({});
+
   const updateTest = (data) => {
-    console.log("UPDATE TEST ", data, Object.keys(data));
+    console.log("UPDATE TEST ", data, Object.keys(data), selectedContact);
     if (data.hasOwnProperty("data")) {
       // subscription update...
       console.log("UPDATE TEST PAYLOAD FOUND ", Object.keys(data.data));
@@ -108,7 +110,7 @@ export const Container = () => {
           "UPDATE TEST ADD MESSAGE FOUND ",
           Object.keys(data.data.addMessage)
         );
-        if (selectedContact === -1) {
+        if (selectedContact.current === -1) {
           console.log("UPDATE TEST SENDER FOUND ", data.data.addMessage.sender);
           messageCount.current[data.data.addMessage.sender]++;
 
@@ -168,7 +170,8 @@ export const Container = () => {
     (i) => {
       console.log("CLICK ", i, contacts, onUpdateRef);
       // if messages>0 .... update status to 1===read
-      setSelectedContact(i);
+      //setSelectedContact(i);
+      selectedContact.current = i;
       setShowContacts(false);
       /*
       prifina.core.subscriptions
@@ -207,18 +210,18 @@ export const Container = () => {
 
   const sendMessage = async (msg) => {
     console.log("MSG ", msg);
-    console.log("CONTACT ", contacts[selectedContact].name);
+    console.log("CONTACT ", contacts[selectedContact.current].name);
     await prifina.core.mutations.createMessage({
       body: msg,
       sender: currentUser.uuid,
-      receiver: contacts[selectedContact].uuid,
+      receiver: contacts[selectedContact.current].uuid,
     });
     setMessages((prev) => [
       ...prev,
       {
         body: msg,
         sender: currentUser.uuid,
-        receiver: contacts[selectedContact].uuid,
+        receiver: contacts[selectedContact.current].uuid,
       },
     ]);
 
@@ -260,7 +263,8 @@ export const Container = () => {
           <StyledWrapper>
             <StyledClose
               onClick={() => {
-                setSelectedContact(-1);
+                //setSelectedContact(-1);
+                selectedContact.current = -1;
                 setShowContacts(true);
                 setMessages([]);
                 //unSubscribe(appID, onUpdateRef, "addMessage");
@@ -276,7 +280,7 @@ export const Container = () => {
                 messages={messages}
                 sender={currentUser.uuid}
                 senderName={currentUser.name}
-                receiverName={contacts[selectedContact].name}
+                receiverName={contacts[selectedContact.current].name}
               />
             )}
           </MessageBox>
