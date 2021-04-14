@@ -115,6 +115,8 @@ export const Container = () => {
           setMessages((prev) => [...prev, data.data.addMessage]);
         } else {
           // can change status to 1===read
+          const msg = data.data.addMessage;
+          console.log("UPDATE MESSAGE STATUS ", msg);
           prifina.core.mutations
             .updateMessageStatus({
               created_at: msg.created_at,
@@ -123,7 +125,7 @@ export const Container = () => {
               status: 1,
             })
             .then(() => {
-              setMessages((prev) => [...prev, data.data.addMessage]);
+              setMessages((prev) => [...prev, msg]);
             });
         }
         console.log("MESSAGE COUNT ", messageCount.current);
