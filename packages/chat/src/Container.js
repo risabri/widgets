@@ -113,15 +113,18 @@ export const Container = () => {
   useEffect(async () => {
     onUpdateRef.current = onUpdate(appID, updateTest);
     const addressBook = await prifina.core.queries.getAddressBook();
+    console.log("ADDRESSBOOK ", addressBook);
     if (typeof addressBook.data.getUserAddressBook.addressBook === "string") {
       const contactList = JSON.parse(
         addressBook.data.getUserAddressBook.addressBook
       );
+      setContacts(contactList);
     } else {
       const contactList = addressBook.data.getUserAddressBook;
+      setContacts(contactList);
     }
     //console.log(addressBook);
-    setContacts(contactList);
+    //setContacts(contactList);
     //
     console.log(prifina);
   }, []);
