@@ -99,10 +99,12 @@ export const Container = () => {
   const onUpdateRef = useRef();
   const messageCount = useRef({});
   const updateTest = (data) => {
-    console.log("UPDATE TEST ", data);
+    console.log("UPDATE TEST ", data, Object.keys(data));
     if (data.hasOwnProperty("data")) {
       // subscription update...
+      console.log("UPDATE TEST PAYLOAD FOUND ", Object.keys(data.data));
       if (data.data.hasOwnProperty("addMessage")) {
+        console.log("UPDATE TEST ADD MESSAGE FOUND");
         if (selectedContact === -1) {
           messageCount.current[data.data.addMessage.sender]++;
 
