@@ -97,13 +97,19 @@ export const Container = () => {
   const [selectedContact, setSelectedContact] = useState(-1);
 
   const onUpdateRef = useRef();
-
+  const messageCount = useRef({});
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data);
     if (data.hasOwnProperty("data")) {
       // subscription update...
       if (data.data.hasOwnProperty("addMessage")) {
-        setMessages((prev) => [...prev, data.data.addMessage]);
+        if (selectedContact === -1) {
+          messageCount.current[data.data.addMessage.sender]++;
+
+          setMessages((prev) => [...prev, data.data.addMessage]);
+        } else {
+          setMessages((prev) => [...prev, data.data.addMessage]);
+        }
       }
     } else {
       setMessages((prev) => [...prev, data]);
@@ -114,18 +120,28 @@ export const Container = () => {
     onUpdateRef.current = onUpdate(appID, updateTest);
     const addressBook = await prifina.core.queries.getAddressBook();
     console.log("ADDRESSBOOK ", addressBook);
+
     if (typeof addressBook.data.getUserAddressBook.addressBook === "string") {
       const contactList = JSON.parse(
         addressBook.data.getUserAddressBook.addressBook
       );
       setContacts(contactList);
+      contactList.forEach((c) => {
+        messageCount.current[c] = 0;
+      });
     } else {
       const contactList = addressBook.data.getUserAddressBook;
       setContacts(contactList);
+      contactList.forEach((c) => {
+        messageCount.current[c] = 0;
+      });
     }
+
     //console.log(addressBook);
     //setContacts(contactList);
     //
+    await prifina.core.subscriptions.addMessage(onUpdateRef.current);
+
     console.log(prifina);
   }, []);
 
@@ -133,12 +149,15 @@ export const Container = () => {
     (i) => {
       console.log("CLICK ", i, contacts, onUpdateRef);
       setSelectedContact(i);
+
       setShowContacts(false);
+      /*
       prifina.core.subscriptions
         .addMessage(onUpdateRef.current)
         .then((subRes) => {
           console.log("SUB RESULT ", subRes);
         });
+        */
       /*
       subscriptionTest(appID, {
         addMessage: [
@@ -200,7 +219,10 @@ export const Container = () => {
                   onClick={() => contactClick(i)}
                   key={"contact-" + i}
                 >
-                  {c.name}
+                  {c.name}{" "}
+                  {Object.keys(messageCount.current).length > 0 &&
+                    messageCount.current[c.uuid] > 0 &&
+                    messageCount.current[uuid]}
                 </li>
               );
             })}
@@ -214,7 +236,8 @@ export const Container = () => {
               onClick={() => {
                 setSelectedContact(-1);
                 setShowContacts(true);
-                unSubscribe(appID, onUpdateRef, "addMessage");
+                setMessages([]);
+                //unSubscribe(appID, onUpdateRef, "addMessage");
               }}
             />
           </StyledWrapper>
