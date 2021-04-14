@@ -104,7 +104,10 @@ export const Container = () => {
       // subscription update...
       console.log("UPDATE TEST PAYLOAD FOUND ", Object.keys(data.data));
       if (data.data.hasOwnProperty("addMessage")) {
-        console.log("UPDATE TEST ADD MESSAGE FOUND ");
+        console.log(
+          "UPDATE TEST ADD MESSAGE FOUND ",
+          Object.keys(data.data.addMessage)
+        );
         if (selectedContact === -1) {
           console.log("UPDATE TEST SENDER FOUND ", data.data.addMessage.sender);
           messageCount.current[data.data.addMessage.sender]++;
