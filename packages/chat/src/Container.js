@@ -162,6 +162,8 @@ export const Container = () => {
     //setContacts(contactList);
     //
     await prifina.core.subscriptions.addMessage(onUpdateRef.current);
+    const unreadMessages = await prifina.core.queries.getUnreadMessages();
+    console.log("UNREAD MESSAGES ", unreadMessages);
 
     console.log(prifina);
   }, []);
@@ -169,10 +171,30 @@ export const Container = () => {
   const contactClick = useCallback(
     (i) => {
       console.log("CLICK ", i, contacts, onUpdateRef);
-      // if messages>0 .... update status to 1===read
+
       //setSelectedContact(i);
       selectedContact.current = i;
-      setShowContacts(false);
+      // if messages>0 .... update status to 1===read
+      if (messages.length > 0) {
+        const statuses = messages.map((msg) => {
+          return prifina.core.mutations.updateMessageStatus({
+            createdAt: msg.created_at,
+            sender: msg.sender,
+            messageId: msg.messageId,
+            status: 1,
+          });
+        });
+        Promise.all(statuses)
+          .then(() => {
+            setShowContacts(false);
+          })
+          .catch((err) => {
+            console.log("STATUS UPDATE ERROR ", err);
+          });
+      } else {
+        setShowContacts(false);
+      }
+
       /*
       prifina.core.subscriptions
         .addMessage(onUpdateRef.current)
