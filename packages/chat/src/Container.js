@@ -99,7 +99,7 @@ export const Container = () => {
   const selectedContact = useRef(-1);
   const onUpdateRef = useRef();
   const messageCount = useRef({});
-  const unreadMessages = useRef({});
+  const unreadMessageList = useRef({});
 
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data, Object.keys(data), selectedContact);
@@ -170,11 +170,11 @@ export const Container = () => {
       unreadMessages.data.listUnreadMessages.items.forEach((item) => {
         console.log(item);
         console.log(Object.keys(item));
-        console.log(unreadMessages.current);
+        console.log(unreadMessageList.current);
 
-        if (!unreadMessages.current.hasOwnProperty(item.sender))
-          unreadMessages.current[item.sender] = [];
-        unreadMessages.current[item.sender].push(item);
+        if (!unreadMessageList.current.hasOwnProperty(item.sender))
+          unreadMessageList.current[item.sender] = [];
+        unreadMessageList.current[item.sender].push(item);
         messageCount.current[item.sender]++;
       });
     }
