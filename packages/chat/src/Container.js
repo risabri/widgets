@@ -150,6 +150,18 @@ export const Container = () => {
       contactList.forEach((c) => {
         messageCount.current[c.uuid] = 0;
       });
+
+      await prifina.core.subscriptions.addMessage(onUpdateRef.current);
+      const unreadMessages = await prifina.core.queries.getUnreadMessages();
+      if (unreadMessages.data.listUnreadMessages.items.length > 0) {
+        unreadMessages.data.listUnreadMessages.items.forEach((item) => {
+          if (!unreadMessageList.current.hasOwnProperty(item.sender))
+            unreadMessageList.current[item.sender] = [];
+          unreadMessageList.current[item.sender].push(item);
+          messageCount.current[item.sender]++;
+        });
+      }
+
       setContacts(contactList);
     } else {
       const contactList = addressBook.data.getUserAddressBook;
@@ -162,22 +174,6 @@ export const Container = () => {
     //console.log(addressBook);
     //setContacts(contactList);
     //
-
-    await prifina.core.subscriptions.addMessage(onUpdateRef.current);
-    const unreadMessages = await prifina.core.queries.getUnreadMessages();
-    console.log("UNREAD MESSAGES ", unreadMessages);
-    if (unreadMessages.data.listUnreadMessages.items.length > 0) {
-      unreadMessages.data.listUnreadMessages.items.forEach((item) => {
-        console.log(item);
-        console.log(Object.keys(item));
-        console.log(unreadMessageList.current);
-
-        if (!unreadMessageList.current.hasOwnProperty(item.sender))
-          unreadMessageList.current[item.sender] = [];
-        unreadMessageList.current[item.sender].push(item);
-        messageCount.current[item.sender]++;
-      });
-    }
 
     console.log(prifina);
   }, []);
