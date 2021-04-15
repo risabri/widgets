@@ -197,8 +197,8 @@ export const Container = () => {
 
       // if messages>0 .... update status to 1===read
       if (msgQueue.length > 0) {
-        console.log("STATUS UPDATE ", msgQueue);
-        /*
+        //console.log("STATUS UPDATE ", msgQueue);
+
         const statuses = msgQueue.map((msg) => {
           return prifina.core.mutations.updateMessageStatus({
             createdAt: msg.created_at,
@@ -209,12 +209,15 @@ export const Container = () => {
         });
         Promise.all(statuses)
           .then(() => {
+            unreadMessageList.current[
+              contacts[selectedContact.current].uuid
+            ] = [];
+            messageCount.current[contacts[selectedContact.current].uuid] = 0;
             setShowContacts(false);
           })
           .catch((err) => {
             console.log("STATUS UPDATE ERROR ", err);
           });
-          */
       } else {
         setShowContacts(false);
       }
