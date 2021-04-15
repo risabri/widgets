@@ -99,7 +99,7 @@ export const Container = () => {
   const selectedContact = useRef(-1);
   const onUpdateRef = useRef();
   const messageCount = useRef({});
-
+  const unreadMessages = useRef({});
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data, Object.keys(data), selectedContact);
     if (data.hasOwnProperty("data")) {
@@ -164,6 +164,14 @@ export const Container = () => {
     await prifina.core.subscriptions.addMessage(onUpdateRef.current);
     const unreadMessages = await prifina.core.queries.getUnreadMessages();
     console.log("UNREAD MESSAGES ", unreadMessages);
+    if (unreadMessages.data.listUnreadMessages.items.length > 0) {
+      unreadMessages.data.listUnreadMessages.items.forEach((item) => {
+        if (!unreadMessages.current.hasOwnProperty(item.sender))
+          unreadMessages.current[item.sender] = [];
+        unreadMessages.current[item.sender].push(item);
+        messageCount.current[item.sender]++;
+      });
+    }
 
     console.log(prifina);
   }, []);
