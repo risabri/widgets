@@ -184,9 +184,22 @@ export const Container = () => {
 
       //setSelectedContact(i);
       selectedContact.current = i;
+      let msgQueue = messages;
+      if (
+        unreadMessageList.current.hasOwnProperty(
+          contacts[selectedContact.current].uuid
+        )
+      ) {
+        msgQueue = messages.concat(
+          unreadMessageList.current[contacts[selectedContact.current].uuid]
+        );
+      }
+
       // if messages>0 .... update status to 1===read
-      if (messages.length > 0) {
-        const statuses = messages.map((msg) => {
+      if (msgQueue.length > 0) {
+        console.log("STATUS UPDATE ", msgQueue);
+        /*
+        const statuses = msgQueue.map((msg) => {
           return prifina.core.mutations.updateMessageStatus({
             createdAt: msg.created_at,
             sender: msg.sender,
@@ -201,6 +214,7 @@ export const Container = () => {
           .catch((err) => {
             console.log("STATUS UPDATE ERROR ", err);
           });
+          */
       } else {
         setShowContacts(false);
       }
