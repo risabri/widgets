@@ -208,26 +208,41 @@ export const Container = () => {
         const msg = data.data.Messaging;
         const body = JSON.parse(msg.body);
         console.log("BODY ", body);
-        let result = "";
-        if (board.current[body.rowIndex][body.colIndex] === "O") {
-          console.log("NOTIFY RESULT HIT");
-          /*
-          body: "{"rowIndex":1,"colIndex":2}"
-createdAt: 1619341633448
-id: "b74bf692-b749-4f9c-8ac2-ce65acbf568f"
-*/
-
-          result = JSON.stringify({ result: 1 });
+        if (body.hasOwnProperty("result")) {
+          //e.target.style.backgroundColor = "red";
+          //document.querySelectorAll("[data-row-index='" + item.rowIndex + "']")
+          const r = document.querySelector(
+            "[data-row-index='" +
+              body.rowIndex +
+              "'],[data-col-index='" +
+              body.colIndex +
+              "']"
+          );
+          if (body.result === 1) {
+            hitsTotal.current++;
+            setHits(hitsTotal.current);
+            game.current[body.rowIndex][body.colIndex] = "O";
+            r.style.backgroundColor = "red";
+          } else {
+            game.current[body.rowIndex][body.colIndex] = "X";
+            r.style.backgroundColor = "gray";
+          }
         } else {
-          console.log("NOTIFY RESULT MISS");
-          result = JSON.stringify({ result: 0 });
+          let result = "";
+          if (board.current[body.rowIndex][body.colIndex] === "O") {
+            console.log("NOTIFY RESULT HIT");
+            result = JSON.stringify({ result: 1, ...body });
+          } else {
+            console.log("NOTIFY RESULT MISS");
+            result = JSON.stringify({ result: 0, ...body });
+          }
+          await prifina.core.mutations.createRemoteMessaging({
+            id: msg.id,
+            receiver: msg.receiver,
+            key: msg.key,
+            body: result,
+          });
         }
-        await prifina.core.mutations.createRemoteMessaging({
-          id: msg.id,
-          receiver: msg.receiver,
-          key: msg.key,
-          body: result,
-        });
       }
     } else {
       waitingList.current.push(data);
