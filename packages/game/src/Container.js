@@ -353,7 +353,9 @@ export const Container = () => {
     const rowIndex = parseInt(e.target.dataset.rowIndex);
     const colIndex = parseInt(e.target.dataset.colIndex);
     const receiver = waitingList.current[waitingIndex].senderKey.split("#")[0];
-    await prifina.core.mutations.createRemoteMessaging({
+
+    //await prifina.core.mutations.createRemoteMessaging({
+    await prifina.core.mutations.createMessaging({
       key: "battleship",
       body: JSON.stringify({ rowIndex: rowIndex, colIndex: colIndex }),
       receiver: receiver,
