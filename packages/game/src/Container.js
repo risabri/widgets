@@ -204,6 +204,15 @@ export const Container = () => {
     if (data.hasOwnProperty("data")) {
       if (data.data.hasOwnProperty("Waiting")) {
       }
+      if (data.data.hasOwnProperty("Messaging")) {
+        const body = JSON.parse(data.data.Messaging.body);
+        console.log("BODY ", body);
+        if (board.current[body.rowIndex][body.colIndex] === "O") {
+          console.log("NOTIFY RESULT HIT");
+        } else {
+          console.log("NOTIFY RESULT MISS");
+        }
+      }
     } else {
       waitingList.current.push(data);
       setWaitingStatus(waitingList.current.length);
