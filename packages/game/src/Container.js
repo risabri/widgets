@@ -272,11 +272,14 @@ export const Container = () => {
     let battleship = [];
     let carrier = [];
 */
-    
-   
-    await prifina.core.subscriptions.addMessaging(onUpdateRef.current,{"key":"battleship"});
     game.current = grid;
-    setPlay(2);
+
+    prifina.core.subscriptions
+      .addMessaging(onUpdateRef.current, { key: "battleship" })
+      .then((res) => {
+        console.log("PLAY SUB ", res);
+        setPlay(2);
+      });
   };
 
   const handleClick = useCallback((e) => {
