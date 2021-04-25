@@ -231,7 +231,8 @@ export const Container = () => {
             r.style.backgroundColor = "gray";
           }
         } else if (body.hasOwnProperty("connect")) {
-          registerRemoteClient(msg.endpoint, msg.region);
+          registerRemoteClient(body.endpoint, body.region);
+          // body.name... player
           // update player status....
         } else {
           let result = "";
@@ -381,10 +382,12 @@ export const Container = () => {
     await prifina.core.mutations.createRemoteMessaging({
       receiver: receiver[0],
       key: receiver[1],
-      body: JSON.stringify({ connect: true }),
-      endpoint: currentUser.endpoint,
-      region: currentUser.region,
-      name: "Unknown",
+      body: JSON.stringify({
+        connect: true,
+        endpoint: currentUser.endpoint,
+        region: currentUser.region,
+        name: "Unknown",
+      }),
     });
   }, []);
 
