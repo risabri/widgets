@@ -214,7 +214,7 @@ export const Container = () => {
           const r = document.querySelector(
             "[data-row-index='" +
               body.rowIndex +
-              "'],[data-col-index='" +
+              "'][data-col-index='" +
               body.colIndex +
               "']"
           );
