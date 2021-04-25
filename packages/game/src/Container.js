@@ -180,6 +180,8 @@ export const Container = () => {
   const [waitingStatus, setWaitingStatus] = useState(0);
   const timer = useRef();
   const waitingList = useRef([]);
+  const selectedPlayerIndex = useRef(-1);
+
   const onUpdateRef = useRef();
   const total = useRef(0);
   const [hits, setHits] = useState(0);
@@ -339,11 +341,19 @@ export const Container = () => {
     //document.getElementById("cannon").play();
     //console.log("REFS ", squareRef.current);
   }, []);
-  const handleGameClick = useCallback((e) => {
+  const handleGameClick = useCallback(async (e) => {
     //console.log("CLICK ", e.target.dataset);
     //e.target.style.backgroundColor = "black";
     const rowIndex = parseInt(e.target.dataset.rowIndex);
     const colIndex = parseInt(e.target.dataset.colIndex);
+    const receiver = waitingList.current[waitingIndex].senderKey.split("#")[0];
+    await prifina.core.mutations.createRemoteMessaging({
+      key: "battleship",
+      body: JSON.stringify({ rowIndex: rowIndex, colIndex: colIndex }),
+      receiver: receiver,
+    });
+
+    /*
     if (board.current[rowIndex][colIndex] == "O") {
       e.target.style.backgroundColor = "red";
       hitsTotal.current++;
@@ -351,11 +361,13 @@ export const Container = () => {
     } else {
       e.target.style.backgroundColor = "gray";
     }
+    */
   }, []);
   const handleWaitingClick = useCallback((e) => {
     console.log("CLICK ", e.target.dataset);
     const waitingIndex = parseInt(e.target.dataset.waitingIndex);
     console.log("CLIENT ", waitingList.current[waitingIndex]);
+    selectedPlayerIndex.current = waitingIndex;
     registerRemoteClient(
       waitingList.current[waitingIndex].endpoint,
       waitingList.current[waitingIndex].region
