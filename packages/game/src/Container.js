@@ -400,6 +400,10 @@ export const Container = () => {
         name: "Unknown",
       }),
     });
+    await prifina.core.subscriptions.addMessaging(onUpdateRef.current, {
+      key: "battleship",
+    });
+    setPlay(1);
   }, []);
 
   console.log("NEW RENDER ");
