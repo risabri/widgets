@@ -186,7 +186,7 @@ export const Container = () => {
   const total = useRef(0);
   const [hits, setHits] = useState(0);
   const hitsTotal = useRef(0);
-  const playerStatus = userRef("host");
+  const playerStatus = useRef("host");
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
