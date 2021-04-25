@@ -186,6 +186,7 @@ export const Container = () => {
   const total = useRef(0);
   const [hits, setHits] = useState(0);
   const hitsTotal = useRef(0);
+  const playerStatus = userRef("host");
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -378,8 +379,11 @@ export const Container = () => {
       waitingList.current[waitingIndex].region
     );
 
+    playerStatus.current = "player";
     const receiver = waitingList.current[waitingIndex].senderKey.split("#");
-    await prifina.core.mutations.createRemoteMessaging({
+
+    //await prifina.core.mutations.createRemoteMessaging({
+    await prifina.core.mutations.createMessaging({
       receiver: receiver[0],
       key: receiver[1],
       body: JSON.stringify({
