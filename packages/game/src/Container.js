@@ -323,13 +323,16 @@ export const Container = () => {
     let carrier = [];
 */
     game.current = grid;
-
+    // only when playerStatus is player...
+    /*
     prifina.core.subscriptions
       .addMessaging(onUpdateRef.current, { key: "battleship" })
       .then((res) => {
         console.log("PLAY SUB ", res);
         setPlay(2);
       });
+      */
+    setPlay(2);
   };
 
   const handleClick = useCallback((e) => {
@@ -428,6 +431,10 @@ export const Container = () => {
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
+                await prifina.core.subscriptions.addMessaging(
+                  onUpdateRef.current,
+                  { key: "battleship" }
+                );
                 setPlay(1);
               }}
             >
