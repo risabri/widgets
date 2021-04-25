@@ -205,6 +205,7 @@ export const Container = () => {
     console.log("UPDATE TEST ", data, Object.keys(data));
     if (data.hasOwnProperty("data")) {
       if (data.data.hasOwnProperty("Waiting")) {
+        // update waiting list...
       }
       if (data.data.hasOwnProperty("Messaging")) {
         const msg = data.data.Messaging;
@@ -229,6 +230,9 @@ export const Container = () => {
             game.current[body.rowIndex][body.colIndex] = "X";
             r.style.backgroundColor = "gray";
           }
+        } else if (body.hasOwnProperty("connect")) {
+          registerRemoteClient(msg.endpoint, msg.region);
+          // update player status....
         } else {
           let result = "";
           if (board.current[body.rowIndex][body.colIndex] === "O") {
@@ -363,7 +367,7 @@ export const Container = () => {
     }
     */
   }, []);
-  const handleWaitingClick = useCallback((e) => {
+  const handleWaitingClick = useCallback(async (e) => {
     console.log("CLICK ", e.target.dataset);
     const waitingIndex = parseInt(e.target.dataset.waitingIndex);
     console.log("CLIENT ", waitingList.current[waitingIndex]);
@@ -372,6 +376,16 @@ export const Container = () => {
       waitingList.current[waitingIndex].endpoint,
       waitingList.current[waitingIndex].region
     );
+
+    const receiver = waitingList.current[waitingIndex].senderKey.split("#");
+    await prifina.core.mutations.createRemoteMessaging({
+      receiver: receiver[0],
+      key: receiver[1],
+      body: JSON.stringify({ connect: true }),
+      endpoint: currentUser.endpoint,
+      region: currentUser.region,
+      name: "Unknown",
+    });
   }, []);
 
   console.log("NEW RENDER ");
@@ -509,13 +523,6 @@ export const Container = () => {
           */}
           </div>
           <button onClick={playClick}>Ready</button>
-          <button
-            onClick={() => {
-              clearInterval(timer.current);
-            }}
-          >
-            Stop
-          </button>
         </StyledBox>
       )}
       {play === 2 && (
