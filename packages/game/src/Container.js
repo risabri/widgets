@@ -276,13 +276,7 @@ export const Container = memo(() => {
     game.current = grid;
     setPlay(2);
   };
-  /*
-  useEffect(() => {
-    return () => {
-      clearInterval(timer.current);
-    };
-  });
-  */
+
   const handleClick = useCallback((e) => {
     console.log("CLICK ", e);
     console.log("CLICK ", e.target.dataset);

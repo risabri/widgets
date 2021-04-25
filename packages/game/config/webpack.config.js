@@ -8,6 +8,8 @@ const TerserPlugin = require("terser-webpack-plugin");
 const paths = require("./paths");
 const remoteComponentConfig = require("./remote-component.config").resolve;
 
+var SRC = path.resolve(__dirname, paths.src);
+
 const externals = Object.keys(remoteComponentConfig).reduce(
   (obj, key) => ({ ...obj, [key]: key }),
   {}
@@ -60,6 +62,11 @@ module.exports = {
             loader: "url-loader",
           },
         ],
+      },
+      {
+        test: /\.mp3$/,
+        include: SRC,
+        loader: "file-loader",
       },
     ],
   },
