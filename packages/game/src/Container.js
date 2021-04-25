@@ -148,7 +148,7 @@ const Square = forwardRef(({ children, game = false, ...props }, ref) => {
 const appID = "gameWidget";
 
 //export const Container = memo(function Container() {
-export const Container = memo(() => {
+export const Container = () => {
   // init hook and get provider api services...
   const {
     Prifina,
@@ -513,4 +513,4 @@ export const Container = memo(() => {
       </audio>
     </>
   );
-});
+};
