@@ -244,7 +244,9 @@ export const Container = () => {
             console.log("NOTIFY RESULT MISS");
             result = JSON.stringify({ result: 0, ...body });
           }
-          await prifina.core.mutations.createRemoteMessaging({
+
+          //await prifina.core.mutations.createRemoteMessaging({
+          await prifina.core.mutations.createMessaging({
             id: msg.id,
             receiver: msg.receiver,
             key: msg.key,
