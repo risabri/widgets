@@ -320,7 +320,35 @@ export const Container = memo(() => {
   console.log("NEW RENDER ");
   return (
     <>
-      {waitingStatus === 0 && <WaitingList>No games available...</WaitingList>}
+      {waitingStatus === 0 && <WaitingList><div style={{marginTop:"20px",textAlign="center"}}>No games available...</div>
+        
+        <div
+            style={{
+              height: "100px",
+              width: "400px",
+              textAlign: "center",
+              borderTop: "1px solid",
+            }}
+          >
+            Name: <input id={"player"} name={"player"} />
+            <button
+              style={{ marginTop: "10px", marginLeft: "10px" }}
+              onClick={async () => {
+                const player = document.getElementById("player").value;
+                //await prifina.core.mutations.addWaiting({endpoint: "", name: "", senderKey: ""});
+                await prifina.core.mutations.addWaiting({
+                  name: player,
+                  key: "battleship",
+                  endpoint: currentUser.endpoint,
+                  region: currentUser.region,
+                });
+                setPlay(1);
+              }}
+            >
+              New Game
+            </button>
+          </div>
+        </WaitingList>}
       {play === 0 && waitingStatus > 0 && (
         <>
           <WaitingList>
