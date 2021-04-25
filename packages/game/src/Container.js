@@ -199,19 +199,35 @@ export const Container = () => {
   }, []);
 */
 
-  const updateTest = (data) => {
+  const updateTest = async (data) => {
     console.log("UPDATE TEST ", data, Object.keys(data));
     if (data.hasOwnProperty("data")) {
       if (data.data.hasOwnProperty("Waiting")) {
       }
       if (data.data.hasOwnProperty("Messaging")) {
-        const body = JSON.parse(data.data.Messaging.body);
+        const msg = data.data.Messaging;
+        const body = JSON.parse(msg.body);
         console.log("BODY ", body);
+        let result = "";
         if (board.current[body.rowIndex][body.colIndex] === "O") {
           console.log("NOTIFY RESULT HIT");
+          /*
+          body: "{"rowIndex":1,"colIndex":2}"
+createdAt: 1619341633448
+id: "b74bf692-b749-4f9c-8ac2-ce65acbf568f"
+*/
+
+          result = JSON.stringify({ result: 1 });
         } else {
           console.log("NOTIFY RESULT MISS");
+          result = JSON.stringify({ result: 0 });
         }
+        await prifina.core.mutations.createRemoteMessaging({
+          id: msg.id,
+          receiver: msg.receiver,
+          key: msg.key,
+          body: result,
+        });
       }
     } else {
       waitingList.current.push(data);
