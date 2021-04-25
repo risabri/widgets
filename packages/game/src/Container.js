@@ -320,9 +320,13 @@ export const Container = memo(() => {
   console.log("NEW RENDER ");
   return (
     <>
-      {waitingStatus === 0 && <WaitingList><div style={{marginTop:"20px",textAlign="center"}}>No games available...</div>
-        
-        <div
+      {waitingStatus === 0 && (
+        <WaitingList>
+          <div style={{ marginTop: "20px", textAlign: "center" }}>
+            No games available...
+          </div>
+
+          <div
             style={{
               height: "100px",
               width: "400px",
@@ -348,7 +352,8 @@ export const Container = memo(() => {
               New Game
             </button>
           </div>
-        </WaitingList>}
+        </WaitingList>
+      )}
       {play === 0 && waitingStatus > 0 && (
         <>
           <WaitingList>
