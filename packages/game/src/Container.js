@@ -190,6 +190,7 @@ export const Container = () => {
   const gameKey = "battleShip";
   const receiver = useRef("");
   const gameStarted = useRef(false);
+  const [gameStatus, setGameStatus] = useState(["Waiting for player..."]);
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -229,16 +230,20 @@ export const Container = () => {
             hitsTotal.current++;
             setHits(hitsTotal.current);
             game.current[body.rowIndex][body.colIndex] = "O";
+            setGameStatus((arr) => [...arr, "Hit..."]);
             r.style.backgroundColor = "red";
           } else {
             game.current[body.rowIndex][body.colIndex] = "X";
             r.style.backgroundColor = "gray";
+            setGameStatus((arr) => [...arr, "Miss..."]);
           }
         } else if (body.hasOwnProperty("connect")) {
           registerRemoteClient(body.endpoint, body.region);
           receiver.current = msg.sender;
           // body.name... player
           // update player status....
+
+          setGameStatus((arr) => [...arr, "Player joined..."]);
         } else if (body.hasOwnProperty("play")) {
           gameStarted.current = true;
         } else {
@@ -583,14 +588,16 @@ export const Container = () => {
             })}
           </StyledArea>
 
-          <div style={{ overflow: "hidden", clear: "both" }}>
-            {/* 
-          <Ship name="Glass" />
-          <Ship name="Banana" />
-          <Ship name="Paper" />
-          */}
+          <button style={{ marginTop: "20px" }} onClick={playClick}>
+            Ready
+          </button>
+          <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
+            <ul>
+              {gameStatus.map((m, i) => {
+                <li key={"msg-" + i}>{m}</li>;
+              })}
+            </ul>
           </div>
-          <button onClick={playClick}>Ready</button>
         </StyledBox>
       )}
       {play === 2 && (
@@ -631,13 +638,13 @@ export const Container = () => {
             <div>Total:{total.current}</div>
           </div>
 
-          <button
-            onClick={() => {
-              console.log("STOP PLAYING...");
-            }}
-          >
-            Stop
-          </button>
+          <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
+            <ul>
+              {gameStatus.map((m, i) => {
+                <li key={"msg-" + i}>{m}</li>;
+              })}
+            </ul>
+          </div>
         </StyledBox>
       )}
       {/* 
