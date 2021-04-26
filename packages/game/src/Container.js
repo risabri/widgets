@@ -187,7 +187,9 @@ export const Container = () => {
   const [hits, setHits] = useState(0);
   const hitsTotal = useRef(0);
   const playerStatus = useRef("host");
+  const gameKey = "battleShip";
   const receiver = useRef("");
+  const gameStarted = useRef(false);
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -237,6 +239,8 @@ export const Container = () => {
           receiver.current = msg.sender;
           // body.name... player
           // update player status....
+        } else if (body.hasOwnProperty("play")) {
+          gameStarted.current = true;
         } else {
           let result = "";
           const rr = document.querySelector(
@@ -343,7 +347,30 @@ export const Container = () => {
         setPlay(2);
       });
       */
-    setPlay(2);
+
+    if (receiver.current !== "") {
+      if (!gameStarted.current && receiver.current !== "") {
+        //await prifina.core.mutations.createRemoteMessaging({
+        prifina.core.mutations
+          .createMessaging({
+            receiver: receiver.current,
+            key: gameKey.current,
+            body: JSON.stringify({
+              play: true,
+            }),
+          })
+          .then(() => {
+            gameStarted.current = true;
+            //remove from waiting list...
+            setPlay(2);
+          });
+      } else {
+        gameStarted.current = true;
+        setPlay(2);
+      }
+    } else {
+      // update player status....
+    }
   };
 
   const handleClick = useCallback((e) => {
@@ -372,7 +399,7 @@ export const Container = () => {
 
     //await prifina.core.mutations.createRemoteMessaging({
     await prifina.core.mutations.createMessaging({
-      key: "battleship",
+      key: gameKey.current,
       body: JSON.stringify({ rowIndex: rowIndex, colIndex: colIndex }),
       receiver: receiver.current,
     });
@@ -412,7 +439,7 @@ export const Container = () => {
       }),
     });
     await prifina.core.subscriptions.addMessaging(onUpdateRef.current, {
-      key: "battleship",
+      key: gameKey.current,
     });
     setPlay(1);
   }, []);
@@ -443,14 +470,14 @@ export const Container = () => {
                 console.log("ADD NEW PLAYER...");
                 await prifina.core.mutations.addWaiting({
                   name: player,
-                  key: "battleship",
+                  key: gameKey.current,
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
                 console.log("ADD MESSAGING SUB...");
                 await prifina.core.subscriptions.addMessaging(
                   onUpdateRef.current,
-                  { key: "battleship" }
+                  { key: gameKey.current }
                 );
                 setPlay(1);
               }}
@@ -500,14 +527,14 @@ export const Container = () => {
                 console.log("ADD NEW PLAYER...2 ");
                 await prifina.core.mutations.addWaiting({
                   name: player,
-                  key: "battleship",
+                  key: gameKey.current,
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
                 console.log("ADD MESSAGING SUB...2 ");
                 await prifina.core.subscriptions.addMessaging(
                   onUpdateRef.current,
-                  { key: "battleship" }
+                  { key: gameKey.current }
                 );
                 setPlay(1);
               }}
