@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 import { usePrifina } from "@prifina/hooks";
 
-import cannon from "./Cannon-SoundBible.com-1661203605.mp3";
+//import cannon from "./Cannon-SoundBible.com-1661203605.mp3";
 
 const StyledWrapper = styled.div`
   /* */
@@ -431,12 +431,14 @@ export const Container = () => {
               onClick={async () => {
                 const player = document.getElementById("player").value;
                 //await prifina.core.mutations.addWaiting({endpoint: "", name: "", senderKey: ""});
+                console.log("ADD NEW PLAYER...");
                 await prifina.core.mutations.addWaiting({
                   name: player,
                   key: "battleship",
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
+                console.log("ADD MESSAGING SUB...");
                 await prifina.core.subscriptions.addMessaging(
                   onUpdateRef.current,
                   { key: "battleship" }
@@ -486,12 +488,18 @@ export const Container = () => {
               onClick={async () => {
                 const player = document.getElementById("player").value;
                 //await prifina.core.mutations.addWaiting({endpoint: "", name: "", senderKey: ""});
+                console.log("ADD NEW PLAYER...2 ");
                 await prifina.core.mutations.addWaiting({
                   name: player,
                   key: "battleship",
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
+                console.log("ADD MESSAGING SUB...2 ");
+                await prifina.core.subscriptions.addMessaging(
+                  onUpdateRef.current,
+                  { key: "battleship" }
+                );
                 setPlay(1);
               }}
             >
@@ -596,9 +604,11 @@ export const Container = () => {
           </button>
         </StyledBox>
       )}
+      {/* 
       <audio id="cannon">
         <source src={cannon} type="audio/mpeg" />
       </audio>
+      */}
     </>
   );
 };
