@@ -255,6 +255,9 @@ export const Container = () => {
         } else if (body.hasOwnProperty("play")) {
           gameStarted.current = true;
           setGameStatus((arr) => ["Player ready...", ...arr]);
+        } else if (body.hasOwnProperty("start")) {
+          gameStarted.current = true;
+          setGameStatus((arr) => ["Game started...", ...arr]);
         } else {
           let result = "";
           const rr = document.querySelector(
@@ -379,9 +382,19 @@ export const Container = () => {
             setPlay(2);
           });
       } else {
-        console.log("UPDATE STATUS ????");
+        //console.log("UPDATE STATUS ????");
         gameStarted.current = true;
-        setPlay(2);
+        prifina.core.mutations
+          .createMessaging({
+            receiver: receiver.current,
+            key: gameKey,
+            body: JSON.stringify({
+              start: true,
+            }),
+          })
+          .then(() => {
+            setPlay(2);
+          });
       }
     } else {
       // update player status....
