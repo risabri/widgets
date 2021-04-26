@@ -594,7 +594,7 @@ export const Container = () => {
           <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
             <ul>
               {gameStatus.map((m, i) => {
-                <li key={"msg-" + i}>{m}</li>;
+                return <li key={"msg-" + i}>{m}</li>;
               })}
             </ul>
           </div>
@@ -641,7 +641,7 @@ export const Container = () => {
           <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
             <ul>
               {gameStatus.map((m, i) => {
-                <li key={"msg-" + i}>{m}</li>;
+                return <li key={"msg-" + i}>{m}</li>;
               })}
             </ul>
           </div>
