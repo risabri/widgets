@@ -187,6 +187,7 @@ export const Container = () => {
   const [hits, setHits] = useState(0);
   const hitsTotal = useRef(0);
   const playerStatus = useRef("host");
+  const receiver = useRef("");
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -233,6 +234,7 @@ export const Container = () => {
           }
         } else if (body.hasOwnProperty("connect")) {
           registerRemoteClient(body.endpoint, body.region);
+          receiver.current = body.sender;
           // body.name... player
           // update player status....
         } else {
@@ -357,13 +359,13 @@ export const Container = () => {
     //e.target.style.backgroundColor = "black";
     const rowIndex = parseInt(e.target.dataset.rowIndex);
     const colIndex = parseInt(e.target.dataset.colIndex);
-    const receiver = waitingList.current[waitingIndex].senderKey.split("#")[0];
+    //const receiver = waitingList.current[waitingIndex].senderKey.split("#")[0];
 
     //await prifina.core.mutations.createRemoteMessaging({
     await prifina.core.mutations.createMessaging({
       key: "battleship",
       body: JSON.stringify({ rowIndex: rowIndex, colIndex: colIndex }),
-      receiver: receiver,
+      receiver: receiver.current,
     });
 
     /*
@@ -387,19 +389,19 @@ export const Container = () => {
     );
 
     playerStatus.current = "player";
-    const receiver = waitingList.current[waitingIndex].senderKey.split("#");
-
-    //await prifina.core.mutations.createRemoteMessaging({
-    await prifina.core.mutations.createMessaging({
-      receiver: receiver[0],
-      key: receiver[1],
-      body: JSON.stringify({
-        connect: true,
-        endpoint: currentUser.endpoint,
-        region: currentUser.region,
-        name: "Unknown",
-      }),
-    });
+    const host = waitingList.current[waitingIndex].senderKey.split("#");
+    receiver.current =
+      //await prifina.core.mutations.createRemoteMessaging({
+      await prifina.core.mutations.createMessaging({
+        receiver: receiver.current,
+        key: host[1],
+        body: JSON.stringify({
+          connect: true,
+          endpoint: currentUser.endpoint,
+          region: currentUser.region,
+          name: "Unknown",
+        }),
+      });
     await prifina.core.subscriptions.addMessaging(onUpdateRef.current, {
       key: "battleship",
     });
