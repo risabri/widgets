@@ -250,7 +250,7 @@ export const Container = () => {
           //await prifina.core.mutations.createRemoteMessaging({
           await prifina.core.mutations.createMessaging({
             id: msg.id,
-            receiver: msg.receiver,
+            receiver: msg.sender,
             key: msg.key,
             body: result,
           });
