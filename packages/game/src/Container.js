@@ -190,7 +190,7 @@ export const Container = () => {
   const gameKey = "battleShip";
   const receiver = useRef("");
   const gameStarted = useRef(false);
-  const [gameStatus, setGameStatus] = useState(["Waiting for player..."]);
+  const [gameStatus, setGameStatus] = useState([""]);
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -246,6 +246,7 @@ export const Container = () => {
           setGameStatus((arr) => [...arr, "Player joined..."]);
         } else if (body.hasOwnProperty("play")) {
           gameStarted.current = true;
+          setGameStatus((arr) => [...arr, "Player ready..."]);
         } else {
           let result = "";
           const rr = document.querySelector(
@@ -375,6 +376,7 @@ export const Container = () => {
       }
     } else {
       // update player status....
+      setGameStatus((arr) => [...arr, "Waiting for player..."]);
     }
   };
 
@@ -591,7 +593,14 @@ export const Container = () => {
           <button style={{ marginTop: "20px" }} onClick={playClick}>
             Ready
           </button>
-          <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
+          <div
+            style={{
+              overflow: "hidden",
+              clear: "both",
+              marginTop: "20px",
+              height: "150px",
+            }}
+          >
             <ul>
               {gameStatus.map((m, i) => {
                 return <li key={"msg-" + i}>{m}</li>;
@@ -638,7 +647,14 @@ export const Container = () => {
             <div>Total:{total.current}</div>
           </div>
 
-          <div style={{ overflow: "hidden", clear: "both", marginTop: "20px" }}>
+          <div
+            style={{
+              overflow: "hidden",
+              clear: "both",
+              marginTop: "20px",
+              height: "110px",
+            }}
+          >
             <ul>
               {gameStatus.map((m, i) => {
                 return <li key={"msg-" + i}>{m}</li>;
