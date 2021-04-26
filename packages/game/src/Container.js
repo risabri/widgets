@@ -390,18 +390,18 @@ export const Container = () => {
 
     playerStatus.current = "player";
     const host = waitingList.current[waitingIndex].senderKey.split("#");
-    receiver.current =
-      //await prifina.core.mutations.createRemoteMessaging({
-      await prifina.core.mutations.createMessaging({
-        receiver: receiver.current,
-        key: host[1],
-        body: JSON.stringify({
-          connect: true,
-          endpoint: currentUser.endpoint,
-          region: currentUser.region,
-          name: "Unknown",
-        }),
-      });
+    receiver.current = host[0];
+    //await prifina.core.mutations.createRemoteMessaging({
+    await prifina.core.mutations.createMessaging({
+      receiver: receiver.current,
+      key: host[1],
+      body: JSON.stringify({
+        connect: true,
+        endpoint: currentUser.endpoint,
+        region: currentUser.region,
+        name: "Unknown",
+      }),
+    });
     await prifina.core.subscriptions.addMessaging(onUpdateRef.current, {
       key: "battleship",
     });
