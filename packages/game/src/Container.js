@@ -359,7 +359,7 @@ export const Container = () => {
         prifina.core.mutations
           .createMessaging({
             receiver: receiver.current,
-            key: gameKey.current,
+            key: gameKey,
             body: JSON.stringify({
               play: true,
             }),
@@ -404,7 +404,7 @@ export const Container = () => {
 
     //await prifina.core.mutations.createRemoteMessaging({
     await prifina.core.mutations.createMessaging({
-      key: gameKey.current,
+      key: gameKey,
       body: JSON.stringify({ rowIndex: rowIndex, colIndex: colIndex }),
       receiver: receiver.current,
     });
@@ -444,7 +444,7 @@ export const Container = () => {
       }),
     });
     await prifina.core.subscriptions.addMessaging(onUpdateRef.current, {
-      key: gameKey.current,
+      key: gameKey,
     });
     setPlay(1);
   }, []);
@@ -475,14 +475,14 @@ export const Container = () => {
                 console.log("ADD NEW PLAYER...");
                 await prifina.core.mutations.addWaiting({
                   name: player,
-                  key: gameKey.current,
+                  key: gameKey,
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
                 console.log("ADD MESSAGING SUB...");
                 await prifina.core.subscriptions.addMessaging(
                   onUpdateRef.current,
-                  { key: gameKey.current }
+                  { key: gameKey }
                 );
                 setPlay(1);
               }}
@@ -532,14 +532,14 @@ export const Container = () => {
                 console.log("ADD NEW PLAYER...2 ");
                 await prifina.core.mutations.addWaiting({
                   name: player,
-                  key: gameKey.current,
+                  key: gameKey,
                   endpoint: currentUser.endpoint,
                   region: currentUser.region,
                 });
                 console.log("ADD MESSAGING SUB...2 ");
                 await prifina.core.subscriptions.addMessaging(
                   onUpdateRef.current,
-                  { key: gameKey.current }
+                  { key: gameKey }
                 );
                 setPlay(1);
               }}
