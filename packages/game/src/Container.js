@@ -190,7 +190,7 @@ export const Container = () => {
   const gameKey = "battleShip";
   const receiver = useRef("");
   const gameStarted = useRef(false);
-  const [gameStatus, setGameStatus] = useState([""]);
+  const [gameStatus, setGameStatus] = useState(["Init"]);
 
   /*
   const handleFileDrop = useCallback((item, monitor) => {
@@ -241,8 +241,16 @@ export const Container = () => {
           registerRemoteClient(body.endpoint, body.region);
           receiver.current = msg.sender;
           // body.name... player
+          if (gameStarted.current) {
+            await prifina.core.mutations.createMessaging({
+              receiver: receiver.current,
+              key: gameKey,
+              body: JSON.stringify({
+                play: true,
+              }),
+            });
+          }
           // update player status....
-
           setGameStatus((arr) => [...arr, "Player joined..."]);
         } else if (body.hasOwnProperty("play")) {
           gameStarted.current = true;
