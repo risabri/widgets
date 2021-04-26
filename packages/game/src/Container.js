@@ -493,22 +493,28 @@ export const Container = () => {
             Name: <input id={"player"} name={"player"} />
             <button
               style={{ marginTop: "10px", marginLeft: "10px" }}
-              onClick={async () => {
+              onClick={() => {
                 const player = document.getElementById("player").value;
                 //await prifina.core.mutations.addWaiting({endpoint: "", name: "", senderKey: ""});
-                console.log("ADD NEW PLAYER...");
-                await prifina.core.mutations.addWaiting({
-                  name: player,
-                  key: gameKey,
-                  endpoint: currentUser.endpoint,
-                  region: currentUser.region,
-                });
-                console.log("ADD MESSAGING SUB...");
-                await prifina.core.subscriptions.addMessaging(
-                  onUpdateRef.current,
-                  { key: gameKey }
-                );
-                setPlay(1);
+
+                prifina.core.mutations
+                  .addWaiting({
+                    name: player,
+                    key: gameKey,
+                    endpoint: currentUser.endpoint,
+                    region: currentUser.region,
+                  })
+                  .then((res) => {
+                    console.log("ADD NEW PLAYER...", res);
+                    waitingList.current.push(data);
+                    setWaitingStatus(waitingList.current.length);
+                    prifina.core.subscriptions
+                      .addMessaging(onUpdateRef.current, { key: gameKey })
+                      .then((res) => {
+                        console.log("ADD MESSAGING SUB...", res);
+                        setPlay(1);
+                      });
+                  });
               }}
             >
               New Game
@@ -550,22 +556,27 @@ export const Container = () => {
             Name: <input id={"player"} name={"player"} />
             <button
               style={{ marginTop: "10px", marginLeft: "10px" }}
-              onClick={async () => {
+              onClick={() => {
                 const player = document.getElementById("player").value;
                 //await prifina.core.mutations.addWaiting({endpoint: "", name: "", senderKey: ""});
-                console.log("ADD NEW PLAYER...2 ");
-                await prifina.core.mutations.addWaiting({
-                  name: player,
-                  key: gameKey,
-                  endpoint: currentUser.endpoint,
-                  region: currentUser.region,
-                });
-                console.log("ADD MESSAGING SUB...2 ");
-                await prifina.core.subscriptions.addMessaging(
-                  onUpdateRef.current,
-                  { key: gameKey }
-                );
-                setPlay(1);
+                prifina.core.mutations
+                  .addWaiting({
+                    name: player,
+                    key: gameKey,
+                    endpoint: currentUser.endpoint,
+                    region: currentUser.region,
+                  })
+                  .then((res) => {
+                    console.log("ADD NEW PLAYER... 2", res);
+                    waitingList.current.push(data);
+                    setWaitingStatus(waitingList.current.length);
+                    prifina.core.subscriptions
+                      .addMessaging(onUpdateRef.current, { key: gameKey })
+                      .then((res) => {
+                        console.log("ADD MESSAGING SUB... 2", res);
+                        setPlay(1);
+                      });
+                  });
               }}
             >
               New Game
