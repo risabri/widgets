@@ -506,7 +506,7 @@ export const Container = () => {
                   })
                   .then((res) => {
                     console.log("ADD NEW PLAYER...", res);
-                    waitingList.current.push(data);
+                    waitingList.current.push(res.data.waiting);
                     setWaitingStatus(waitingList.current.length);
                     prifina.core.subscriptions
                       .addMessaging(onUpdateRef.current, { key: gameKey })
@@ -568,7 +568,7 @@ export const Container = () => {
                   })
                   .then((res) => {
                     console.log("ADD NEW PLAYER... 2", res);
-                    waitingList.current.push(data);
+                    waitingList.current.push(res.data.waiting);
                     setWaitingStatus(waitingList.current.length);
                     prifina.core.subscriptions
                       .addMessaging(onUpdateRef.current, { key: gameKey })
