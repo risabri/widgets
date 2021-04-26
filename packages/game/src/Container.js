@@ -234,7 +234,7 @@ export const Container = () => {
           }
         } else if (body.hasOwnProperty("connect")) {
           registerRemoteClient(body.endpoint, body.region);
-          receiver.current = body.sender;
+          receiver.current = msg.sender;
           // body.name... player
           // update player status....
         } else {
