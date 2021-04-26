@@ -239,12 +239,21 @@ export const Container = () => {
           // update player status....
         } else {
           let result = "";
+          const rr = document.querySelector(
+            "[data-row-index='" +
+              body.rowIndex +
+              "'][data-col-index='" +
+              body.colIndex +
+              "']"
+          );
           if (board.current[body.rowIndex][body.colIndex] === "O") {
             console.log("NOTIFY RESULT HIT");
             result = JSON.stringify({ result: 1, ...body });
+            rr.style.backgroundColor = "red";
           } else {
             console.log("NOTIFY RESULT MISS");
             result = JSON.stringify({ result: 0, ...body });
+            rr.style.backgroundColor = "gray";
           }
 
           //await prifina.core.mutations.createRemoteMessaging({
