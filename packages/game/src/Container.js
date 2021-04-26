@@ -230,12 +230,12 @@ export const Container = () => {
             hitsTotal.current++;
             setHits(hitsTotal.current);
             game.current[body.rowIndex][body.colIndex] = "O";
-            setGameStatus((arr) => [...arr, "Hit..."]);
+            setGameStatus((arr) => ["Hit...", ...arr]);
             r.style.backgroundColor = "red";
           } else {
             game.current[body.rowIndex][body.colIndex] = "X";
             r.style.backgroundColor = "gray";
-            setGameStatus((arr) => [...arr, "Miss..."]);
+            setGameStatus((arr) => ["Miss...", ...arr]);
           }
         } else if (body.hasOwnProperty("connect")) {
           registerRemoteClient(body.endpoint, body.region);
@@ -251,10 +251,10 @@ export const Container = () => {
             });
           }
           // update player status....
-          setGameStatus((arr) => [...arr, "Player joined..."]);
+          setGameStatus((arr) => ["Player joined...", ...arr]);
         } else if (body.hasOwnProperty("play")) {
           gameStarted.current = true;
-          setGameStatus((arr) => [...arr, "Player ready..."]);
+          setGameStatus((arr) => ["Player ready...", ...arr]);
         } else {
           let result = "";
           const rr = document.querySelector(
@@ -379,12 +379,13 @@ export const Container = () => {
             setPlay(2);
           });
       } else {
+        console.log("UPDATE STATUS ????");
         gameStarted.current = true;
         setPlay(2);
       }
     } else {
       // update player status....
-      setGameStatus((arr) => [...arr, "Waiting for player..."]);
+      setGameStatus((arr) => ["Waiting for player...", ...arr]);
     }
   };
 
@@ -603,7 +604,7 @@ export const Container = () => {
           </button>
           <div
             style={{
-              overflow: "hidden",
+              overflow: "auto",
               clear: "both",
               marginTop: "20px",
               height: "150px",
@@ -657,7 +658,7 @@ export const Container = () => {
 
           <div
             style={{
-              overflow: "hidden",
+              overflow: "auto",
               clear: "both",
               marginTop: "20px",
               height: "110px",
