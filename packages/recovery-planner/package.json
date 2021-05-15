@@ -1,9 +1,9 @@
 {
-  "name": "sleep-quality",
+  "name": "recovery-planner",
   "version": "0.0.1",
-  "description": "Sleep quality vs screen time widget",
+  "description": "Using activity data for wearables, this widget suggests how much sleep / rest your muscles need.",
   "author": "hamza <hamzahalilovic.12@gmail.com>",
-  "homepage": "https://github.com/hamzahalilovic/widgets#readme",
+  "homepage": "https://github.com/prifina/widgets#readme",
   "license": "MIT",
   "main": "dist/esm/index.js",
   "publishConfig": {

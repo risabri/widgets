@@ -64,7 +64,7 @@ const data = [
 
 const styles = {
   background:
-    "linear-gradient(180deg, #231345 36.28%, #2B2362 89.8%, #32327E 105.56%)",
+    "radial-gradient(112.15% 446.12% at 11.22% 45.49%, #5AB5D8 0%, rgba(38, 106, 142, 0.996779) 2.6%, rgba(23, 84, 120, 0.995859) 9.37%, rgba(16, 74, 111, 0.99543) 16.67%, rgba(8, 63, 99, 0.994923) 20.83%, rgba(2, 55, 91, 0.994593) 24.96%, rgba(2, 47, 83, 0.993761) 31.25%, rgba(2, 41, 77, 0.993147) 34.9%, rgba(3, 31, 65, 0.99199) 46.88%, rgba(3, 22, 56, 0.991057) 59.9%, rgba(3, 20, 54, 0.990833) 66.73%, #031436 100%)",
   borderRadius: "10px",
   paddingTop: "6px",
   paddingLeft: "19px",
@@ -83,19 +83,6 @@ const Widget = (props) => {
   const [newData, setNewData] = useState({});
   const period = useRef("");
   // setNewData(data);
-
-  const [opacity, setOpacity] = useState({
-    deepSleep: 1,
-    screenTime: 1,
-  });
-  const handleMouseEnter = (o) => {
-    const { dataKey } = o;
-    setOpacity({ ...opacity, [dataKey]: 0.5 });
-  };
-  const handleMouseLeave = (o) => {
-    const { dataKey } = o;
-    setOpacity({ ...opacity, [dataKey]: 1 });
-  };
 
   const dataUpdate = async (data) => {
     // should check the data payload... :)
@@ -188,100 +175,12 @@ const Widget = (props) => {
 
   return (
     <ChakraProvider>
-      <Flex w="312px" height="144px" style={styles} flexDirection="column">
-        <Text color="white" fontSize={12}>
-          Sleep Quality
-        </Text>
-        <Box paddingRight="13px" paddingLeft="95px">
-          <Text fontSize="10px" color="#72DDFF" textAlign="right">
-            To improve your quality and quantity of sleep, try avoiding screens
-            before going to bed.
-          </Text>
-        </Box>
-        <Flex alt="graph" flexDirection="column">
-          <Text fontSize={7} color="white">
-            Hours
-          </Text>
-          <LineChart
-            width={275}
-            height={68}
-            data={activityMockup}
-            margin={{
-              top: 0,
-              right: 40,
-              left: -40,
-              bottom: 0,
-            }}
-          >
-            <CartesianGrid
-              horizontal={false}
-              vertical={false}
-              strokeDasharray="3 3"
-            />
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tick={{ fontSize: 7, fill: "white" }}
-              tickLine={false}
-            />
-            <YAxis
-              type="number"
-              axisLine={false}
-              tick={{ fontSize: 7, fill: "white" }}
-              tickLine={false}
-              domain={[0, "dataMax + 1"]}
-            />
-
-            <Legend
-              verticalAlign="top"
-              layout="vertical"
-              align="right"
-              wrapperStyle={{
-                paddingLeft: 10,
-
-                fontSize: 7,
-              }}
-              iconType="line"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              // payload={[
-              //   {
-              //     id: "deepSleep",
-              //     value: "Deep Sleep",
-              //     type: "line",
-              //     color: "#FF7601",
-              //   },
-              //   {
-              //     id: "screenTime",
-              //     value: "Screen Time",
-              //     type: "line",
-              //     color: "#FFC700",
-              //   },
-              // ]}
-            />
-            <Line
-              type="linear"
-              dataKey="deepSleep"
-              name="Deep Sleep"
-              strokeOpacity={opacity.deepSleep}
-              stroke="#FF7601"
-              activeDot={{ r: 8 }}
-              dot={false}
-            />
-            <Line
-              type="linear"
-              dataKey="screenTime"
-              name="Screen Time"
-              strokeOpacity={opacity.screenTime}
-              stroke="#FFC700"
-              dot={false}
-            />
-          </LineChart>
-        </Flex>
-        <Box position="absolute" alignSelf="flex-end" top={144 - 63}>
-          <Image src={SheepImage} />
-        </Box>
-      </Flex>
+      <Flex
+        w="312px"
+        height="144px"
+        style={styles}
+        flexDirection="column"
+      ></Flex>
     </ChakraProvider>
   );
 };
