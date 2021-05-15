@@ -1,8 +1,6 @@
 import React from "react";
 import { App } from "../src/App";
 
-import { PrifinaProvider } from "@prifina/hooks";
-
 export default { title: "App" };
 
 export const app = () => {
@@ -14,13 +12,4 @@ app.story = {
 
 app.story = {
   name: "Chat Widget",
-  decorators: [
-    (Story) => {
-      return (
-        <PrifinaProvider stage={"dev"}>
-          <Story />
-        </PrifinaProvider>
-      );
-    },
-  ],
 };

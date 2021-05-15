@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import App from "../src/Hello";
+import Container from "../src/Container";
 
 export default { title: "Test" };
 
@@ -17,7 +18,7 @@ export const app = () => {
   }, []);
   */
 
-  return <App msg={"Hello, Tero"} />;
+  return <Container />;
 };
 app.story = {
   name: "App",

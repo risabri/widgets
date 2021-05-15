@@ -5,12 +5,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-//import { PrifinaProvider } from "@prifina/hooks";
+import { PrifinaProvider, PrifinaContext } from "@prifina/hooks";
 
 import LocalComponent from "./index.js";
 
 const node = document.getElementById("app");
+const App = (props) => (
+  <PrifinaProvider stage={"dev"} Context={PrifinaContext}>
+    <LocalComponent {...props} />
+  </PrifinaProvider>
+);
 
-const App = (props) => <LocalComponent {...props} />;
+//const App = (props) => <LocalComponent {...props} />;
 
-ReactDOM.render(<App />, node);
+ReactDOM.render(<App city={"Helsinki"} />, node);

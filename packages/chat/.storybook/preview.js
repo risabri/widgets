@@ -1,23 +1,11 @@
 import React from "react";
 import { addDecorator, addParameters } from "@storybook/react";
 
-//import { PrifinaProvider } from "@prifina/hooks";
-/*
-import { ThemeProvider } from "@blend-ui/core";
-
-//<ThemeProvider mobileApp={true}>
+import { PrifinaProvider, PrifinaContext } from "@prifina/hooks";
 const themeProviderDecorator = (story) => (
-  <ThemeProvider>{story()}</ThemeProvider>
+  <PrifinaProvider stage={"dev"} Context={PrifinaContext}>
+    {story()}
+  </PrifinaProvider>
 );
 
 addDecorator(themeProviderDecorator);
-*/
-
-//<ThemeProvider mobileApp={true}>
-/*
-const themeProviderDecorator = (story) => (
-  <PrifinaProvider>{story()}</PrifinaProvider>
-);
-
-addDecorator(themeProviderDecorator);
-*/

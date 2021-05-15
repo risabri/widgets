@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const UseFetch = (initialUrl) => {
   // create state variables
-  const [data, setData] = useState(null);
+  const [weatherData, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [url, setUrl] = useState(initialUrl);
@@ -34,7 +34,7 @@ const UseFetch = (initialUrl) => {
       });
   }, [url]);
 
-  return { data, error, isLoading, setUrl };
+  return { weatherData, error, isLoading, setUrl };
 };
 
 export default UseFetch;
