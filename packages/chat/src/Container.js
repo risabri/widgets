@@ -99,6 +99,7 @@ export const Container = () => {
   const selectedContact = useRef(-1);
   const onUpdateRef = useRef();
   const messageCount = useRef({});
+  const unreadMessageList = useRef({});
 
   const updateTest = (data) => {
     console.log("UPDATE TEST ", data, Object.keys(data), selectedContact);
@@ -149,6 +150,18 @@ export const Container = () => {
       contactList.forEach((c) => {
         messageCount.current[c.uuid] = 0;
       });
+
+      await prifina.core.subscriptions.addMessage(onUpdateRef.current);
+      const unreadMessages = await prifina.core.queries.getUnreadMessages();
+      if (unreadMessages.data.listUnreadMessages.items.length > 0) {
+        unreadMessages.data.listUnreadMessages.items.forEach((item) => {
+          if (!unreadMessageList.current.hasOwnProperty(item.sender))
+            unreadMessageList.current[item.sender] = [];
+          unreadMessageList.current[item.sender].push(item);
+          messageCount.current[item.sender]++;
+        });
+      }
+
       setContacts(contactList);
     } else {
       const contactList = addressBook.data.getUserAddressBook;
@@ -161,7 +174,6 @@ export const Container = () => {
     //console.log(addressBook);
     //setContacts(contactList);
     //
-    await prifina.core.subscriptions.addMessage(onUpdateRef.current);
 
     console.log(prifina);
   }, []);
@@ -169,10 +181,47 @@ export const Container = () => {
   const contactClick = useCallback(
     (i) => {
       console.log("CLICK ", i, contacts, onUpdateRef);
-      // if messages>0 .... update status to 1===read
+
       //setSelectedContact(i);
       selectedContact.current = i;
-      setShowContacts(false);
+      let msgQueue = messages;
+      if (
+        unreadMessageList.current.hasOwnProperty(
+          contacts[selectedContact.current].uuid
+        )
+      ) {
+        msgQueue = messages.concat(
+          unreadMessageList.current[contacts[selectedContact.current].uuid]
+        );
+      }
+
+      // if messages>0 .... update status to 1===read
+      if (msgQueue.length > 0) {
+        //console.log("STATUS UPDATE ", msgQueue);
+
+        const statuses = msgQueue.map((msg) => {
+          return prifina.core.mutations.updateMessageStatus({
+            createdAt: msg.created_at,
+            sender: msg.sender,
+            messageId: msg.messageId,
+            status: 1,
+          });
+        });
+        Promise.all(statuses)
+          .then(() => {
+            unreadMessageList.current[
+              contacts[selectedContact.current].uuid
+            ] = [];
+            messageCount.current[contacts[selectedContact.current].uuid] = 0;
+            setShowContacts(false);
+          })
+          .catch((err) => {
+            console.log("STATUS UPDATE ERROR ", err);
+          });
+      } else {
+        setShowContacts(false);
+      }
+
       /*
       prifina.core.subscriptions
         .addMessage(onUpdateRef.current)
