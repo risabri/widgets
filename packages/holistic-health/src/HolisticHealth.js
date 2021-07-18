@@ -7,18 +7,11 @@ import {
   ChakraProvider,
   Text,
   Box,
-  Image,
-  Button,
   IconButton,
-  Icon,
   ButtonGroup,
   CircularProgress,
-  CircularProgressLabel,
-  List,
-  ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
+  Input,
+  Stack,
 } from "@chakra-ui/react";
 
 import {
@@ -36,6 +29,8 @@ import { FireIcon } from "./assets/icons";
 import { WalkIcon } from "./assets/icons";
 import { HealthIcon } from "./assets/icons";
 import { EditIcon } from "./assets/icons";
+import { CloseIcon } from "./assets/icons";
+import { CheckIcon } from "./assets/icons";
 
 import { data } from "./data";
 
@@ -156,6 +151,9 @@ const HolisticHealth = () => {
     case 3:
       stepProgress = 100;
       break;
+    case 3:
+      stepProgress = 100;
+      break;
     default:
       stepProgress = 50;
   }
@@ -173,7 +171,12 @@ const HolisticHealth = () => {
                 <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
                   Daily Goals
                 </Text>
-                <IconButton icon={<EditIcon />} />
+                <IconButton
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                />
               </Flex>
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
@@ -220,7 +223,7 @@ const HolisticHealth = () => {
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
-                thickness="12px"
+                thickness="14px"
                 capIsRound
               />
               <CircularProgress
@@ -229,7 +232,7 @@ const HolisticHealth = () => {
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
-                thickness="12px"
+                thickness="17px"
                 capIsRound
               />
               <HealthIcon />
@@ -629,6 +632,148 @@ const HolisticHealth = () => {
                 name="Light"
               />
             </BarChart>
+          </Flex>
+        </Flex>
+      )}
+      {step === 4 && (
+        <Flex alt="container" style={containerStyle} flex={1}>
+          <Text fontSize="16px" color="#3271E6" fontWeight="bold">
+            Holistic Health
+          </Text>
+          <Flex alt="uppperContaner">
+            <Flex
+              alt="leftSide"
+              flexDirection="column"
+              flex={2}
+              width="147px"
+              height="131px"
+              borderWidth={1}
+              borderColor="#6E587A"
+              borderRadius="5px"
+              paddingTop="3px"
+              paddingBottom="10px"
+              paddingLeft="10px"
+              paddingRight="10px"
+              justifyContent="space-between"
+            >
+              <Flex
+                alt="toolbar"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
+                  Edit Goals
+                </Text>
+                <Flex>
+                  <IconButton
+                    icon={<CloseIcon />}
+                    paddingRight="12px"
+                    onClick={() => {
+                      setStep(0);
+                    }}
+                  />
+                  <IconButton icon={<CheckIcon />} />
+                </Flex>
+              </Flex>
+              <Stack spacing={10}>
+                <Flex alt="input1" alignItems="baseline">
+                  <Input
+                    width="26px"
+                    height="24px"
+                    color="white "
+                    bg="#39114F"
+                    borderWidth="0px"
+                    borderRadius="2px"
+                  />
+                  <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
+                    hrs per night
+                  </Text>
+                </Flex>
+                <Flex alt="input2" alignItems="baseline">
+                  <Input
+                    width="77px"
+                    height="24px"
+                    color="white "
+                    bg="#39114F"
+                    borderWidth="0px"
+                    borderRadius="2px"
+                  />
+                  <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
+                    Kcal
+                  </Text>
+                </Flex>
+                <Flex alt="input3" alignItems="baseline">
+                  <Input
+                    width="77px"
+                    height="24px"
+                    color="white "
+                    bg="#39114F"
+                    borderWidth="0px"
+                    borderRadius="2px"
+                  />
+                  <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
+                    Steps
+                  </Text>
+                </Flex>
+              </Stack>
+            </Flex>
+            <Flex
+              alt="rightSide"
+              alignItems="center"
+              justifyContent="center"
+              flex={2}
+            >
+              <CircularProgress
+                style={circularProgressStyle}
+                value={60}
+                size="113px"
+                trackColor="transparent"
+                color="#DC3284"
+                thickness="12px"
+                capIsRound
+              />
+              <CircularProgress
+                style={circularProgressStyle}
+                value={70}
+                size="88px"
+                trackColor="transparent"
+                color="#E7D535"
+                thickness="14px"
+                capIsRound
+              />
+              <CircularProgress
+                style={circularProgressStyle}
+                value={80}
+                size="66px"
+                trackColor="transparent"
+                color="#AE35E7"
+                thickness="17px"
+                capIsRound
+              />
+              <HealthIcon />
+            </Flex>
+          </Flex>
+          <Flex alt="bottomContainer" paddingTop="20px" flexDirection="column">
+            <Text color="white" fontSize="12px" fontWeight="700">
+              7 day averages
+            </Text>
+            <Flex paddingTop="16px" justifyContent="space-between">
+              <Card
+                icon={<SleepingEmoji size="15px" />}
+                title="7.5"
+                subtitle="Sleep per night"
+              />
+              <Card
+                icon={<FireIcon size="15px" />}
+                title="7.5"
+                subtitle="Burnt per day"
+              />
+              <Card
+                icon={<WalkIcon size="15px" />}
+                title="7.5"
+                subtitle="Walked per day"
+              />
+            </Flex>
           </Flex>
         </Flex>
       )}
