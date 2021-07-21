@@ -1,65 +1,74 @@
-export const data = [
+export const activityData = [
   {
-    day: "Mon",
-    awakeTime: 1,
-    deepSleep: 1,
-    remSleep: 1,
-    lightSleep: 2,
-    calories: 2000,
-    steps: 11000,
+    activity: 80,
   },
   {
-    day: "Tue",
-    awakeTime: 1,
-    deepSleep: 2.5,
-    remSleep: 2.5,
-    lightSleep: 2.5,
-    calories: 2050,
-    steps: 10500,
+    activity: 80,
   },
   {
-    day: "Wed",
-    awakeTime: 0.8,
-    deepSleep: 2,
-    remSleep: 2,
-    lightSleep: 4,
-    calories: 1650,
-    steps: 11000,
+    activity: 0,
   },
   {
-    day: "Thu",
-    awakeTime: 1,
-    deepSleep: 3,
-    remSleep: 2,
-    lightSleep: 5,
-    calories: 2100,
-    steps: 9000,
+    activity: 0,
   },
   {
-    day: "Fri",
-    awakeTime: 0.7,
-    deepSleep: 2,
-    remSleep: 2,
-    lightSleep: 2.5,
-    calories: 1500,
-    steps: 7000,
+    activity: 80,
   },
   {
-    day: "Sat",
-    awakeTime: 1,
-    deepSleep: 1,
-    remSleep: 2,
-    lightSleep: 5,
-    calories: 1800,
-    steps: 8000,
+    activity: 0,
   },
   {
-    day: "Sun",
-    awakeTime: 2,
-    deepSleep: 1,
-    remSleep: 2,
-    lightSleep: 5.5,
-    calories: 500,
-    steps: 4000,
+    activity: 80,
+  },
+  {
+    activity: 60,
+  },
+  {
+    activity: 50,
+  },
+  {
+    activity: 10,
+  },
+  {
+    activity: 20,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 20,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 0,
+  },
+  {
+    activity: 100,
+  },
+  {
+    activity: 80,
+  },
+  {
+    activity: 80,
   },
 ];
