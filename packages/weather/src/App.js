@@ -18,7 +18,7 @@ import { LocationIcon } from "./assets/icons";
 const containerStyle = {
   width: "308px",
   height: "296px",
-  background: "linear-gradient(180deg, #D2DEEA 0%, #00416A 100%)",
+  background: "linear-gradient(180deg, #C6E0E9 0%, #0092FF 100%)",
   borderRadius: "30px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
   paddingTop: 31,
@@ -79,7 +79,7 @@ const App = (props) => {
   // );
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=New York&days=3&aqi=no&alerts=no`
+    `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=Sarajevo&days=3&aqi=no&alerts=no`
   );
   //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
@@ -194,6 +194,8 @@ const App = (props) => {
     const icon2 = threeDaysData[1].day.condition.icon;
     const icon3 = threeDaysData[2].day.condition.icon;
 
+    console.log("ICON", icon2);
+
     const day2Min = threeDaysData[1].day.mintemp_c;
     const day2Max = threeDaysData[1].day.maxtemp_c;
     const day3Min = threeDaysData[2].day.mintemp_c;
@@ -247,9 +249,15 @@ const App = (props) => {
 
     console.log("WEATHER DATA", weatherData);
 
+    const locationTime = weatherData.location.localtime;
+
+    var time = new Date(locationTime).getHours();
+
+    console.log("sdadsasda", time);
+
     const hourData = weatherData.forecast.forecastday[0].hour;
 
-    const sixHourData = hourData.slice(0, 6);
+    const sixHourData = hourData.slice(time, time + 6);
 
     console.log("HOUR DATA", hourData);
 
@@ -257,12 +265,12 @@ const App = (props) => {
 
     console.log("HOUR time", hourTime);
 
-    var time = new Date(hourTime);
-    const currentTime = time.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
+    // var time = new Date(hourTime);
+    // const currentTime = time.toLocaleString("en-US", {
+    //   hour: "numeric",
+    //   minute: "numeric",
+    //   hour12: true,
+    // });
 
     return (
       <Flex
