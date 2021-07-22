@@ -58,7 +58,7 @@ const circularProgressStyle = {
   // transform: ["scaleX(-1)", "rotate(45deg)"],
 };
 
-const CustomButton = ({ icon, text, onClick }) => {
+const CustomButton = ({ icon, current, onClick, goal, unit }) => {
   return (
     <Box
       as="button"
@@ -89,7 +89,17 @@ const CustomButton = ({ icon, text, onClick }) => {
       onClick={onClick}
     >
       {icon}
-      <Text paddingLeft="9px">{text}</Text>
+      <Flex paddingLeft="9px">
+        <Text paddingRight="3px" fontSize="12px" color="white" fontWeight="700">
+          {current}
+        </Text>
+        <Text paddingRight="3px" fontSize="10px" color="white" fontWeight="400">
+          /{goal}
+        </Text>
+        <Text fontSize="10px" color="white" fontWeight="400">
+          {unit}
+        </Text>
+      </Flex>
     </Box>
   );
 };
@@ -135,6 +145,9 @@ const HolisticHealth = () => {
   const prifina = new Prifina({ appId: appID });
 
   const [step, setStep] = useState(0);
+  const [hours, setHours] = useState("8");
+  const [calories, setCalories] = useState("2000");
+  const [totalSteps, setTotalSteps] = useState("10000");
 
   let stepProgress = 0;
 
@@ -181,21 +194,27 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  text="6/8 hrs"
+                  current="6"
+                  goal={hours}
+                  unit="Hrs"
                   onClick={() => {
                     setStep(1);
                   }}
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  text="1456 /2000 kcal"
+                  current="1456"
+                  goal={calories}
+                  unit="Kcal"
                   onClick={() => {
                     setStep(2);
                   }}
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  text="9.5k /10k Steps"
+                  current="9.5k"
+                  goal={totalSteps}
+                  unit="Steps"
                   onClick={() => {
                     setStep(3);
                   }}
@@ -250,12 +269,12 @@ const HolisticHealth = () => {
               />
               <Card
                 icon={<FireIcon size="15px" />}
-                title="7.5"
+                title="2100"
                 subtitle="Burnt per day"
               />
               <Card
                 icon={<WalkIcon size="15px" />}
-                title="7.5"
+                title="12,000"
                 subtitle="Walked per day"
               />
             </Flex>
@@ -273,26 +292,37 @@ const HolisticHealth = () => {
                 <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
                   Daily Goals
                 </Text>
-                <IconButton icon={<EditIcon />} />
+                <IconButton
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                />
               </Flex>
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  text="6/8 hrs"
+                  current="6"
+                  goal={hours}
+                  unit="Hrs"
                   onClick={() => {
                     setStep(1);
                   }}
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  text="1456 /2000 kcal"
+                  current="1456"
+                  goal={calories}
+                  unit="Kcal"
                   onClick={() => {
                     setStep(2);
                   }}
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  text="9.5k /10k Steps"
+                  current="9.5k"
+                  goal={totalSteps}
+                  unit="Steps"
                   onClick={() => {
                     setStep(3);
                   }}
@@ -400,26 +430,37 @@ const HolisticHealth = () => {
                 <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
                   Daily Goals
                 </Text>
-                <IconButton icon={<EditIcon />} />
+                <IconButton
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                />
               </Flex>
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  text="6/8 hrs"
+                  current="6"
+                  goal={hours}
+                  unit="Hrs"
                   onClick={() => {
                     setStep(1);
                   }}
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  text="1456 /2000 kcal"
+                  current="1456"
+                  goal={calories}
+                  unit="Kcal"
                   onClick={() => {
                     setStep(2);
                   }}
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  text="9.5k /10k Steps"
+                  current="9.5k"
+                  goal={totalSteps}
+                  unit="Steps"
                   onClick={() => {
                     setStep(3);
                   }}
@@ -523,26 +564,37 @@ const HolisticHealth = () => {
                 <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
                   Daily Goals
                 </Text>
-                <IconButton icon={<EditIcon />} />
+                <IconButton
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                />
               </Flex>
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  text="6/8 hrs"
+                  current="6"
+                  goal={hours}
+                  unit="Hrs"
                   onClick={() => {
                     setStep(1);
                   }}
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  text="1456 /2000 kcal"
+                  current="1456"
+                  goal={calories}
+                  unit="Kcal"
                   onClick={() => {
                     setStep(2);
                   }}
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  text="9.5k /10k Steps"
+                  current="9.5k"
+                  goal={totalSteps}
+                  unit="Steps"
                   onClick={() => {
                     setStep(3);
                   }}
@@ -672,7 +724,12 @@ const HolisticHealth = () => {
                       setStep(0);
                     }}
                   />
-                  <IconButton icon={<CheckIcon />} />
+                  <IconButton
+                    icon={<CheckIcon />}
+                    onClick={() => {
+                      setStep(0);
+                    }}
+                  />
                 </Flex>
               </Flex>
               <Stack spacing={10}>
@@ -684,6 +741,9 @@ const HolisticHealth = () => {
                     bg="#39114F"
                     borderWidth="0px"
                     borderRadius="2px"
+                    onChange={(e) => {
+                      setHours(e.currentTarget.value);
+                    }}
                   />
                   <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
                     hrs per night
@@ -697,6 +757,9 @@ const HolisticHealth = () => {
                     bg="#39114F"
                     borderWidth="0px"
                     borderRadius="2px"
+                    onChange={(e) => {
+                      setCalories(e.currentTarget.value);
+                    }}
                   />
                   <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
                     Kcal
@@ -710,6 +773,9 @@ const HolisticHealth = () => {
                     bg="#39114F"
                     borderWidth="0px"
                     borderRadius="2px"
+                    onChange={(e) => {
+                      setTotalSteps(e.currentTarget.value);
+                    }}
                   />
                   <Text paddingLeft="6px" color="#F6F6F6" fontSize="10px">
                     Steps
@@ -765,12 +831,12 @@ const HolisticHealth = () => {
               />
               <Card
                 icon={<FireIcon size="15px" />}
-                title="7.5"
+                title="2100"
                 subtitle="Burnt per day"
               />
               <Card
                 icon={<WalkIcon size="15px" />}
-                title="7.5"
+                title="12,000"
                 subtitle="Walked per day"
               />
             </Flex>
