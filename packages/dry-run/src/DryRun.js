@@ -226,7 +226,7 @@ const HolisticHealth = (props) => {
         }}
         borderWidth={0}
       >
-        <XAxis />
+        <XAxis stroke="#90CDF4" />
         <YAxis tick={false} />
         <Tooltip />
         <CartesianGrid stroke="#f5f5f5" stroke="none" />
