@@ -30,13 +30,8 @@ import {
   Label,
 } from "recharts";
 
-import { SleepingEmoji } from "./assets/icons";
-import { FireIcon } from "./assets/icons";
-import { WalkIcon } from "./assets/icons";
-import { HealthIcon } from "./assets/icons";
-import { EditIcon } from "./assets/icons";
-import { CloseIcon } from "./assets/icons";
-import { CheckIcon } from "./assets/icons";
+import { ArrowRight } from "./assets/icons";
+import { ArrowLeft } from "./assets/icons";
 
 import { data } from "./data";
 
@@ -59,7 +54,7 @@ const containerStyle = {
   background: "#FFEAEA",
   borderRadius: "10px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
-  padding: 8,
+
   flexDirection: "column",
 };
 
@@ -121,7 +116,7 @@ const Sleepwell = () => {
   return (
     <ChakraProvider>
       <Flex alt="container" style={containerStyle} flex={1}>
-        <Flex alt="topContainer" flexDirection="column">
+        <Flex alt="topContainer" flexDirection="column" padding={8}>
           <Text
             paddingBottom="6px"
             color="#FF9D9D"
@@ -197,12 +192,29 @@ const Sleepwell = () => {
         <Flex
           alt="bottomContainer"
           flexDirection="column"
-          // bg="#1C1F6D"
+          bg="#1C1F6D"
           height="100%"
-          marginLeft={0}
+          // paddingTop="18px"
+          borderBottomLeftRadius="10px"
+          borderBottomRightRadius="10px"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="left"
+          // paddingBottom="26px"
         >
-          <Text>{displayTitle}</Text>
-          <Text>{displayText}</Text>
+          <Flex flexDirection="column" paddingLeft="30px" paddingRight="36px">
+            <Text fontSize="12px" color="#FF9D9D" fontWeight="700">
+              {tips[0].title}
+            </Text>
+            <Text fontSize="10px" color="#FCEBEB">
+              {tips[0].text}
+            </Text>
+          </Flex>
+
+          <ButtonGroup spacing={0} alignSelf="flex-end" paddingRight="11px">
+            <ArrowLeft />
+            <ArrowRight />
+          </ButtonGroup>
         </Flex>
       </Flex>
     </ChakraProvider>
