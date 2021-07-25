@@ -100,10 +100,6 @@ const HolisticHealth = (props) => {
 
     console.log("FORECAST THREE DAYS2", threeDaysData);
 
-    // console.log("ICON", icon1);
-    // console.log("ICON", icon2);
-    // console.log("ICON", icon3);
-
     const days = [
       "Sunday",
       "Monday",
@@ -230,8 +226,19 @@ const HolisticHealth = (props) => {
         <YAxis tick={false} />
         <Tooltip />
         <CartesianGrid stroke="#f5f5f5" stroke="none" />
-        <Bar dataKey="chance_of_rain" barSize={3} fill="#90CDF4" />
-        <Line type="monotone" dataKey="activity" stroke="#FFF500" dot={false} />
+        <Bar
+          dataKey="chance_of_rain"
+          name="Chance of rain"
+          barSize={3}
+          fill="#90CDF4"
+        />
+        <Line
+          type="step"
+          dataKey="activity"
+          name="Activity"
+          stroke="#FFF500"
+          dot={false}
+        />
       </ComposedChart>
     );
   };
