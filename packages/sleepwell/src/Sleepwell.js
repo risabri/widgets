@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { usePrifina } from "@prifina/hooks";
 
@@ -43,10 +43,18 @@ const legendStyle = {
 
 const appID = "sleepwell";
 
-const Sleepwell = () => {
+const Sleepwell = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const prifina = new Prifina({ appId: appID });
+
+  useEffect(async () => {
+    // init callback function for background updates/notifications
+    onUpdate(appID);
+    // register datasource modules
+    registerHooks(appID);
+    // get
+  }, []);
 
   const [step, setStep] = useState(0);
 

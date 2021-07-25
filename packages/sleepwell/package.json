@@ -73,12 +73,7 @@
     "storybook": "start-storybook -p 9009 -s public",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
-  "peerDependencies": {
-    "@prifina/hooks": "^0.0.61",
-    "react": "^17.0.1",
-    "styled-components": "^5.2.1",
-    "styled-system": "^5.1.5"
-  },
+
   "bugs": {
     "url": "https://github.com/hamzahalilovic/widgets/issues"
   }
