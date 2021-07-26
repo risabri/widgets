@@ -7,14 +7,67 @@ import { usePrifina } from "@prifina/hooks";
 import S3Upload from "@prifina/file-upload";
 //import { FileList } from './FileList';
 
-const style = {
-  height: "200px",
-  fontSize: "16px",
-  width: "200px",
+import {
+  Flex,
+  ChakraProvider,
+  Text,
+  Box,
+  IconButton,
+  ButtonGroup,
+  CircularProgress,
+  Input,
+  Stack,
+  Image,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CircularProgressLabel,
+} from "@chakra-ui/react";
 
+import { Progress as Progress2 } from "@chakra-ui/react";
+
+import folder from "./assets/folder.svg";
+
+const container = {
+  height: "296px",
+  fontSize: "16px",
+  width: "308px",
+  background: "rgba(151, 212, 231, 0.15",
   display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingTop: "45px",
+  paddingBottom: "35px",
+  borderRadius: 10,
+  // border: "1px solid red",
+  boxShadow: "0px 12px 24px rgba(182, 204, 214, 0.2)",
+};
+const uploadContainer = {
+  height: "296px",
+  fontSize: "16px",
+  width: "308px",
+  background: "linear-gradient(180deg, #F0FDFC 0%, #E8F5FE 100%)",
+  display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
+  borderRadius: 10,
+  boxShadow: "0px 12px 24px rgba(182, 204, 214, 0.2)",
+};
+
+const innerContainer = {
+  height: "150px",
+  fontSize: "16px",
+  width: "220px",
+  background: "rgba(151, 212, 231, 0.25)",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 10,
+  // border: "1px solid #D3F2F0",
 };
 const TargetBox = (props) => {
   const { onDrop } = props;
@@ -35,9 +88,20 @@ const TargetBox = (props) => {
   );
   const isActive = canDrop && isOver;
   return (
-    <div ref={drop} style={style}>
-      {isActive ? "Release to drop" : "Drag file here"}
-    </div>
+    <Flex style={container}>
+      <Text fontSize={20} fontWeight="600">
+        Upload your files
+      </Text>
+      <Text color="gray" fontSize={10}>
+        You can upload one file at a time
+      </Text>
+      <Flex ref={drop} style={innerContainer}>
+        <Image src={folder} />
+        <Text color="gray" fontSize={10}>
+          {isActive ? "Release to drop" : "Drag and drop your files here"}
+        </Text>
+      </Flex>
+    </Flex>
   );
 };
 
@@ -104,11 +168,25 @@ export const Container = () => {
   }, []);
 
   return (
-    <>
+    <ChakraProvider>
       {droppedFiles.length === 0 && <TargetBox onDrop={handleFileDrop} />}
       {droppedFiles.length > 0 && (
-        <div style={style}>Uploaded {Math.floor(uploaded)}%</div>
+        <Flex style={uploadContainer}>
+          <Text fontWeight="600" fontSize={20} paddingBottom="15px">
+            Your file is being uploaded
+          </Text>
+          <CircularProgress
+            value={uploaded}
+            size="120px"
+            color="teal"
+            capIsRound
+          >
+            <CircularProgressLabel color="gray">
+              {Math.floor(uploaded)}%
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Flex>
       )}
-    </>
+    </ChakraProvider>
   );
 };
