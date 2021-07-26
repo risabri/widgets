@@ -18,7 +18,6 @@ import { LocationIcon } from "./assets/icons";
 const containerStyle = {
   width: "308px",
   height: "296px",
-  background: "linear-gradient(180deg, #C6E0E9 0%, #0092FF 100%)",
   borderRadius: "30px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
   paddingTop: 31,
@@ -33,7 +32,6 @@ const App = (props) => {
   console.log("WEATHER WIDGET PROPS ", props);
 
   const { city, data } = props;
-
   //const city = "san francisco";
 
   // init hook and get provider api services...
@@ -79,10 +77,74 @@ const App = (props) => {
   // );
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=Sarajevo&days=3&aqi=no&alerts=no`
+    `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=hong kong&days=3&aqi=no&alerts=no`
   );
   //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
+  ////background
+  if (error) return <h2>Error when fetching: {error}</h2>;
+  if (!weatherData && isLoading) return <h2>LOADING...</h2>;
+  if (!weatherData) return null;
+  const currentCondition = weatherData.current.condition.text;
+
+  const isDay = weatherData.current.is_day;
+  const sunrise = weatherData.forecast.forecastday[0].astro.sunrise;
+  const sunset = weatherData.forecast.forecastday[0].astro.sunset;
+
+  const locationTime = weatherData.location.localtime;
+  console.log("locationTime", locationTime);
+  console.log("sunrise", sunrise);
+
+  var time = new Date(locationTime);
+  const currentTime = time.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+
+  console.log("currentTime", currentTime);
+
+  console.log("is day", isDay);
+  console.log("is condition", currentCondition);
+
+  let bg = "linear-gradient(180deg, #C6E0E9 0%, #0092FF 100%)";
+  const clear = "linear-gradient(180deg, #C6E0E9 0%, #0092FF 100%)";
+  const cloudy =
+    "linear-gradient(180deg, #C4E0E5 0%, #58A8C5 30.73%, #2571A4 88.54%)";
+  const clearNight = "linear-gradient(180deg, #2B5876 0%, #4E4376 100%)";
+  const cloudyNight = "linear-gradient(180deg, #928DAB 0%, #1F1C2C 100%)";
+
+  if (currentTime >= sunrise && currentTime <= sunset) {
+    switch (currentCondition) {
+      case "Clear":
+        bg = clear;
+        break;
+      case "cloudy":
+        bg = cloudy;
+        break;
+      case "Partly cloudy":
+        bg = clear;
+        break;
+      default:
+        bg = clear;
+    }
+  } else {
+    switch (currentCondition) {
+      case "Clear":
+        bg = clearNight;
+        break;
+      case "cloudy":
+        bg = cloudyNight;
+        break;
+      case "Partly cloudy":
+        bg = clearNight;
+        break;
+
+      default:
+        bg = clearNight;
+    }
+  }
+  /////////////
   const getContent = () => {
     if (error) return <h2>Error when fetching: {error}</h2>;
     if (!weatherData && isLoading) return <h2>LOADING...</h2>;
@@ -307,7 +369,7 @@ const App = (props) => {
 
   return (
     <ChakraProvider>
-      <Flex alt="container" style={containerStyle} flex={1}>
+      <Flex alt="container" style={containerStyle} flex={1} bg={bg}>
         {getContent()}
 
         {getForecast()}
