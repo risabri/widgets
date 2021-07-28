@@ -6,7 +6,7 @@ export default { title: "Test" };
 export const app = () => (
   <>
     <App />
-    <App offset={120} tz={"Madrid"} />
+    {/* <App offset={120} tz={"Madrid"} /> */}
   </>
 );
 
