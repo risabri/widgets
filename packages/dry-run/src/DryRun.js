@@ -79,12 +79,22 @@ const HolisticHealth = (props) => {
 
   const [city, setCity] = useState("London");
 
+  function handleChange(event) {
+    setCity(event.target.value);
+  }
+
   const { weatherData, error, isLoading, setUrl } = useFetch(
     `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=${city}&days=3&aqi=no&alerts=no`
   );
 
+  useEffect(() => {
+    // init callback function for background updates/notifications
+    // handleChange();
+  }, [city]);
+
   //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
   console.log("WEATHER DATA", weatherData);
+  console.log("CITY", city);
   // console.log("FORECAST DATA", forecastData.weatherData);
 
   const WeatherChart = () => {
@@ -268,6 +278,8 @@ const HolisticHealth = (props) => {
           fontWeight="bold"
           fontStyle="italic"
           borderRadius="2px"
+          value={city}
+          onChange={handleChange}
         ></Input>
 
         {WeatherChart()}
