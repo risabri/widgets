@@ -60,7 +60,7 @@ const App = (props) => {
       typeof data.settings === "object" &&
       data.settings.hasOwnProperty("city")
     ) {
-      //setCity(data.settings.city);
+      setCity(data.settings.city);
       setUrl(
         `${API_BASE_URL}/data/2.5/weather?q=${data.settings.city}&units=metric&appid=${API_KEY}`
       );
@@ -77,7 +77,7 @@ const App = (props) => {
   // );
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=hong kong&days=3&aqi=no&alerts=no`
+    `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
   );
   //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
@@ -326,13 +326,6 @@ const App = (props) => {
     const hourTime = sixHourData.time;
 
     console.log("HOUR time", hourTime);
-
-    // var time = new Date(hourTime);
-    // const currentTime = time.toLocaleString("en-US", {
-    //   hour: "numeric",
-    //   minute: "numeric",
-    //   hour12: true,
-    // });
 
     return (
       <Flex
