@@ -37,7 +37,6 @@ module.exports = {
   ],
   externals: {
     ...externals,
-    react: "React",
   },
   module: {
     rules: [

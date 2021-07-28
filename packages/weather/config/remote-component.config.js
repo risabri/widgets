@@ -9,7 +9,4 @@ module.exports = {
     "styled-components": require("styled-components"),
     "@prifina/hooks": require("@prifina/hooks"),
   },
-  externals: {
-    react: "React",
-  },
 };
