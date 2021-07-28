@@ -1,6 +1,8 @@
 const path = require("path");
 
-const webpack = require("webpack", "react");
+const webpack = require("webpack");
+
+const React = require("react");
 const WebpackAssetsManifest = require("webpack-assets-manifest");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -33,9 +35,6 @@ module.exports = {
     }),
     new WebpackAssetsManifest(),
     new CleanWebpackPlugin(),
-    new webpack.ProvidePlugin({
-      React: "react",
-    }),
   ],
   externals: {
     ...externals,
