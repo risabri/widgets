@@ -18,3 +18,37 @@ export const LocationIcon = () => (
     </svg>
   </>
 );
+
+export const ChevronRight = () => (
+  <>
+    <svg
+      width="8"
+      height="15"
+      viewBox="0 0 8 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 12.3857L5 7.45713L0 2.52856L1 0.557129L8 7.45713L1 14.3571L0 12.3857Z"
+        fill="#D0D0D0"
+      />
+    </svg>
+  </>
+);
+
+export const ChevronLeft = () => (
+  <>
+    <svg
+      width="8"
+      height="15"
+      viewBox="0 0 8 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 1.97123L3 6.8998L8 11.8284L7 13.7998L0 6.8998L7 -0.000196576L8 1.97123Z"
+        fill="#D0D0D0"
+      />
+    </svg>
+  </>
+);

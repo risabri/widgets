@@ -1,17 +1,18 @@
 {
   "id": "0123456789",
   "version": "0.0.1",
+  "name": "weatherWidget",
   "title": "Weather Widget",
-  "author": "Prifina Inc",
+  "publisher": "Prifina Inc",
   "icon": "assets/weatherly-icon.png",
   "bannerImage": "assets/weatherly-banner.png",
   "settings": [
     { "field": "city", "value": "New York", "label": "City", "type": "text" }
   ],
   "shortDescription": "Heads up widget for showing you the weather in relevant locations to you.",
-  "longDescription": "This simple widget gives you insight into the weather in different locations you choose. You can access it in your account from where ever you access the internet.",
+  "longDescription": "This simple widget gives you insight into the weather in different locations you choose. You can access it in your account from wherever you access the internet.",
   "dataTypes": "User-held data",
-  "category": "Health",
+  "category": "Weather",
   "deviceSupport": "Desktop browser",
   "languages": "en",
   "age": "3+",
@@ -20,7 +21,7 @@
     "assets/weatherly-ss-2.png",
     "assets/weatherly-ss-3.png"
   ],
-  "keyFeatures": [""],
+  "keyFeatures": ["Public data display"],
   "userHeld": ["Session time", "Session duration"],
   "userGenerated": ["Location input"],
   "public": ["Weather data"]
