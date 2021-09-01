@@ -1,0 +1,32 @@
+{
+  "id": "5522443311",
+  "version": "0.0.1",
+  "name": "clockWidget",
+  "title": "Clock",
+  "publisher": "Prifina Inc",
+  "icon": "assets/clock-icon.png",
+  "bannerImage": "assets/clock-banner.png",
+  "settings": [
+    {
+      "offset": -4,
+      "tz": "",
+      "type": "select"
+    }
+  ],
+  "shortDescription": "Compare the time for four separate locations.",
+  "longDescription": "Set important timezones for you to follow or simply keep track of the time next to other widgets you use. This simple clock widget exists in your Prifina account and is accessible from where ever you use the Internet.",
+  "dataTypes": "User-generated",
+  "category": "Productivity",
+  "deviceSupport": "Desktop browser",
+  "languages": "en",
+  "age": "3+",
+  "screenshots": [
+    "assets/clock-ss-1.png",
+    "assets/clock-ss-2.png",
+    "assets/clock-ss-3.png"
+  ],
+  "keyFeatures": ["Time display", "Multiple timezones"],
+  "userHeld": [""],
+  "userGenerated": ["Locations"],
+  "public": ["Data and time"]
+}

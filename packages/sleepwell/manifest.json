@@ -1,8 +1,8 @@
 {
   "id": "3311225544",
   "version": "0.0.1",
-  "name": "dryRunWidget",
-  "title": "Dry Run",
+  "name": "sleepwellWidget",
+  "title": "Sleepwell",
   "publisher": "Prifina Inc",
   "icon": "assets/sleepwell-icon.png",
   "bannerImage": "assets/sleepwell-banner.png",

@@ -41,7 +41,7 @@ const legendStyle = {
   left: -20,
 };
 
-const appID = "sleepwell";
+const appID = "sleepwellWidget";
 
 const Sleepwell = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();

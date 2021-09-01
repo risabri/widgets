@@ -269,7 +269,7 @@ function useIsMountedRef() {
 }
 
 // unique appID for the widget....
-const appID = "watchWidget";
+const appID = "clockWidget";
 
 const Watch = (props) => {
   console.log("WATCH PROPS ", props);
