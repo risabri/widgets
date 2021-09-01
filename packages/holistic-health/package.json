@@ -25,6 +25,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "framer-motion": "^4",
+    "prifina": "^0.0.9",
     "recharts": "^2.0.10"
   },
   "devDependencies": {

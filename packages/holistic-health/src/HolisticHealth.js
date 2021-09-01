@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina } from "@prifina/hooks";
 
+import OuraData from "prifina/oura/";
+
 import {
   Flex,
   ChakraProvider,
@@ -143,6 +145,51 @@ const HolisticHealth = () => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const prifina = new Prifina({ appId: appID });
+
+  const [filteredData, setFilteredData] = useState();
+
+  const processData = (data) => {
+    filteredItems = data;
+    setFilteredData(filteredItems);
+  };
+
+  const dataUpdate = async (data) => {
+    // should check the data payload... :)
+    console.log("TIMELINE UPDATE ", data);
+    //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
+    //console.log("TIMELINE UPDATE ", typeof data.settings);
+
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.year !== ""
+    ) {
+      //console.log("TIMELINE ", data.settings);
+
+      const result = await API[appID].OuraData.queryOuraDaily({});
+      console.log("DATA ", result.data.getS3Object.content);
+      if (result.data.getS3Object.content.length > 0) {
+        processData(result.data.getS3Object.content);
+      }
+    }
+  };
+
+  useEffect(async () => {
+    // init callback function for background updates/notifications
+    onUpdate(appID, dataUpdate);
+    // register datasource modules
+    registerHooks(appID, [OuraData]);
+    // get
+    console.log("TIMELINE PROPS DATA ", data);
+
+    const result = await API[appID].OuraData.queryOuraDaily({});
+    console.log("DATA ", result.data.getS3Object.content);
+    if (result.data.getS3Object.content.length > 0) {
+      processData(result.data.getS3Object.content);
+    }
+  }, []);
+
+  console.log("THIS IS", filteredData);
 
   const [step, setStep] = useState(0);
   const [hours, setHours] = useState("8");
