@@ -106,7 +106,7 @@ const TargetBox = (props) => {
 };
 
 // unique appID for the widget....
-const appID = "fileDropWidget";
+const appID = "dataUploadWidget";
 
 export const Container = () => {
   // init hook and get provider api services...
