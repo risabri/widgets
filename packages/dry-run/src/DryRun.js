@@ -77,14 +77,14 @@ const DryRun = (props) => {
     `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
   );
 
+  if (error) return <h2>Error when fetching: {error}</h2>;
+  if (!weatherData && isLoading) return <h2>LOADING...</h2>;
+  if (!weatherData) return null;
+
   console.log("WEATHER DATA", weatherData);
   console.log("CITY", city);
 
   const weatherChart = () => {
-    if (error) return <h2>Error when fetching: {error}</h2>;
-    if (!weatherData && isLoading) return <h2>LOADING...</h2>;
-    if (!weatherData) return null;
-
     const threeDaysData = weatherData.forecast.forecastday;
 
     const icon1 = threeDaysData[0].day.condition.icon;
@@ -157,10 +157,6 @@ const DryRun = (props) => {
   };
 
   const graph = () => {
-    if (error) return <h2>Error when fetching: {error}</h2>;
-    if (!weatherData && isLoading) return <h2>LOADING...</h2>;
-    if (!weatherData) return null;
-
     const threeDaysData = weatherData.forecast.forecastday;
 
     const oneDayData = threeDaysData[0];
@@ -221,6 +217,32 @@ const DryRun = (props) => {
     );
   };
 
+  const threeDaysData = weatherData.forecast.forecastday[0].hour;
+  console.log("SSSSS", threeDaysData);
+
+  const newR = threeDaysData;
+
+  const trainingHours = newR.slice(6, 20);
+
+  console.log("Reduced hours", trainingHours);
+
+  let optimalHourDate = trainingHours.reduce((prev, curr) =>
+    prev.chance_of_rain < curr.chance_of_rain ? prev : curr
+  );
+
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+
+  let h = optimalHourDate.time;
+  var d = new Date(h);
+  var minutes = addZero(d.getMinutes());
+
+  var optimalHour = d.getHours();
+
   return (
     <ChakraProvider>
       <Flex alt="container" style={containerStyle} flex={1}>
@@ -253,15 +275,39 @@ const DryRun = (props) => {
           {graph()}
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="column">
-              <Text color="#FFFFFF" fontSize={10} textTransform="uppercase">
-                Chance of rain
-              </Text>
-              <Text color="#FFFFFF" fontSize={10} textTransform="uppercase">
-                Activity history
-              </Text>
+              <Flex alignItems="center">
+                <Flex
+                  w="7px"
+                  h="7px"
+                  background="#90CDF4"
+                  borderRadius={999}
+                  marginRight="4px"
+                />
+                <Text color="#FFFFFF" fontSize={10} textTransform="uppercase">
+                  Chance of rain
+                </Text>
+              </Flex>
+              <Flex alignItems="center">
+                <Flex
+                  w="7px"
+                  h="7px"
+                  background="#FFF500"
+                  borderRadius={999}
+                  marginRight="4px"
+                />
+                <Text color="#FFFFFF" fontSize={10} textTransform="uppercase">
+                  Activity history
+                </Text>
+              </Flex>
             </Flex>
             <Flex flexDirection="column" alignItems="center">
-              <Text color="#FFFFFF">8:00-9:00PM</Text>
+              <Text
+                fontSize="18px"
+                color="#FFFFFF"
+                fontWeight="700"
+              >{`${optimalHour}:${minutes}-${
+                optimalHour + 1
+              }:${minutes}`}</Text>
               <Text textTransform="uppercase" color="#FFF500" fontSize={10}>
                 Optimal workout time
               </Text>
