@@ -14710,10 +14710,10 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
 
-prifina@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/prifina/-/prifina-0.0.10.tgz#e2e45f682bdc28b969eed6c8e90fd461110de0ee"
-  integrity sha512-U+w06PUNunuYISeFFstgDC/EcyshN+4kbamdWYFW8mkS+hnE4hSFUaMiCpAxD2ax/WJnTpsfgEr90rR+MkFl7A==
+prifina@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/prifina/-/prifina-0.0.11.tgz#c14c77573326dbf1557f55835755f3e8417ed800"
+  integrity sha512-PH/XtrnfFXlr0vgeFwI9t/A6lGx7JaEDiymwjjdKIzxMQmJHhcHxLBU824Sa/xCkfmWGCD6HPwwsCQJmbappWw==
 
 prifina@^0.0.9:
   version "0.0.9"
