@@ -191,7 +191,7 @@ const HolisticHealth = () => {
     }
   }, []);
 
-  console.log("THIS IS", filteredData);
+  console.log("FILTERED DATA", filteredData);
 
   const [step, setStep] = useState(0);
   const [hours, setHours] = useState("8");
@@ -588,7 +588,7 @@ const HolisticHealth = () => {
                 barSize={22}
                 stackId="a"
                 fill="url(#colorUv)"
-                name="Light"
+                name="Calories"
               />
             </BarChart>
           </Flex>
@@ -722,7 +722,7 @@ const HolisticHealth = () => {
                 barSize={22}
                 stackId="a"
                 fill="url(#colorUv)"
-                name="Light"
+                name="Steps"
               />
             </BarChart>
           </Flex>

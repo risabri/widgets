@@ -209,8 +209,8 @@ const App = (props) => {
     });
 
     return (
-      <Flex justifyContent="center">
-        <Flex paddingRight="17px">
+      <Flex>
+        <Flex paddingLeft="20px" paddingRight="17px">
           <Image src={customIcon} boxSize="100px" />
         </Flex>
         <Flex

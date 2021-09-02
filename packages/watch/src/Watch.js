@@ -43,27 +43,29 @@ const Clock = styled.div`
 
   .hours-hand {
     // box-shadow: 1px 1px 1px 1px gray;
-    // border-radius: 40% 40% 20% 20%;
+    border-radius: 50% 50% 20% 20%;
     position: absolute;
     // border: 2px solid white;
     background-color: white;
     width: 3px;
+    height: 25px;
   }
 
   .minutes-hand {
     // box-shadow: 1px 1px 1px 1px gray;
     position: absolute;
-    // border-radius: 40% 40% 20% 20%;
+    border-radius: 40% 80% 20% 20%;
     background-color: white;
     // border: 1px solid black;
-    width: 2px;
+    width: 1.75px;
+    // height: 25px;
   }
 
   .seconds-hand {
-    // box-shadow: 1px 1px 1px 0px red;
+    // box-shadow: 1px 1px 1px 1px red;
     position: absolute;
     border-radius: 30%;
-    background-color: white;
+    background-color: red;
     width: 1px;
   }
 
@@ -90,7 +92,6 @@ const Clock = styled.div`
     font-weight: 500;
   }
 `;
-
 
 const Hour = styled.span`
   top: ${(props) => (props.pos ? props.pos.top : 0)}px;
