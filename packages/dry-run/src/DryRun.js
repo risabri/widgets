@@ -63,7 +63,7 @@ const DryRun = (props) => {
     ) {
       setCity(data.settings.city);
       setUrl(
-        `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${data.settings.city}&days=3&aqi=no&alerts=no`
+        `${API_BASE_URL}/data/2.5/onecall?q=${data.settings.city}&units=metric&appid=${API_KEY}`
       );
     }
   };
