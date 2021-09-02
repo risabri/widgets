@@ -5,7 +5,8 @@ import { usePrifina } from "@prifina/hooks";
 import moment from "moment";
 import "moment-timezone";
 import { useId } from "@reach/auto-id";
-import { alignItems, alignSelf } from "styled-system";
+
+import { Flex } from "@chakra-ui/react";
 
 /*
 $primary: black;
@@ -15,40 +16,10 @@ $accent: red;
 $clock-border: 10px;
 */
 
-const TopContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  padding-bottom: 30px;
-`;
-
-const BottomContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 15px;
-`;
-
 const TzText = styled.div`
   font-size: 12px;
   text-align: center;
   padding: 5px;
-`;
-const Container = styled.div`
-  padding: 10px;
-  height: 296px;
-  background: linear-gradient(149.48deg, #ebecf0 -13.01%, #e5e6ec 86.1%);
-  font-size: 10px;
-  width: 308px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-bottom: 25px;
 `;
 
 const testProps = (props) => {
@@ -120,75 +91,6 @@ const Clock = styled.div`
   }
 `;
 
-const SmallerClock = styled.div`
-  /*background-color: mix(white, gray, 95%); */
-  border-radius: 50%;
-  // width: ${(props) => props.size};
-  // height: ${(props) => props.size};
-  width: 76px;
-  height: 76px;
-  display: flex;
-  position: relative;
-  background: black;
-
-  .hours-hand {
-    position: absolute;
-
-    background-color: white;
-    width: 3px;
-  }
-
-  .minutes-hand {
-    position: absolute;
-
-    background-color: white;
-
-    width: 2px;
-  }
-
-  .seconds-hand {
-    position: absolute;
-    border-radius: 30%;
-    background-color: white;
-    width: 1px;
-  }
-
-  .hand-pivot {
-    // box-shadow: 0 0 2px 2px silver;
-    border: 3px solid silver;
-    border-radius: 50%;
-    height: 0px;
-    width: 0px;
-    position: absolute;
-  }
-
-  .dial-hour {
-    /*color: mix(white, black, 30%); */
-    // text-shadow: 1px 1px 4px;
-    position: absolute;
-    color: white;
-    font-size: 8px;
-    padding: 3px;
-  }
-  .dial-hour.hour-main {
-    color: white;
-    // font-size: 1.6em;
-    font-weight: 500;
-  }
-`;
-
-const Text = styled.div`
-  font-size: 30px;
-  background: -webkit-linear-gradient(
-    180deg,
-    #1a1a1a 34.38%,
-    #888888 48.96%,
-    #1a1a1a 67.19%
-  );
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
 
 const Hour = styled.span`
   top: ${(props) => (props.pos ? props.pos.top : 0)}px;
@@ -275,74 +177,37 @@ const Watch = (props) => {
   console.log("WATCH PROPS ", props);
   const { offset, tz, data } = props;
   // init hook and get provider api services...
-  const { onUpdate, Prifina } = usePrifina();
+  // const { onUpdate, Prifina } = usePrifina();
 
-  // init provider api with your appID
-  const prifina = new Prifina({ appId: appID });
+  // // init provider api with your appID
+  // const prifina = new Prifina({ appId: appID });
 
   const elementId = useId();
 
   const localTz = moment.tz.guess();
 
   /////////////////////
-  /////////TIME PROPS///////////////
-  const localTime = moment.tz(localTz).format("dddd, MMMM Do YYYY, h:mm:ss a");
-  console.log("LOCAL", localTime);
-
-  const locale = "en";
-  const [today, setDate] = useState(new Date()); // Save the current date to be able to trigger an update
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      // Creates an interval which will update the current data every minute
-      // This will trigger a rerender every component that uses the useDate hook.
-      setDate(new Date());
-    }, 1000);
-    return () => {
-      clearInterval(timer); // Return a funtion to clear the timer so that it will stop being called on unmount
-    };
-  }, []);
-
-  const day = today.toLocaleDateString(locale, { weekday: "long" });
-  const date = `${day}, ${today.getDate()} ${today.toLocaleDateString(locale, {
-    month: "long",
-  })}\n\n`;
-
-  const hour = today.getHours();
-  // const wish = `Good ${(hour < 12 && 'Morning') || (hour < 17 && 'Afternoon') || 'Evening'}, `;
-
-  const time = today.toLocaleTimeString(locale, {
-    hour: "numeric",
-    hour12: true,
-    minute: "numeric",
-    second: "numeric",
-  });
-
-  console.log("TIME", date);
-
-  ////////////////////////////////////////////////////////////////////
 
   const localOffset = moment.tz(localTz).utcOffset();
   let tzDefault = {
     offset: offset === -1 ? localOffset : offset,
     tz: tz === "" ? localTz : tz,
   };
-  if (
-    typeof data !== "undefined" &&
-    data.hasOwnProperty("settings") &&
-    data.settings.hasOwnProperty("tz") &&
-    data.settings.tz !== ""
-  ) {
-    tzDefault = {
-      offset: parseInt(data.settings.offset),
-      tz: data.settings.tz,
-    };
-    console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
-  }
+  // if (
+  //   typeof data !== "undefined" &&
+  //   data.hasOwnProperty("settings") &&
+  //   data.settings.hasOwnProperty("tz") &&
+  //   data.settings.tz !== ""
+  // ) {
+  //   tzDefault = {
+  //     offset: parseInt(data.settings.offset),
+  //     tz: data.settings.tz,
+  //   };
+  //   console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
+  // }
   const isMountedRef = useIsMountedRef();
   const [tzInfo, setTzInfo] = useState(tzDefault);
   const [clockSize, setClockSize] = useState("90%");
-  const [smallerClockSize, setSmallerClockSize] = useState("50%");
   const [dialHour, setDialHour] = useState([]);
   const [handPivot, setHandPivot] = useState({ top: 0, left: 0 });
   const [hoursHand, setHoursHand] = useState({
@@ -526,238 +391,68 @@ const Watch = (props) => {
     };
   }, [isMountedRef, tzInfo]);
 
-  const dataUpdate = (data) => {
-    // should check the data payload... :)
-    console.log("WATCH WIDGET UPDATE ", data);
+  // const dataUpdate = (data) => {
+  //   // should check the data payload... :)
+  //   console.log("WATCH WIDGET UPDATE ", data);
 
-    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
-      //
-      setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
-    }
-  };
+  //   if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+  //     //
+  //     setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
+  //   }
+  // };
 
-  useEffect(() => {
-    // init callback function for background updates/notifications
+  // useEffect(() => {
+  //   // init callback function for background updates/notifications
 
-    onUpdate(appID, dataUpdate);
-  }, []);
+  //   onUpdate(appID, dataUpdate);
+  // }, []);
 
   return (
-    <Container>
-      <div style={{ fontSize: 16 }}>Clock Widget</div>
-      <TopContainer>
-        <Clock
-          id={"clock-" + elementId}
-          // size={clockSize}
-          width="92px"
-          height="72px"
-        >
-          <HoursHand
-            pos={hoursHand}
-            className="hours-hand"
-            id={"hours-hand-" + elementId}
-          ></HoursHand>
-          <MinutesHand
-            pos={minutesHand}
-            className="minutes-hand"
-            id={"minutes-hand-" + elementId}
-          ></MinutesHand>
-          <SecondsHand
-            pos={secondsHand}
-            className="seconds-hand"
-            id={"seconds-hand-" + elementId}
-          ></SecondsHand>
+    <Flex flexDirection="column" alignItems="center">
+      <Clock id={"clock-" + elementId} size={clockSize}>
+        <HoursHand
+          pos={hoursHand}
+          className="hours-hand"
+          id={"hours-hand-" + elementId}
+        ></HoursHand>
+        <MinutesHand
+          pos={minutesHand}
+          className="minutes-hand"
+          id={"minutes-hand-" + elementId}
+        ></MinutesHand>
+        <SecondsHand
+          pos={secondsHand}
+          className="seconds-hand"
+          id={"seconds-hand-" + elementId}
+        ></SecondsHand>
 
-          <Pivot
-            pos={handPivot}
-            className="hand-pivot"
-            id={"hand-pivot-" + elementId}
-          ></Pivot>
-          {[...Array(12)].map((x, i) => {
-            if ((i + 1) % 3 === 0) {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour hour-main"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            } else {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            }
-          })}
-        </Clock>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: 15,
-            justifyContent: "center",
-          }}
-        >
-          <text style={{ fontSize: 18, fontWeight: 400 }}>{date}</text>
-          <Text className="h1">{time}</Text>
-          <text style={{ fontSize: 10 }}>{tzInfo.tz}</text>
-        </div>
-      </TopContainer>
-      {/* <TzText>{tzInfo.tz}</TzText> */}
-      <BottomContainer>
-        <SmallerClock id={"clock-" + elementId} size={clockSize}>
-          <HoursHand
-            pos={hoursHand}
-            className="hours-hand"
-            id={"hours-hand-" + elementId}
-          ></HoursHand>
-
-          <MinutesHand
-            pos={minutesHand}
-            className="minutes-hand"
-            id={"minutes-hand-" + elementId}
-          ></MinutesHand>
-          <SecondsHand
-            pos={secondsHand}
-            className="seconds-hand"
-            id={"seconds-hand-" + elementId}
-          ></SecondsHand>
-          <Pivot
-            pos={handPivot}
-            className="hand-pivot"
-            id={"hand-pivot-" + elementId}
-          ></Pivot>
-          {[...Array(12)].map((x, i) => {
-            if ((i + 1) % 3 === 0) {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour hour-main"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            } else {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            }
-          })}
-          <text style={{ paddingTop: 80, paddingLeft: 5 }}>{tzInfo.tz}</text>
-        </SmallerClock>
-
-        <SmallerClock id={"clock-" + elementId} size={clockSize}>
-          <HoursHand
-            pos={hoursHand}
-            className="hours-hand"
-            id={"hours-hand-" + elementId}
-          ></HoursHand>
-          <MinutesHand
-            pos={minutesHand}
-            className="minutes-hand"
-            id={"minutes-hand-" + elementId}
-          ></MinutesHand>
-          <SecondsHand
-            pos={secondsHand}
-            className="seconds-hand"
-            id={"seconds-hand-" + elementId}
-          ></SecondsHand>
-          <Pivot
-            pos={handPivot}
-            className="hand-pivot"
-            id={"hand-pivot-" + elementId}
-          ></Pivot>
-          {[...Array(12)].map((x, i) => {
-            if ((i + 1) % 3 === 0) {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour hour-main"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            } else {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            }
-          })}
-          <text style={{ paddingTop: 80, paddingLeft: 5 }}>{tzInfo.tz}</text>
-        </SmallerClock>
-        <SmallerClock
-          id={"clock-" + elementId}
-          size={clockSize}
-          // style={{ width: 76, height: 76, marginLeft: 0 }}
-        >
-          <HoursHand
-            pos={hoursHand}
-            className="hours-hand"
-            id={"hours-hand-" + elementId}
-          ></HoursHand>
-          <MinutesHand
-            pos={minutesHand}
-            className="minutes-hand"
-            id={"minutes-hand-" + elementId}
-          ></MinutesHand>
-          <SecondsHand
-            pos={secondsHand}
-            className="seconds-hand"
-            id={"seconds-hand-" + elementId}
-          ></SecondsHand>
-          <Pivot
-            pos={handPivot}
-            className="hand-pivot"
-            id={"hand-pivot-" + elementId}
-          ></Pivot>
-          {[...Array(12)].map((x, i) => {
-            if ((i + 1) % 3 === 0) {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour hour-main"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            } else {
-              return (
-                <Hour
-                  pos={dialHour[i]}
-                  key={"hour-" + i}
-                  className={"dial-hour"}
-                >
-                  {i + 1}
-                </Hour>
-              );
-            }
-          })}
-          <text style={{ paddingTop: 80, paddingLeft: 5 }}>{tzInfo.tz}</text>
-        </SmallerClock>
-      </BottomContainer>
-    </Container>
+        <Pivot
+          pos={handPivot}
+          className="hand-pivot"
+          id={"hand-pivot-" + elementId}
+        ></Pivot>
+        {[...Array(12)].map((x, i) => {
+          if ((i + 1) % 3 === 0) {
+            return (
+              <Hour
+                pos={dialHour[i]}
+                key={"hour-" + i}
+                className={"dial-hour hour-main"}
+              >
+                {i + 1}
+              </Hour>
+            );
+          } else {
+            return (
+              <Hour pos={dialHour[i]} key={"hour-" + i} className={"dial-hour"}>
+                {i + 1}
+              </Hour>
+            );
+          }
+        })}
+      </Clock>
+      <text style={{ fontSize: 10 }}>{tzInfo.tz}</text>
+    </Flex>
   );
 };
 
