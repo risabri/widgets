@@ -8,8 +8,14 @@
   "bannerImage": "assets/clock-banner.png",
   "settings": [
     {
-      "offset": -4,
-      "tz": "",
+      "offset1": -4,
+      "tz1": "",
+      "offset2": -3,
+      "tz2": "",
+      "offset3": 1,
+      "tz3": "",
+      "offset4": 5,
+      "tz4": "",
       "type": "select"
     }
   ],

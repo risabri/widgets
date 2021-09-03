@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { usePrifina } from "@prifina/hooks";
 
+import OuraData from "demo-prifina-components/oura";
+
 import {
   Flex,
   ChakraProvider,
@@ -48,13 +50,54 @@ const Sleepwell = (props) => {
 
   const prifina = new Prifina({ appId: appID });
 
+  const [myData, setMyData] = useState();
+
+  const processData = (data) => {
+    var filteredItems = data;
+
+    setMyData(filteredItems);
+  };
+
+  const dataUpdate = async (data) => {
+    // should check the data payload... :)
+    console.log("TIMELINE UPDATE ", data);
+    //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
+    //console.log("TIMELINE UPDATE ", typeof data.settings);
+
+    //console.log("TIMELINE ", data.settings);
+
+    const result = await API[appID].OuraData.queryOuraDaily();
+
+    console.log("DATA NETFLIX", result.data.getS3Object.content);
+  };
+
   useEffect(async () => {
     // init callback function for background updates/notifications
     onUpdate(appID);
     // register datasource modules
-    registerHooks(appID);
+    registerHooks(appID, [OuraData]);
+
     // get
+    console.log("SLEEP QUALITY PROPS", data);
+
+    // const filter = {
+    //   [Op.and]: {
+    //     [netflixHours]: {
+    //       [Op.eq]: _fn("netflixHours", "netflixHours"),
+    //     },
+    //   },
+    // };
+
+    // console.log("FILTER ", filter);
+
+    const result = await API[appID].OuraData.queryOuraDaily({});
+    console.log("DATA ", result.data.getS3Object.content);
+    if (result.data.getS3Object.content.length > 0) {
+      processData(result.data.getS3Object.content);
+    }
   }, []);
+
+  console.log("HHEHEHEE", myData);
 
   const [step, setStep] = useState(0);
 
