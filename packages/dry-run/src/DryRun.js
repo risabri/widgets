@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina } from "@prifina/hooks";
 
-import OuraData from "prifina/oura";
+import OuraData from "demo-prifina/oura";
 
 import { Flex, ChakraProvider, Text, Input, Image } from "@chakra-ui/react";
 
@@ -20,7 +20,7 @@ import {
 import useFetch from "./hooks/useFetch";
 import { API_KEY, API_BASE_URL } from "./config";
 import { days, months, dayLetter } from "./utils/period";
-import { activityData } from "./data";
+// import { activityData } from "./data";
 
 const containerStyle = {
   width: "308px",
@@ -42,6 +42,8 @@ const DryRun = (props) => {
 
   const { city, data } = props;
 
+  const [ouraHourly, setOuraHourly] = useState();
+
   let defaultCity = city;
   if (
     typeof data !== "undefined" &&
@@ -55,7 +57,7 @@ const DryRun = (props) => {
 
   const [searchCity, setCity] = useState(defaultCity);
 
-  const dataUpdate = (data) => {
+  const dataUpdate = async (data) => {
     if (
       data.hasOwnProperty("settings") &&
       typeof data.settings === "object" &&
@@ -66,12 +68,29 @@ const DryRun = (props) => {
         `${API_BASE_URL}/data/2.5/onecall?q=${data.settings.city}&units=metric&appid=${API_KEY}`
       );
     }
+
+    const result = await API[appID].OuraData.queryOuraHourly();
+
+    console.log("OURA HOURLY", result.data.getS3Object.content);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
+    // register datasource modules
+    registerHooks(appID, [OuraData]);
+
+    // get
+    // console.log("SLEEP QUALITY PROPS", data);
+
+    const result = await API[appID].OuraData.queryOuraHourly({});
+    console.log("DATA ", result.data.getS3Object.content);
+    if (result.data.getS3Object.content.length > 0) {
+      setOuraHourly(result.data.getS3Object.content);
+    }
   }, []);
+
+  console.log("OURA HOURLY", ouraHourly);
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
     `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
@@ -165,7 +184,7 @@ const DryRun = (props) => {
 
     // Function for combining the data from two arrays
     let combinedData = hourData.map((item, i) =>
-      Object.assign({}, item, activityData[i])
+      Object.assign({}, item, ouraHourly[i])
     );
     console.log("COMBINED DATA", combinedData);
 
@@ -267,7 +286,8 @@ const DryRun = (props) => {
           fontStyle="italic"
           borderRadius="2px"
           value={searchCity}
-        ></Input>
+          readOnly
+        />
 
         {weatherChart()}
 
