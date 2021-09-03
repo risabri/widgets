@@ -1,48 +1,3 @@
-export const data = [
-  {
-    day: "M",
-    deepSleep: 0.9,
-    netflixHours: 1.8,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "T",
-    deepSleep: 1,
-    netflixHours: 3.1,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "W",
-    deepSleep: 3.3,
-    netflixHours: 1,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "TH",
-    deepSleep: 1.1,
-    netflixHours: 2.1,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "F",
-    deepSleep: 2.2,
-    netflixHours: 0.9,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "S",
-    deepSleep: 1.8,
-    netflixHours: 1.5,
-    optimalDeepSleep: 2,
-  },
-  {
-    day: "SU",
-    deepSleep: 1.6,
-    netflixHours: 1.2,
-    optimalDeepSleep: 2,
-  },
-];
-
 export const tips = [
   {
     title: "Increase light exposure during the day",
@@ -70,3 +25,48 @@ export const tips = [
       "Blue light  from LED T.V.s  has been shown to interrupt the body’s natural release of melatonin (a  sleep homone) before bed. Stop using screens after 9pm to allow your body enought time to pepare for bed.",
   },
 ];
+
+// export const data = [
+//   {
+//     day: "M",
+//     deepSleep: 0.9,
+//     netflixHours: 1.8,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "T",
+//     deepSleep: 1,
+//     netflixHours: 3.1,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "W",
+//     deepSleep: 3.3,
+//     netflixHours: 1,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "TH",
+//     deepSleep: 1.1,
+//     netflixHours: 2.1,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "F",
+//     deepSleep: 2.2,
+//     netflixHours: 0.9,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "S",
+//     deepSleep: 1.8,
+//     netflixHours: 1.5,
+//     optimalDeepSleep: 2,
+//   },
+//   {
+//     day: "SU",
+//     deepSleep: 1.6,
+//     netflixHours: 1.2,
+//     optimalDeepSleep: 2,
+//   },
+// ];

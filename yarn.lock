@@ -9644,10 +9644,10 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
-demo-prifina-components@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/demo-prifina-components/-/demo-prifina-components-0.0.6.tgz#4549d2e0dc0f7083527380ad70fedec2082f6f50"
-  integrity sha512-itPhDgzmCo4Y+500eBi379wQ0h/Gee6K0REQOd9sIiYx1Gnk8yyh5hs+uSHBroxfVRjhrzo8s8kcrhvINSGteQ==
+demo-prifina@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/demo-prifina/-/demo-prifina-0.0.2.tgz#beb3c01717a6e36d759d1d565d51fe3374e0f500"
+  integrity sha512-mW1dAS4CuKqSWIT03L7DAZB8uhARSt6BVCrUb33R3/J2QP7XMpkxA4OCsPWQhtPZ+fq3W4zfMwcFISQRAdiTsg==
 
 depd@~1.1.2:
   version "1.1.2"

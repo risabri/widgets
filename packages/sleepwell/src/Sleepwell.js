@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { usePrifina } from "@prifina/hooks";
 
-import OuraData from "demo-prifina-components/oura";
+import OuraData from "demo-prifina/oura";
 
 import {
   Flex,
@@ -26,7 +26,31 @@ import {
 import { ArrowRight } from "./assets/icons";
 import { ArrowLeft } from "./assets/icons";
 
-import { data, tips } from "./data";
+import { tips } from "./data";
+
+const staticData = [
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+  {
+    optimalDeepSleep: 2,
+  },
+];
 
 const containerStyle = {
   width: "308px",
@@ -49,13 +73,18 @@ const Sleepwell = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const prifina = new Prifina({ appId: appID });
+  const [merged, setMerged] = useState();
 
-  const [myData, setMyData] = useState();
+  const [ouraDaily, setOuraDaily] = useState();
+  const [netflixData, setNetflixData] = useState();
 
-  const processData = (data) => {
-    var filteredItems = data;
-
-    setMyData(filteredItems);
+  ///process netflix data from 30 days to 7 days
+  const processNetflixData = (data) => {
+    // var filteredItems = data.map((item) => ({
+    //   netflixHours: item.netflixHours,
+    // }));
+    var filteredItems = data.slice(0, 7);
+    setNetflixData(filteredItems);
   };
 
   const dataUpdate = async (data) => {
@@ -63,11 +92,9 @@ const Sleepwell = (props) => {
     console.log("TIMELINE UPDATE ", data);
     //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
     //console.log("TIMELINE UPDATE ", typeof data.settings);
-
     //console.log("TIMELINE ", data.settings);
 
     const result = await API[appID].OuraData.queryOuraDaily();
-
     console.log("DATA NETFLIX", result.data.getS3Object.content);
   };
 
@@ -78,26 +105,33 @@ const Sleepwell = (props) => {
     registerHooks(appID, [OuraData]);
 
     // get
-    console.log("SLEEP QUALITY PROPS", data);
-
-    // const filter = {
-    //   [Op.and]: {
-    //     [netflixHours]: {
-    //       [Op.eq]: _fn("netflixHours", "netflixHours"),
-    //     },
-    //   },
-    // };
-
-    // console.log("FILTER ", filter);
+    // console.log("SLEEP QUALITY PROPS", data);
 
     const result = await API[appID].OuraData.queryOuraDaily({});
     console.log("DATA ", result.data.getS3Object.content);
     if (result.data.getS3Object.content.length > 0) {
-      processData(result.data.getS3Object.content);
+      setOuraDaily(result.data.getS3Object.content);
     }
+    const result2 = await API[appID].OuraData.queryNetflixData({});
+    console.log("DATA ", result2.data.getS3Object.content);
+    if (result2.data.getS3Object.content.length > 0) {
+      processNetflixData(result2.data.getS3Object.content);
+      // setNetflixData(result2.data.getS3Object.content);
+    }
+
+    const slicedMerge = result2.data.getS3Object.content.slice(0, 7);
+
+    var filteredOura = slicedMerge.map((item) => ({
+      // deepSleepTime: item.deepSleepTime,
+      netflixHours: item.netflixHours,
+    }));
+    setMerged(filteredOura);
   }, []);
 
-  console.log("HHEHEHEE", myData);
+  console.log("OURA DAILY", ouraDaily);
+  console.log("NETLFIX", netflixData);
+
+  console.log("asddassd", merged);
 
   const [step, setStep] = useState(0);
 
@@ -192,7 +226,7 @@ const Sleepwell = (props) => {
           <ComposedChart
             width={290}
             height={120}
-            data={data}
+            data={merged}
             margin={{
               top: 6,
               right: 0,
@@ -201,7 +235,12 @@ const Sleepwell = (props) => {
             }}
           >
             <CartesianGrid stroke="none" />
-            <XAxis dataKey="day" stroke="#333570" fontSize={10} />
+            <XAxis
+              dataKey="day"
+              stroke="#333570"
+              fontSize={10}
+              ticks={["09:00", "10:00", "11:00"]}
+            />
             <YAxis
               stroke="#333570"
               fontSize={10}
@@ -235,13 +274,15 @@ const Sleepwell = (props) => {
               wrapperStyle={legendStyle}
             />
             <Area
+              data={ouraDaily}
               type="monotoneX"
               name="Deep Sleep"
-              dataKey="deepSleep"
+              dataKey="deepSleepTime"
               fill="#EEF4FF"
               stroke="#333570"
             />
             <Area
+              data={netflixData}
               type="monotoneX"
               name="Netflix after 5pm"
               dataKey="netflixHours"
@@ -250,6 +291,7 @@ const Sleepwell = (props) => {
               dot={false}
             />
             <Line
+              data={staticData}
               type="monotone"
               name="Optimal Sleep"
               dataKey="optimalDeepSleep"
