@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { usePrifina, Op, _fn, buildFilter } from "@prifina/hooks";
 
-import MockDataConnector from "prifina/mock-data-connector";
+// import MockDataConnector from "prifina/mock-data-connector";
 
 import {
   Flex,

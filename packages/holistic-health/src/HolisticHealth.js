@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina } from "@prifina/hooks";
 
-import OuraData from "prifina/oura/";
+import OuraData from "demo-prifina/oura";
 
 import {
   Flex,
@@ -36,7 +36,7 @@ import {
   CheckIcon,
 } from "./assets/icons";
 
-import { data } from "./data";
+// import { data } from "./data";
 
 const containerStyle = {
   width: "308px",
@@ -148,12 +148,12 @@ const HolisticHealth = () => {
 
   const prifina = new Prifina({ appId: appID });
 
-  const [filteredData, setFilteredData] = useState();
+  const [ouraDaily, setOuraDaily] = useState();
 
-  const processData = (data) => {
-    filteredItems = data;
-    setFilteredData(filteredItems);
-  };
+  // const processData = (data) => {
+  //   filteredItems = data;
+  //   setFilteredData(filteredItems);
+  // };
 
   const dataUpdate = async (data) => {
     // should check the data payload... :)
@@ -171,7 +171,8 @@ const HolisticHealth = () => {
       const result = await API[appID].OuraData.queryOuraDaily({});
       console.log("DATA ", result.data.getS3Object.content);
       if (result.data.getS3Object.content.length > 0) {
-        processData(result.data.getS3Object.content);
+        // processData(result.data.getS3Object.content);
+        setOuraDaily(result.data.getS3Object.content);
       }
     }
   };
@@ -182,16 +183,17 @@ const HolisticHealth = () => {
     // register datasource modules
     registerHooks(appID, [OuraData]);
     // get
-    console.log("TIMELINE PROPS DATA ", data);
+    // console.log("TIMELINE PROPS DATA ", data);
 
     const result = await API[appID].OuraData.queryOuraDaily({});
     console.log("DATA ", result.data.getS3Object.content);
     if (result.data.getS3Object.content.length > 0) {
-      processData(result.data.getS3Object.content);
+      // processData(result.data.getS3Object.content);
+      setOuraDaily(result.data.getS3Object.content);
     }
   }, []);
 
-  console.log("FILTERED DATA", filteredData);
+  console.log("OURA DAILY", ouraDaily);
 
   const [step, setStep] = useState(0);
   const [hours, setHours] = useState("8");
@@ -415,7 +417,7 @@ const HolisticHealth = () => {
             <BarChart
               width={350}
               height={103}
-              data={data}
+              data={ouraDaily}
               margin={{
                 top: 0,
                 right: 25,
@@ -433,16 +435,26 @@ const HolisticHealth = () => {
               <YAxis fontSize={10} />
               <Tooltip />
               <Bar
-                dataKey="lightSleep"
+                dataKey="lightSleepTime"
                 barSize={18.5}
                 stackId="a"
                 fill="#FDDF96"
                 name="Light"
               />
-              <Bar dataKey="remSleep" stackId="a" fill="#FDB400" name="REM" />
-              <Bar dataKey="deepSleep" stackId="a" fill="#624600" name="Deep" />
               <Bar
-                dataKey="awakeTime"
+                dataKey="REMSleepTime"
+                stackId="a"
+                fill="#FDB400"
+                name="REM"
+              />
+              <Bar
+                dataKey="deepSleepTime"
+                stackId="a"
+                fill="#624600"
+                name="Deep"
+              />
+              <Bar
+                dataKey="totalAwakeTime"
                 stackId="a"
                 fill="#FDF3DB"
                 name="Awake"
@@ -553,7 +565,7 @@ const HolisticHealth = () => {
             <BarChart
               width={292}
               height={103}
-              data={data}
+              data={ouraDaily}
               margin={{
                 top: 7,
                 right: 5,
@@ -584,7 +596,7 @@ const HolisticHealth = () => {
                 </linearGradient>
               </defs>
               <Bar
-                dataKey="calories"
+                dataKey="totalCalories"
                 barSize={22}
                 stackId="a"
                 fill="url(#colorUv)"
@@ -687,7 +699,7 @@ const HolisticHealth = () => {
             <BarChart
               width={292}
               height={103}
-              data={data}
+              data={ouraDaily}
               margin={{
                 top: 7,
                 right: 5,
@@ -718,7 +730,7 @@ const HolisticHealth = () => {
                 </linearGradient>
               </defs>
               <Bar
-                dataKey="steps"
+                dataKey="totalSteps"
                 barSize={22}
                 stackId="a"
                 fill="url(#colorUv)"
