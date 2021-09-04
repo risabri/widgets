@@ -6,6 +6,8 @@ import moment from "moment";
 import "moment-timezone";
 import { useId } from "@reach/auto-id";
 
+import { Flex } from "@chakra-ui/react";
+
 /*
 $primary: black;
 $primary-2: white;
@@ -13,17 +15,13 @@ $secondary: gray;
 $accent: red;
 $clock-border: 10px;
 */
+
 const TzText = styled.div`
   font-size: 12px;
   text-align: center;
   padding: 5px;
 `;
-const Container = styled.div`
-  padding: 10px;
-  height: 200px;
-  font-size: 10px;
-  width: 200px;
-`;
+
 const testProps = (props) => {
   console.log("PROPS ", props);
   return null;
@@ -31,35 +29,40 @@ const testProps = (props) => {
 const Clock = styled.div`
   /*background-color: mix(white, gray, 95%); */
   border-radius: 50%;
-  width: ${(props) => props.size};
-  height: ${(props) => props.size};
+  // width: ${(props) => props.size};
+  // height: ${(props) => props.size};
+  width: 92px;
+  height: 92px;
   display: flex;
   position: relative;
-  margin-left: 5%;
-  margin-right: 5%;
-  box-shadow: inset 0 0 20px gray;
-  border: 4px solid black;
+  // margin-left: 5%;
+  // margin-right: 5%;
+  // box-shadow: inset 0 0 20px gray;
+  border: 7px solid #353935;
+  background: black;
 
   .hours-hand {
-    box-shadow: 1px 1px 1px 1px gray;
-    border-radius: 40% 40% 20% 20%;
+    // box-shadow: 1px 1px 1px 1px gray;
+    border-radius: 50% 50% 20% 20%;
     position: absolute;
-    border: 2px solid black;
+    // border: 2px solid white;
     background-color: white;
     width: 3px;
+    height: 25px;
   }
 
   .minutes-hand {
-    box-shadow: 1px 1px 1px 1px gray;
+    // box-shadow: 1px 1px 1px 1px gray;
     position: absolute;
-    border-radius: 40% 40% 20% 20%;
+    border-radius: 40% 80% 20% 20%;
     background-color: white;
-    border: 1px solid black;
-    width: 2px;
+    // border: 1px solid black;
+    width: 1.75px;
+    // height: 25px;
   }
 
   .seconds-hand {
-    box-shadow: 1px 1px 1px 0px red;
+    // box-shadow: 1px 1px 1px 1px red;
     position: absolute;
     border-radius: 30%;
     background-color: red;
@@ -67,8 +70,8 @@ const Clock = styled.div`
   }
 
   .hand-pivot {
-    box-shadow: 0 0 2px 2px red;
-    border: 3px solid white;
+    // box-shadow: 0 0 2px 2px silver;
+    border: 3px solid silver;
     border-radius: 50%;
     height: 0px;
     width: 0px;
@@ -77,15 +80,19 @@ const Clock = styled.div`
 
   .dial-hour {
     /*color: mix(white, black, 30%); */
-    text-shadow: 1px 1px 4px;
+    // text-shadow: 1px 1px 4px;
     position: absolute;
+    color: white;
+    font-size: 9px;
+    padding: 3px;
   }
   .dial-hour.hour-main {
-    color: black;
-    font-size: 1.6em;
+    color: white;
+    // font-size: 1.6em;
     font-weight: 500;
   }
 `;
+
 const Hour = styled.span`
   top: ${(props) => (props.pos ? props.pos.top : 0)}px;
   left: ${(props) => (props.pos ? props.pos.left : 0)}px;
@@ -165,37 +172,40 @@ function useIsMountedRef() {
 }
 
 // unique appID for the widget....
-const appID = "watchWidget";
+const appID = "clockWidget";
 
 const Watch = (props) => {
   console.log("WATCH PROPS ", props);
   const { offset, tz, data } = props;
   // init hook and get provider api services...
-  const { onUpdate, Prifina } = usePrifina();
+  // const { onUpdate, Prifina } = usePrifina();
 
-  // init provider api with your appID
-  const prifina = new Prifina({ appId: appID });
+  // // init provider api with your appID
+  // const prifina = new Prifina({ appId: appID });
 
   const elementId = useId();
 
   const localTz = moment.tz.guess();
+
+  /////////////////////
+
   const localOffset = moment.tz(localTz).utcOffset();
   let tzDefault = {
     offset: offset === -1 ? localOffset : offset,
     tz: tz === "" ? localTz : tz,
   };
-  if (
-    typeof data !== "undefined" &&
-    data.hasOwnProperty("settings") &&
-    data.settings.hasOwnProperty("tz") &&
-    data.settings.tz !== ""
-  ) {
-    tzDefault = {
-      offset: parseInt(data.settings.offset),
-      tz: data.settings.tz,
-    };
-    console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
-  }
+  // if (
+  //   typeof data !== "undefined" &&
+  //   data.hasOwnProperty("settings") &&
+  //   data.settings.hasOwnProperty("tz") &&
+  //   data.settings.tz !== ""
+  // ) {
+  //   tzDefault = {
+  //     offset: parseInt(data.settings.offset),
+  //     tz: data.settings.tz,
+  //   };
+  //   console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
+  // }
   const isMountedRef = useIsMountedRef();
   const [tzInfo, setTzInfo] = useState(tzDefault);
   const [clockSize, setClockSize] = useState("90%");
@@ -382,24 +392,24 @@ const Watch = (props) => {
     };
   }, [isMountedRef, tzInfo]);
 
-  const dataUpdate = (data) => {
-    // should check the data payload... :)
-    console.log("WATCH WIDGET UPDATE ", data);
+  // const dataUpdate = (data) => {
+  //   // should check the data payload... :)
+  //   console.log("WATCH WIDGET UPDATE ", data);
 
-    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
-      //
-      setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
-    }
-  };
+  //   if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+  //     //
+  //     setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
+  //   }
+  // };
 
-  useEffect(() => {
-    // init callback function for background updates/notifications
+  // useEffect(() => {
+  //   // init callback function for background updates/notifications
 
-    onUpdate(appID, dataUpdate);
-  }, []);
+  //   onUpdate(appID, dataUpdate);
+  // }, []);
 
   return (
-    <Container>
+    <Flex flexDirection="column" alignItems="center">
       <Clock id={"clock-" + elementId} size={clockSize}>
         <HoursHand
           pos={hoursHand}
@@ -416,6 +426,7 @@ const Watch = (props) => {
           className="seconds-hand"
           id={"seconds-hand-" + elementId}
         ></SecondsHand>
+
         <Pivot
           pos={handPivot}
           className="hand-pivot"
@@ -441,8 +452,8 @@ const Watch = (props) => {
           }
         })}
       </Clock>
-      <TzText>{tzInfo.tz}</TzText>
-    </Container>
+      <text style={{ fontSize: 10 }}>{tzInfo.tz}</text>
+    </Flex>
   );
 };
 

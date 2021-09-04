@@ -1,0 +1,29 @@
+{
+  "id": "3311225544",
+  "version": "0.0.1",
+  "name": "sleepwellWidget",
+  "title": "Sleepwell",
+  "publisher": "Prifina Inc",
+  "icon": "assets/sleepwell-icon.png",
+  "bannerImage": "assets/sleepwell-banner.png",
+  "settings": [{}],
+  "shortDescription": "What makes a good night's sleep? What movie gives you the best ZZZs? This Sleep Quality widget compares your daily streaming activities and their impact on your sleep quality.",
+  "longDescription": "What impacts your sleep? Do you sleep better after a comedy filled evening on Netflix or maybe its documentaries that really relax your mind? With the Sleepwell widget, you can compare your streaming habits to your deep sleep and get insights into your own sleep patterns. In the future, this widget can expand to more personalized suggestions and different data types, all in order to deliver you the best ZZZs",
+  "dataTypes": "User-held data",
+  "category": "Health & Fitness",
+  "deviceSupport": "Desktop browser",
+  "languages": "en",
+  "age": "7+",
+  "screenshots": [
+    "assets/sleepwell-ss-1.png",
+    "assets/sleepwell-ss-2.png",
+    "assets/sleepwell-ss-3.png"
+  ],
+  "keyFeatures": [
+    "Sleep analysis and insights",
+    "Local data - use your data with no external sharing"
+  ],
+  "userHeld": ["Total deep sleep", "Session time", "Session duration"],
+  "userGenerated": [""],
+  "public": [""]
+}

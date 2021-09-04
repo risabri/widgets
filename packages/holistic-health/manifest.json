@@ -1,0 +1,29 @@
+{
+  "id": "1122334455",
+  "version": "0.0.1",
+  "name": "holisticHealthWidget",
+  "title": "Holistic Health",
+  "publisher": "Prifina Inc",
+  "icon": "assets/holistichealth-icon.png",
+  "bannerImage": "assets/holistichealth-banner.png",
+  "settings": [{}],
+  "shortDescription": "Track your activity from your wearables in one place, see what targets you have hit and view a snapshot of your daily goals.",
+  "longDescription": "With Holistic Health, you can track your activity from all your wearables in one place, see what targets you have hit and view a snapshot of your daily goals. Utilizing your activity data (active minutes, steps, calories etc) from your wearable devices, you can quickly for an idea of your progress toward your goals and keep yourself accountable.",
+  "dataTypes": "User-held data",
+  "category": "Health & Fitness",
+  "deviceSupport": "Desktop browser",
+  "languages": "en",
+  "age": "12+",
+  "screenshots": [
+    "assets/holistichealth-ss-1.png",
+    "assets/holistichealth-ss-2.png",
+    "assets/holistichealth-ss-3.png"
+  ],
+  "keyFeatures": [
+    "Snapshot of Activity Progress",
+    "Local data - use your data without external sharing"
+  ],
+  "userHeld": ["Calories burnt", "Total deep sleep", "Steps taken"],
+  "userGenerated": ["Goals"],
+  "public": [""]
+}

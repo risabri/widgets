@@ -1,0 +1,28 @@
+{
+  "id": "2233114455",
+  "version": "0.0.1",
+  "name": "dryRunWidget",
+  "title": "Dry Run",
+  "publisher": "Prifina Inc",
+  "icon": "assets/dryrun-icon.png",
+  "bannerImage": "assets/dryrun-banner.png",
+  "settings": [
+    { "field": "city", "value": "London", "label": "City", "type": "text" }
+  ],
+  "shortDescription": "Tired of running in bad weather? With Dry Run, utilize your activity data and you get a heads up when your typical time for a run collides with a sleet or a tropical storm.",
+  "longDescription": "Dry Run wants to keep you dry while you exercise. By utilizing your activity habits and open weather data, Dry Run looks out for you and lets you know when it might make sense to deviate from your normal routines. Planned updates for Dry Run include utilizing other weather data types, such as allergens, air quality or pollen.",
+  "dataTypes": "User-held data",
+  "category": "Health & Fitness",
+  "deviceSupport": "Desktop browser",
+  "languages": "en",
+  "age": "12+",
+  "screenshots": [
+    "assets/dryrun-ss-1.png",
+    "assets/dryrun-ss-2.png",
+    "assets/dryrun-ss-3.png"
+  ],
+  "keyFeatures": ["Personalized activity scheduling suggestions"],
+  "userHeld": ["Session time", "Session duration"],
+  "userGenerated": ["Location input"],
+  "public": ["Weather data"]
+}
