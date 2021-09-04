@@ -1,0 +1,26 @@
+{
+  "id": "2255331133",
+  "version": "0.0.1",
+  "name": "dataUploadWidget",
+  "title": "Data Upload",
+  "publisher": "Prifina Inc",
+  "icon": "assets/dataupload-icon.png",
+  "bannerImage": "assets/dataupload-banner.png",
+  "settings": [{}],
+  "shortDescription": "Upload and activate your data. Easily upload documents, images and other files into your personal data cloud. Then utilize this data in your personal applications, for personal value.",
+  "longDescription": "Bring your own data. Upload datasets to activate different Prifina apps. Start off by testing your location date, which you can get from Google Takeout (https://takeout.google.com/) and see how you can utilize it in different apps. Utilizing this Data Upload widget, you bring data directly into your own Prifina account and personal data cloud, where only you have access to it and full control how you utilize it.",
+  "dataTypes": "User-held",
+  "category": "Prifina tools",
+  "deviceSupport": "Desktop browser",
+  "languages": "en",
+  "age": "7+",
+  "screenshots": [
+    "assets/dataupload-ss-1.png",
+    "assets/dataupload-ss-2.png",
+    "assets/dataupload-ss-3.png"
+  ],
+  "keyFeatures": ["Upload data", "Connect sources"],
+  "userHeld": [""],
+  "userGenerated": ["Uploaded content"],
+  "public": [""]
+}
