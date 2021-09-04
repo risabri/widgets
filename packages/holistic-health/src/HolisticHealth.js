@@ -149,11 +149,55 @@ const HolisticHealth = () => {
   const prifina = new Prifina({ appId: appID });
 
   const [ouraDaily, setOuraDaily] = useState();
+  const [lastObject, setLastObject] = useState();
+  const [hours, setHours] = useState("9");
+  const [calories, setCalories] = useState("1000");
+  const [totalSteps, setTotalSteps] = useState("10000");
 
-  // const processData = (data) => {
-  //   filteredItems = data;
-  //   setFilteredData(filteredItems);
-  // };
+  const [achievedHours, setAchievedHours] = useState("8");
+  const [achievedCalories, setAchievedCalories] = useState("2000");
+  const [achievedTotalSteps, setAchievedTotalSteps] = useState("10000");
+
+  const [weeklyAvgHours, setWeeklyAvgHours] = useState("7.5");
+  const [weeklyAvgCalories, setWeeklyAvgCalories] = useState("2100");
+  const [weeklyAvgSteps, setWeeklyAvgSteps] = useState("12000");
+
+  const processData = (data) => {
+    ///setting fetched data as ouraDaily
+    setOuraDaily(data);
+
+    //filtering data
+    var result = Object.keys(data).map((key) => [Number(key), data[key]]);
+
+    var newRes = result.pop();
+
+    setLastObject(newRes[1]);
+    setAchievedHours(newRes[1].totalSleepTime);
+    setAchievedCalories(newRes[1].totalCalories);
+    setAchievedTotalSteps(newRes[1].totalSteps);
+
+    const weekTotalHours = data.map((item) => item.totalSleepTime);
+    const weekTotalCalories = data.map((item) => item.totalCalories);
+    const weekTotalSteps = data.map((item) => item.totalSteps);
+
+    const hoursSum = weekTotalHours.reduce((a, b) => a + b, 0);
+    const hoursAvg = (hoursSum / weekTotalHours.length || 0).toFixed(1);
+
+    const caloriesSum = weekTotalCalories.reduce((a, b) => a + b, 0);
+    const caloriesAvg = Math.round(caloriesSum / weekTotalCalories.length || 0);
+
+    const stepsSum = weekTotalSteps.reduce((a, b) => a + b, 0);
+    const stepsAvg = Math.round(stepsSum / weekTotalSteps.length || 0);
+
+    // var avg = sum / data.length;
+    setWeeklyAvgHours(hoursAvg);
+    setWeeklyAvgCalories(caloriesAvg);
+    setWeeklyAvgSteps(stepsAvg);
+
+    console.log("7 DAYS AVG HOURS", hoursAvg);
+    console.log("7 DAYS AVG CALORIES", caloriesAvg);
+    console.log("7 DAYS AVG STEPS", stepsAvg);
+  };
 
   const dataUpdate = async (data) => {
     // should check the data payload... :)
@@ -171,8 +215,7 @@ const HolisticHealth = () => {
       const result = await API[appID].OuraData.queryOuraDaily({});
       console.log("DATA ", result.data.getS3Object.content);
       if (result.data.getS3Object.content.length > 0) {
-        // processData(result.data.getS3Object.content);
-        setOuraDaily(result.data.getS3Object.content);
+        processData(result.data.getS3Object.content);
       }
     }
   };
@@ -188,17 +231,15 @@ const HolisticHealth = () => {
     const result = await API[appID].OuraData.queryOuraDaily({});
     console.log("DATA ", result.data.getS3Object.content);
     if (result.data.getS3Object.content.length > 0) {
-      // processData(result.data.getS3Object.content);
-      setOuraDaily(result.data.getS3Object.content);
+      processData(result.data.getS3Object.content);
     }
   }, []);
 
   console.log("OURA DAILY", ouraDaily);
 
+  console.log("OURA DAILY MOST RECENT DAY", lastObject);
+
   const [step, setStep] = useState(0);
-  const [hours, setHours] = useState("8");
-  const [calories, setCalories] = useState("2000");
-  const [totalSteps, setTotalSteps] = useState("10000");
 
   switch (step) {
     case 0:
@@ -213,6 +254,13 @@ const HolisticHealth = () => {
       break;
     default:
   }
+
+  ///CircleProgressBar precentage values
+  const hoursPrecentage = (achievedHours / hours) * 100;
+  const caloriesPrecentage = (achievedCalories / calories) * 100;
+  const stepsPrecentage = (achievedTotalSteps / totalSteps) * 100;
+
+  ///7 days averages
 
   return (
     <ChakraProvider>
@@ -237,7 +285,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current="6"
+                  current={achievedHours}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -246,7 +294,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  current="1456"
+                  current={achievedCalories}
                   goal={calories}
                   unit="Kcal"
                   onClick={() => {
@@ -255,7 +303,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  current="9.5k"
+                  current={achievedTotalSteps / 1000 + "k"}
                   goal={totalSteps}
                   unit="Steps"
                   onClick={() => {
@@ -272,7 +320,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={60}
+                value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -281,7 +329,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={70}
+                value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -290,7 +338,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={80}
+                value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -307,17 +355,17 @@ const HolisticHealth = () => {
             <Flex paddingTop="16px" justifyContent="space-between">
               <Card
                 icon={<SleepingEmoji size="15px" />}
-                title="7.5"
+                title={weeklyAvgHours}
                 subtitle="Sleep per night"
               />
               <Card
                 icon={<FireIcon size="15px" />}
-                title="2100"
+                title={weeklyAvgCalories}
                 subtitle="Burnt per day"
               />
               <Card
                 icon={<WalkIcon size="15px" />}
-                title="12,000"
+                title={weeklyAvgSteps}
                 subtitle="Walked per day"
               />
             </Flex>
@@ -345,7 +393,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current="6"
+                  current={achievedHours}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -354,7 +402,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  current="1456"
+                  current={achievedCalories}
                   goal={calories}
                   unit="Kcal"
                   onClick={() => {
@@ -363,7 +411,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  current="9.5k"
+                  current={achievedTotalSteps}
                   goal={totalSteps}
                   unit="Steps"
                   onClick={() => {
@@ -380,7 +428,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={60}
+                value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
                 color="#450323"
@@ -389,7 +437,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={70}
+                value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -398,7 +446,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={80}
+                value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
                 color="#4F145E"
@@ -493,7 +541,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current="6"
+                  current={achievedHours}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -502,7 +550,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  current="1456"
+                  current={achievedCalories}
                   goal={calories}
                   unit="Kcal"
                   onClick={() => {
@@ -511,7 +559,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  current="9.5k"
+                  current={achievedTotalSteps}
                   goal={totalSteps}
                   unit="Steps"
                   onClick={() => {
@@ -528,7 +576,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={60}
+                value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -537,7 +585,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={70}
+                value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
                 color="#3C370F"
@@ -546,7 +594,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={80}
+                value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
                 color="#4F145E"
@@ -627,7 +675,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current="6"
+                  current={achievedHours}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -636,7 +684,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<FireIcon />}
-                  current="1456"
+                  current={achievedCalories}
                   goal={calories}
                   unit="Kcal"
                   onClick={() => {
@@ -645,7 +693,7 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  current="9.5k"
+                  current={achievedTotalSteps}
                   goal={totalSteps}
                   unit="Steps"
                   onClick={() => {
@@ -662,7 +710,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={60}
+                value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
                 color="#3C0D23"
@@ -671,7 +719,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={70}
+                value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
                 color="#3C370F"
@@ -680,7 +728,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={80}
+                value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -846,7 +894,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={60}
+                value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -855,7 +903,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={70}
+                value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -864,7 +912,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={80}
+                value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -881,17 +929,17 @@ const HolisticHealth = () => {
             <Flex paddingTop="16px" justifyContent="space-between">
               <Card
                 icon={<SleepingEmoji size="15px" />}
-                title="7.5"
+                title={weeklyAvgHours}
                 subtitle="Sleep per night"
               />
               <Card
                 icon={<FireIcon size="15px" />}
-                title="2100"
+                title={weeklyAvgCalories}
                 subtitle="Burnt per day"
               />
               <Card
                 icon={<WalkIcon size="15px" />}
-                title="12,000"
+                title={weeklyAvgSteps}
                 subtitle="Walked per day"
               />
             </Flex>
