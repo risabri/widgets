@@ -21,6 +21,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ReferenceLine,
 } from "recharts";
 
 import { ArrowRight } from "./assets/icons";
@@ -80,10 +81,14 @@ const Sleepwell = (props) => {
 
   ///process netflix data from 30 days to 7 days
   const processNetflixData = (data) => {
-    // var filteredItems = data.map((item) => ({
-    //   netflixHours: item.netflixHours,
-    // }));
-    var filteredItems = data.slice(0, 7);
+    const netflixWeekData = data.map((item) => item.netflixHours);
+
+    var filteredData = netflixWeekData.map((item) => ({
+      netflixHours: item,
+    }));
+
+    var filteredItems = filteredData.slice(13, 20);
+
     setNetflixData(filteredItems);
   };
 
@@ -100,7 +105,8 @@ const Sleepwell = (props) => {
 
   useEffect(async () => {
     // init callback function for background updates/notifications
-    onUpdate(appID);
+    onUpdate(appID, dataUpdate);
+
     // register datasource modules
     registerHooks(appID, [OuraData]);
 
@@ -118,20 +124,10 @@ const Sleepwell = (props) => {
       processNetflixData(result2.data.getS3Object.content);
       // setNetflixData(result2.data.getS3Object.content);
     }
-
-    const slicedMerge = result2.data.getS3Object.content.slice(0, 7);
-
-    var filteredOura = slicedMerge.map((item) => ({
-      // deepSleepTime: item.deepSleepTime,
-      netflixHours: item.netflixHours,
-    }));
-    setMerged(filteredOura);
   }, []);
 
   console.log("OURA DAILY", ouraDaily);
   console.log("NETLFIX", netflixData);
-
-  console.log("asddassd", merged);
 
   const [step, setStep] = useState(0);
 
@@ -165,6 +161,12 @@ const Sleepwell = (props) => {
       title = tips[0].title;
       text = tips[0].text;
   }
+
+  const dataKey = [
+    {
+      value: 2,
+    },
+  ];
 
   const getContent = () => {
     return (
@@ -226,7 +228,7 @@ const Sleepwell = (props) => {
           <ComposedChart
             width={290}
             height={120}
-            data={merged}
+            data={ouraDaily}
             margin={{
               top: 6,
               right: 0,
@@ -234,7 +236,7 @@ const Sleepwell = (props) => {
               left: -30,
             }}
           >
-            <CartesianGrid stroke="none" />
+            <CartesianGrid strokeDasharray="1 1 " />
             <XAxis
               dataKey="day"
               stroke="#333570"
@@ -255,6 +257,7 @@ const Sleepwell = (props) => {
               domain={[0, 5]}
             ></YAxis>
             <Tooltip
+              content={ouraDaily}
               wrapperStyle={{
                 width: "auto",
                 height: 30,
@@ -274,7 +277,7 @@ const Sleepwell = (props) => {
               wrapperStyle={legendStyle}
             />
             <Area
-              data={ouraDaily}
+              // data={ouraDaily}
               type="monotoneX"
               name="Deep Sleep"
               dataKey="deepSleepTime"
@@ -290,15 +293,13 @@ const Sleepwell = (props) => {
               stroke="#FF9D9D"
               dot={false}
             />
-            <Line
-              data={staticData}
-              type="monotone"
-              name="Optimal Sleep"
-              dataKey="optimalDeepSleep"
+            <Line name="Optimal Sleep" dataKey="null123" stroke="#CCBFCD" />
+            <ReferenceLine
+              y={2}
+              dataKey="optimal Sleep"
               stroke="#333570"
               strokeOpacity="25%"
               strokeWidth={9}
-              dot={false}
             />
           </ComposedChart>
         </Flex>
