@@ -15,8 +15,8 @@ import { days, months } from "./utils/periods";
 import { getDayIcon, getNightIcon } from "./utils/iconsMap";
 
 const containerStyle = {
-  width: "308px",
-  height: "296px",
+  width: "300px",
+  height: "300px",
   borderRadius: "10px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
   paddingTop: 31,
@@ -391,8 +391,8 @@ const App = (props) => {
 
     return (
       <Flex
-        paddingLeft="25px"
-        paddingRight="29px"
+        paddingLeft="20px"
+        paddingRight="20px"
         marginBottom="28px"
         justifyContent="space-between"
       >

@@ -54,8 +54,8 @@ const staticData = [
 ];
 
 const containerStyle = {
-  width: "308px",
-  height: "296px",
+  width: "300px",
+  height: "300px",
   background: "#FFEAEA",
   borderRadius: "10px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
@@ -231,7 +231,7 @@ const Sleepwell = (props) => {
             data={ouraDaily}
             margin={{
               top: 6,
-              right: 0,
+              right: 10,
               bottom: 0,
               left: -30,
             }}

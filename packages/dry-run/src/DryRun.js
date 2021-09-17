@@ -23,8 +23,8 @@ import { days, months, dayLetter } from "./utils/period";
 // import { activityData } from "./data";
 
 const containerStyle = {
-  width: "308px",
-  height: "296px",
+  width: "300px",
+  height: "300px",
   background:
     "linear-gradient(180deg, #0D3D4D 0%, rgba(0, 44, 69, 0.04) 100%), #071833",
   borderRadius: "10px",
@@ -293,7 +293,11 @@ const DryRun = (props) => {
 
         <Flex alt="bottomContainer" flexDirection="column">
           {graph()}
-          <Flex flexDirection="row" justifyContent="space-between">
+          <Flex
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Flex flexDirection="column">
               <Flex alignItems="center">
                 <Flex
