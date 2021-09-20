@@ -33,7 +33,7 @@ const containerStyle = {
   flexDirection: "column",
 };
 
-const appID = "dryRunWidget";
+const appID = "3LSdcSs1kcPskBWBJvqGto";
 
 const DryRun = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();

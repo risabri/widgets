@@ -25,7 +25,7 @@ const containerStyle = {
 };
 
 // unique appID for the widget....
-const appID = "weatherWidget";
+const appID = "xkn9NGTH6eNyWUbaLxtMe1";
 
 const App = (props) => {
   console.log("WEATHER WIDGET PROPS ", props);

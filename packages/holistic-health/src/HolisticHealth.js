@@ -141,7 +141,7 @@ const Card = ({ icon, title, subtitle, unit }) => {
   );
 };
 
-const appID = "holisticHealthWidget";
+const appID = "sCUiMz2m9JsRSnRJ5favnP";
 
 const HolisticHealth = () => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
