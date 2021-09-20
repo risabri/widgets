@@ -6,6 +6,9 @@
   "publisher": "Prifina Inc",
   "icon": "assets/weatherly-icon.png",
   "bannerImage": "assets/weatherly-banner.png",
+  "theme": "dark/light",
+  "size": [{ "width": 300, "height": 300 }],
+  "dataConnectors": [""],
   "settings": [
     { "field": "city", "value": "New York", "label": "City", "type": "text" }
   ],

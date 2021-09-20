@@ -6,6 +6,9 @@
   "publisher": "Prifina Inc",
   "icon": "assets/dryrun-icon.png",
   "bannerImage": "assets/dryrun-banner.png",
+  "theme": "dark/light",
+  "size": [{ "width": 300, "height": 300 }],
+  "dataConnectors": ["demo-prifina/oura"],
   "settings": [
     { "field": "city", "value": "London", "label": "City", "type": "text" }
   ],

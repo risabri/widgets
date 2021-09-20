@@ -45,8 +45,8 @@ const TimeText = styled.div`
 `;
 
 const containerStyle = {
-  width: "308px",
-  height: "296px",
+  width: "300px",
+  height: "300px",
   borderRadius: "10px",
   background: "linear-gradient(149.48deg, #EBECF0 -13.01%, #E5E6EC 86.1%)",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",

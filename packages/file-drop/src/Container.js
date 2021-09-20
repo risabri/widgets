@@ -30,9 +30,9 @@ import { Progress as Progress2 } from "@chakra-ui/react";
 import folder from "./assets/folder.svg";
 
 const container = {
-  height: "296px",
+  height: "300px",
+  width: "300px",
   fontSize: "16px",
-  width: "308px",
   background: "rgba(151, 212, 231, 0.15",
   display: "flex",
   flexDirection: "column",
@@ -45,9 +45,9 @@ const container = {
   boxShadow: "0px 12px 24px rgba(182, 204, 214, 0.2)",
 };
 const uploadContainer = {
-  height: "296px",
+  height: "300px",
+  width: "300px",
   fontSize: "16px",
-  width: "308px",
   background: "linear-gradient(180deg, #F0FDFC 0%, #E8F5FE 100%)",
   display: "flex",
   flexDirection: "column",

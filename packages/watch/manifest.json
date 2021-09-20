@@ -6,6 +6,9 @@
   "publisher": "Prifina Inc",
   "icon": "assets/clock-icon.png",
   "bannerImage": "assets/clock-banner.png",
+  "theme": "dark/light",
+  "size": [{ "width": 300, "height": 300 }],
+  "dataConnectors": [""],
   "settings": [
     {
       "offset1": -4,
