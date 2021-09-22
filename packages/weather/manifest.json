@@ -5,12 +5,12 @@
   "title": "Weather",
   "publisher": "Prifina Inc",
   "icon": "assets/weatherly-icon.png",
-  "bannerImage": "assets/weatherly-banner.png",
-  "theme": "dark/light",
-  "size": [{ "width": 300, "height": 300 }],
+  "bannerImage": "assets/weatherly-banner.png", 
   "dataConnectors": [""],
   "settings": [
-    { "field": "city", "value": "New York", "label": "City", "type": "text" }
+    { "field": "city", "value": "New York", "label": "City", "type": "text" },
+    {"field":"sizes","value":"[{\"option\":\"300x300\",\"value\":\"300x300\"}]","label":"Sizes","type":"select"},
+      {"field":"theme","value": "[{\"option\":\"Dark\",\"value\":\"dark\"}]","label":"Theme","type":"select"}
   ],
   "shortDescription": "Heads up widget for showing you the weather in relevant locations to you.",
   "longDescription": "This simple widget gives you insight into the weather in different locations you choose. You can access it in your account from wherever you access the internet.",
