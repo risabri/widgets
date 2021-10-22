@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { usePrifina, Op, _fn, buildFilter } from "@prifina/hooks";
+import { usePrifina, Op } from "@prifina/hooks";
 import GoogleTimeline from "@prifina/google-timeline/";
 
 const Container = styled.div`
@@ -69,23 +69,23 @@ const TimeLine = (props) => {
       const filter = {
         [Op.and]: {
           [year]: {
-            [Op.eq]: _fn("YEAR", "p_datetime"),
+            [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
           },
           [month]: {
-            [Op.eq]: _fn("MONTH", "p_datetime"),
+            [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
           },
-          100: { [Op.eq]: _fn("CAST", "p_confidence", "int") },
+          100: { [Op.eq]: { fn: "CAST", field: "p_confidence", opts: "int" } },
         },
       };
 
       console.log("FILTER ", filter);
 
       const result = await API[appID].GoogleTimeline.queryActivities({
-        filter: buildFilter(filter),
+        filter: filter,
       });
-      console.log("DATA ", result.data.getS3Object.content);
-      if (result.data.getS3Object.content.length > 0) {
-        processData(result.data.getS3Object.content);
+      console.log("DATA ", result.data.getDataObject.content);
+      if (result.data.getDataObject.content.length > 0) {
+        processData(result.data.getDataObject.content);
       }
     }
   };
@@ -118,12 +118,12 @@ const TimeLine = (props) => {
     const filter = {
       [Op.and]: {
         [year]: {
-          [Op.eq]: _fn("YEAR", "p_datetime"),
+          [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
         },
         [month]: {
-          [Op.eq]: _fn("MONTH", "p_datetime"),
+          [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
         },
-        100: { [Op.eq]: _fn("CAST", "p_confidence", "int") },
+        100: { [Op.eq]: { fn: "CAST", field: "p_confidence", opts: "int" } },
       },
     };
 
@@ -131,11 +131,11 @@ const TimeLine = (props) => {
     console.log("FILTER ", filter);
 
     const result = await API[appID].GoogleTimeline.queryActivities({
-      filter: buildFilter(filter),
+      filter: filter,
     });
-    console.log("DATA ", result.data.getS3Object.content);
-    if (result.data.getS3Object.content.length > 0) {
-      processData(result.data.getS3Object.content);
+    console.log("DATA ", result.data.getDataObject.content);
+    if (result.data.getDataObject.content.length > 0) {
+      processData(result.data.getDataObject.content);
     }
   }, []);
 
