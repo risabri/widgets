@@ -434,7 +434,7 @@ const App = (props) => {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider resetCSS={false}>
       {isLoading === false && (
         <Flex alt="container" style={containerStyle} flex={1} bg={bg}>
           {getContent()}

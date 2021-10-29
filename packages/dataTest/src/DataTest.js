@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
-import GoogleTimeline from "@prifina/google-timeline/";
+import Fitbit from "@prifina/fitbit";
 
 const Container = styled.div`
   height: 300px;
@@ -16,9 +16,9 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "1u3f465t4cNSWYiyKFVwBG";
+const appID = "866fscSq5Ae7bPgUtb6ffB";
 
-const TimeLine = (props) => {
+const DataTest = (props) => {
   const { data } = props;
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -26,6 +26,31 @@ const TimeLine = (props) => {
   // init provider api with your appID
   const prifina = new Prifina({ appId: appID });
 
+  /*
+  getModuleName,
+  getInfo,
+  queryActivities,
+  queryActivitySummary,
+  queryHearRataSummary,
+  querySleepSummary,
+  queryHearRateData,
+  querySleepData,
+  */
+  const dataUpdate = async (data) => {
+    // should check the data payload... :)
+    console.log("FITBIT UPDATE ", data);
+    //console.log(" UPDATE ", data.hasOwnProperty("settings"));
+    //console.log(" UPDATE ", typeof data.settings);
+  };
+
+  useEffect(async () => {
+    // init callback function for background updates/notifications
+    onUpdate(appID, dataUpdate);
+    // register datasource modules
+    registerHooks(appID, [Fitbit]);
+  }, []);
+
+  /*
   const [timelineData, setTimeLineData] = useState({});
   const period = useRef("");
   const processData = (data) => {
@@ -128,28 +153,6 @@ const TimeLine = (props) => {
       },
     };
 
-    /*
-    const filter = {
-      [year]: {
-        [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
-      },
-    };
-    */
-    /*
-{ "and": {2021: {"=":{xxxx} } }
-
-    const filter = {
-      [Op.and]: {
-        [year]: {
-          [Op.eq]: _fn("YEAR", "p_datetime"),
-        },
-        [month]: {
-          [Op.eq]: _fn("MONTH", "p_datetime"),
-        },
-        100: { [Op.eq]: _fn("CAST", "p_confidence", "int") },
-      },
-    };
-    */
 
     period.current = year + "/" + month;
     //console.log("FILTER ", filter, buildFilter(filter));
@@ -162,26 +165,51 @@ const TimeLine = (props) => {
       processData(result.data.getDataObject.content);
     }
   }, []);
+  */
 
   return (
     <Container>
+      <div>Testing</div>
       <div>
-        <div>TOP 5 activities {period.current}</div>
-        {Object.keys(timelineData).length > 0 && (
-          <ol>
-            {Object.keys(timelineData).map((t, k) => {
-              return (
-                <li key={"act-" + k}>
-                  {t}={timelineData[t]}
-                </li>
-              );
-            })}
-          </ol>
-        )}
+        <button
+          onClick={async () => {
+            const filter = {
+              [Op.and]: {
+                [2021]: {
+                  [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
+                },
+                [10]: {
+                  [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
+                },
+                [16]: {
+                  [Op.eq]: { fn: "DAY", field: "p_datetime", opts: null },
+                },
+              },
+            };
+            const result = await API[appID].Fitbit.queryActivitySummary({
+              filter,
+            });
+            console.log("DATA ", result);
+          }}
+        >
+          queryActivitySummary
+        </button>
+      </div>
+      <div>Testing</div>
+      <div>
+        <button
+          onClick={() => {
+            API[appID].Fitbit.queryActivitySummariesAsync({}).then((res) => {
+              console.log("DATA2 ", res);
+            });
+          }}
+        >
+          queryActivitySummaries
+        </button>
       </div>
     </Container>
   );
 };
-TimeLine.displayName = "TimeLine";
+DataTest.displayName = "DataTest";
 
-export default TimeLine;
+export default DataTest;

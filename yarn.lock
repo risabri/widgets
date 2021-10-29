@@ -4326,10 +4326,15 @@
   resolved "https://registry.yarnpkg.com/@prifina/file-upload/-/file-upload-0.0.3.tgz#f1b6ce34f0ae39638e6f13d8bef6e8e12bfe73fd"
   integrity sha512-nPvtRWDndGMvbMRyhwVIxteTsS9HJpSwZ//LInb7rAUlFzZMwEwwU/7lBHudZD/ACnvCBZBTHktyGzLhZqIZ5A==
 
-"@prifina/google-timeline@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.10.tgz#8d70bbffa24583039ea3ba5216b5a6bd258ca0a5"
-  integrity sha512-wa1SOI3W65A6W8txCJTHUS64PrGvvfLzbkJRhlgaLGeAD+QGfZ+XDQLhYQMtJabEnH05Wh+Wye6+gkKpZs9HrQ==
+"@prifina/fitbit@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@prifina/fitbit/-/fitbit-0.0.8.tgz#7c6d18f61dfbc24902d87477fc151b7309c7b981"
+  integrity sha512-0Lpa6usVsegluDczgs482lTz7uf1OZo5Q5km+2iqm8ZogzyAZoA5uWuyLFebYX5492qm62yuAb2UBb1qqUrCUA==
+
+"@prifina/google-timeline@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.12.tgz#34ef7b10900a9e7a6443ec847a66c4152560a42f"
+  integrity sha512-k+GWF5H7M2wMzxl5QSVu1lVId3CNChZhLQ761dLnLLFkrzYqheyadhwg44DNSCBep7UZ8q034QLLYQzih9jQ5Q==
 
 "@prifina/hooks@0.0.59":
   version "0.0.59"
