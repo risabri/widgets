@@ -3,7 +3,7 @@ import DryRun from "../src/DryRun";
 
 export default { title: "Dry Run Widget" };
 
-export const box = () => <DryRun city="delhi" />;
+export const box = () => <DryRun city="san francisco" />;
 box.story = {
   name: "Dry Run Widget",
 };

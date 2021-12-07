@@ -4,6 +4,8 @@ import { usePrifina } from "@prifina/hooks";
 
 import OuraData from "demo-prifina/oura";
 
+import Oura from "@prifina/oura";
+
 import { Flex, ChakraProvider, Text, Input, Image } from "@chakra-ui/react";
 
 import {
@@ -20,7 +22,7 @@ import {
 import useFetch from "./hooks/useFetch";
 import { API_KEY, API_BASE_URL } from "./config";
 import { days, months, dayLetter } from "./utils/period";
-// import { activityData } from "./data";
+import { activityData, ActivitySummary } from "./data";
 
 const containerStyle = {
   width: "300px",
@@ -43,6 +45,45 @@ const DryRun = (props) => {
   const { city, data } = props;
 
   const [ouraHourly, setOuraHourly] = useState();
+  const [connectorData, setConnectorData] = useState();
+
+  const processData = (data) => {
+    setConnectorData(data);
+
+    let metMinArray = data.activity.met_1min;
+    // var result = Object.keys(data);
+
+    let i;
+    let j;
+    let temporary;
+    let tempAvg;
+    let tempArray = [];
+    let chunk = 60;
+
+    for (i = 0, j = metMinArray.length; i < j; i += chunk) {
+      temporary = metMinArray.slice(i, i + chunk);
+      // console.log("temp", temporary);
+
+      const sum = temporary.reduce((a, b) => a + b, 0);
+      const avg = sum / temporary.length || 0;
+
+      let sad = avg.toFixed(2);
+
+      console.log("asdads", sad);
+
+      tempArray.push(sad);
+      // console.log("tempavg", tempAvg);
+    }
+    ///assigning activity name to items in array
+    var filteredData = tempArray.map((item) => ({
+      metHourAvg: item,
+    }));
+
+    console.log("tempavg2", filteredData);
+
+    setOuraHourly(filteredData);
+  };
+  console.log("CHECK CONNECTOR", connectorData);
 
   let defaultCity = city;
   if (
@@ -69,28 +110,38 @@ const DryRun = (props) => {
       );
     }
 
-    const result = await API[appID].OuraData.queryOuraHourly();
+    const result = await API[appID].Oura.queryActivitySummary();
 
-    console.log("OURA HOURLY", result.data.getS3Object.content);
+    console.log("OURA HOURLY", result.data.getDataObject.content);
   };
 
   useEffect(async () => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
     // register datasource modules
-    registerHooks(appID, [OuraData]);
+    registerHooks(appID, [Oura]);
 
     // get
     // console.log("SLEEP QUALITY PROPS", data);
 
-    const result = await API[appID].OuraData.queryOuraHourly({});
-    console.log("DATA ", result.data.getS3Object.content);
-    if (result.data.getS3Object.content.length > 0) {
-      setOuraHourly(result.data.getS3Object.content);
+    const result = await API[appID].Oura.queryActivitySummary({});
+
+    console.log("realconnector", result.data.getDataObject.content);
+    console.log("DATA ", result.data.getDataObject.content);
+    processData(result.data.getDataObject.content);
+
+    if (result.data.getDataObject.content.length > 0) {
+      // setOuraHourly(result.data.getDataObject.content);
+      processData(result.data.getDataObject.content);
+
+      // processData(result2.data.getDataObject.content);
     }
   }, []);
 
   console.log("OURA HOURLY", ouraHourly);
+  // console.log("OURA HOURLY", ActivitySummary.activity.met_1min);
+
+  // let metMinArray = ActivitySummary.activity.met_1min;
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
     `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
@@ -220,10 +271,11 @@ const DryRun = (props) => {
           barSize={3}
           fill="#90CDF4"
           radius={3}
+          maxBarSize={4}
         />
         <Line
           type="step"
-          dataKey="activity"
+          dataKey="metHourAvg"
           name="Activity"
           stroke="#FFF500"
           dot={false}
@@ -263,7 +315,7 @@ const DryRun = (props) => {
   var optimalHour = d.getHours();
 
   return (
-    <ChakraProvider>
+    <>
       <Flex alt="container" style={containerStyle} flex={1}>
         <Text
           fontSize="16px"
@@ -339,7 +391,7 @@ const DryRun = (props) => {
           </Flex>
         </Flex>
       </Flex>
-    </ChakraProvider>
+    </>
   );
 };
 

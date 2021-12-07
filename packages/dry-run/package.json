@@ -24,6 +24,7 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@prifina/oura": "^0.0.9",
     "demo-prifina": "^0.0.2",
     "framer-motion": "^4",
     "moment": "^2.29.1",
