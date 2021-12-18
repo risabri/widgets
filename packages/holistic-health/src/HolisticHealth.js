@@ -6,7 +6,6 @@ import Oura from "@prifina/oura";
 
 import {
   Flex,
-  ChakraProvider,
   Text,
   Box,
   IconButton,
@@ -95,7 +94,7 @@ const CustomButton = ({ icon, current, onClick, goal, unit }) => {
           {current}
         </Text>
         <Text paddingRight="3px" fontSize="9px" color="white" fontWeight="400">
-          / {goal}
+          /{goal}
         </Text>
         <Text fontSize="10px" color="white" fontWeight="400">
           {unit}
@@ -200,14 +199,9 @@ const HolisticHealth = () => {
 
     setWeeklyAvgCalories(caloriesAvg);
     setWeeklyAvgSteps(stepsAvg);
-
-    //console.log("7 DAYS AVG CALORIES", caloriesAvg);
-    //console.log("7 DAYS AVG STEPS", stepsAvg);
   };
 
   const processSleepData = (data) => {
-    //console.log("PROCESS SLEEP DATA", data);
-
     //create 7 days of data from one day data model
     const makeRepeated = (arr, repeats) =>
       Array.from({ length: repeats }, () => arr).flat();
@@ -222,32 +216,65 @@ const HolisticHealth = () => {
 
     const weeklyAvgHours = toTime(sleepAvg);
 
-    //console.log("totalSleep", weeklyAvgHours);
-
     setWeeklyAvgHours(weeklyAvgHours);
 
     setAchievedHours(newArray[6].total);
 
     setOuraSleep(newArray);
   };
-  //console.log("7 DAYS AVG HOURS", weeklyAvgHours);
 
   const dataUpdate = async (data) => {
     // should check the data payload... :)
-    //console.log("TIMELINE UPDATE ", data);
+    console.log("DATA UPDATE ", data);
 
     if (
       data.hasOwnProperty("settings") &&
       typeof data.settings === "object" &&
       data.settings.year !== ""
     ) {
-      ////console.log("TIMELINE ", data.settings);
-
-      const result = await API[appID].OuraData.queryOuraDaily({});
-      //console.log("DATA ", result.data.getS3Object.content);
-      if (result.data.getS3Object.content.length > 0) {
-        processActivityData(result.data.getS3Object.content);
+      const d = new Date();
+      const currentMonth = d.getMonth();
+      d.setMonth(d.getMonth() - 1);
+      while (d.getMonth() === currentMonth) {
+        d.setDate(d.getDate() - 1);
       }
+      let year = d.getFullYear();
+      let month = d.getMonth();
+
+      if (
+        data.hasOwnProperty("settings") &&
+        data.settings.hasOwnProperty("year") &&
+        data.settings.year !== ""
+      ) {
+        year = parseInt(data.settings.year);
+        month = parseInt(data.settings.month);
+      }
+
+      const filter = {
+        [Op.and]: {
+          [year]: {
+            [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
+          },
+          [month]: {
+            [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
+          },
+        },
+      };
+
+      const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
+        filter: filter,
+      });
+
+      const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
+        filter: filter,
+      });
+
+      //needs to be handled in if loop doesn't work
+      // if (activityResult.data.getDataObject.content.length > 0) {
+      //   processActivityData(activityResult.data.getDataObject.content.activity);
+      // }
+      processSleepData(sleepResult.data.getDataObject.content);
+      processActivityData(activityResult.data.getDataObject.content.activity);
     }
   };
 
@@ -283,40 +310,26 @@ const HolisticHealth = () => {
         [month]: {
           [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
         },
-        // 100: { [Op.eq]: { fn: "CAST", field: "steps", opts: "int" } },
       },
     };
 
-    //console.log("FILTER", filter);
+    // console.log("FILTER", filter);
 
-    const activityResult = await API[appID].Oura.queryActivitySummary({
+    const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
       filter: filter,
     });
 
-    const sleepResult = await API[appID].Oura.querySleepSummary({
+    const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
     });
 
-    // console.log(
-    //   "Activity Connector",
-    //   activityResult.data.getDataObject.content
-    // );
-    //console.log("Sleep Connector", sleepResult.data.getDataObject.content);
-
-    //needs to be handled
+    //needs to be handled in if loop doesn't work
+    // if (activityResult.data.getDataObject.content.length > 0) {
+    //   processActivityData(activityResult.data.getDataObject.content.activity);
+    // }
     processSleepData(sleepResult.data.getDataObject.content);
     processActivityData(activityResult.data.getDataObject.content.activity);
-
-    if (activityResult.data.getDataObject.content.length > 0) {
-      processActivityData(activityResult.data.getDataObject.content.activity);
-    }
   }, []);
-
-  //console.log("OURA activity", ouraActivity);
-
-  //console.log("OURA DAILY MOST RECENT DAY", lastObject);
-
-  //console.log("totalsteps2", achievedTotalSteps);
 
   const [step, setStep] = useState(0);
 
