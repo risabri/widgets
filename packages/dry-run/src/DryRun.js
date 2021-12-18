@@ -4,7 +4,7 @@ import { usePrifina, Op } from "@prifina/hooks";
 
 import Oura from "@prifina/oura";
 
-import { Flex, ChakraProvider, Text, Input, Image } from "@chakra-ui/react";
+import { Flex, Text, Input, Image } from "@chakra-ui/react";
 
 import {
   Bar,
@@ -20,7 +20,6 @@ import {
 import useFetch from "./hooks/useFetch";
 import { API_KEY, API_BASE_URL } from "./config";
 import { days, months, dayLetter } from "./utils/period";
-// import { activityData, ActivitySummary } from "./data";
 
 const containerStyle = {
   width: "300px",
@@ -48,9 +47,8 @@ const DryRun = (props) => {
   const processData = (data) => {
     setConnectorData(data);
 
-    console.log("DATA", data);
+    //console.log("DATA", data);
     let activities = data;
-    console.log("activities", activities);
 
     //from data create 15 days of data
     //logic for checking if it's mock up data - for the final
@@ -60,12 +58,12 @@ const DryRun = (props) => {
       Array.from({ length: repeats }, () => arr).flat();
 
     let newArray = makeRepeated([activities], 15);
-    console.log("15daysofdata", newArray);
+    // //console.log("15daysofdata", newArray);
 
     const class_5min = activities.class_5min;
 
     const class_5min2 = newArray.map((a) => a.class_5min);
-    console.log("class_5min", class_5min2);
+    // //console.log("class_5min", class_5min2);
 
     const day_start = activities.day_start;
 
@@ -86,25 +84,21 @@ const DryRun = (props) => {
       parseData(currentDataItem)
     );
 
-    console.log("two", twoWeeksOfData);
-
-    // ------
-
-    // --------------
+    //console.log("two", twoWeeksOfData);
 
     let activities2 = [];
     class_5min.split("").forEach((val, i) => {
       activities2.push({ ts: new Date(dayStart + i * 5 * 60 * 1000), val });
     });
 
-    console.log("act2", activities2);
+    //console.log("act2", activities2);
 
     setConnectorData(activities2);
 
     setOuraHourly(activities2);
   };
 
-  console.log("CHECK CONNECTOR", connectorData);
+  //console.log("CHECK CONNECTOR", connectorData);
 
   let defaultCity = city;
   if (
@@ -130,10 +124,55 @@ const DryRun = (props) => {
         `${API_BASE_URL}/data/2.5/onecall?q=${data.settings.city}&units=metric&appid=${API_KEY}`
       );
     }
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.year !== ""
+    ) {
+      const d = new Date();
+      const currentMonth = d.getMonth();
+      d.setMonth(d.getMonth() - 1);
+      while (d.getMonth() === currentMonth) {
+        d.setDate(d.getDate() - 1);
+      }
+      let year = d.getFullYear();
+      let month = d.getMonth();
 
-    const result = await API[appID].Oura.queryActivitySummary();
+      if (
+        data.hasOwnProperty("settings") &&
+        data.settings.hasOwnProperty("year") &&
+        data.settings.year !== ""
+      ) {
+        year = parseInt(data.settings.year);
+        month = parseInt(data.settings.month);
+      }
 
-    console.log("OURA HOURLY", result.data.getDataObject.content);
+      const filter = {
+        [Op.and]: {
+          [year]: {
+            [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
+          },
+          [month]: {
+            [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
+          },
+        },
+      };
+
+      //console.log("FILTER", filter);
+
+      const result = await API[appID].Oura.queryActivitySummariesAsync({
+        filter: filter,
+      });
+
+      //console.log("DATA", result.data.getDataObject.content);
+
+      processData(result.data.getDataObject.content.activity);
+
+      //needs solution this doesn't work
+      // if (result.data.getDataObject.content.activity.length > 0) {
+      //   processData(result.data.getDataObject.content.activity);
+      // }
+    }
   };
 
   useEffect(async () => {
@@ -168,33 +207,24 @@ const DryRun = (props) => {
         [month]: {
           [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
         },
-        // 100: { [Op.eq]: { fn: "CAST", field: "steps", opts: "int" } },
       },
     };
 
-    console.log("FILTER", filter);
+    //console.log("FILTER", filter);
 
-    const result = await API[appID].Oura.queryActivitySummary({
+    const result = await API[appID].Oura.queryActivitySummariesAsync({
       filter: filter,
     });
 
-    console.log("realconnector", result.data.getDataObject.content);
-    console.log("DATA ", result.data.getDataObject.content.activity);
+    //console.log("DATA", result.data.getDataObject.content);
 
-    // processData(result.data.getDataObject.content);
     processData(result.data.getDataObject.content.activity);
 
-    if (result.data.getDataObject.content.activity.length > 0) {
-      // setOuraHourly(result.data.getDataObject.content);
-      // processData(result.data.getDataObject.content);
-      // processData(result2.data.getDataObject.content);
-    }
+    //needs solution this doesn't work
+    // if (result.data.getDataObject.content.activity.length > 0) {
+    //   processData(result.data.getDataObject.content.activity);
+    // }
   }, []);
-
-  console.log("OURA HOURLY", ouraHourly);
-  // console.log("OURA HOURLY", ActivitySummary.activity.met_1min);
-
-  // let metMinArray = ActivitySummary.activity.met_1min;
 
   const { weatherData, error, isLoading, setUrl } = useFetch(
     `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
@@ -204,9 +234,6 @@ const DryRun = (props) => {
   if (!weatherData && isLoading) return <h2>LOADING...</h2>;
   if (!weatherData) return null;
 
-  // console.log("WEATHER DATA", weatherData);
-  // console.log("CITY", city);
-
   const weatherChart = () => {
     const threeDaysData = weatherData.forecast.forecastday;
 
@@ -214,7 +241,7 @@ const DryRun = (props) => {
     const icon2 = threeDaysData[1].day.condition.icon;
     const icon3 = threeDaysData[2].day.condition.icon;
 
-    // console.log("FORECAST THREE DAYS2", threeDaysData);
+    // //console.log("FORECAST THREE DAYS2", threeDaysData);
 
     const day1 = threeDaysData[0].date;
     const day2 = threeDaysData[1].date;
@@ -234,15 +261,15 @@ const DryRun = (props) => {
     // var dayName2 = days[day2.getDay()];
     // var dayName3 = days[day3.getDay()];
 
-    // console.log("Day222", dayName1);
-    // console.log("NEW DATE", newDate1);
+    // //console.log("Day222", dayName1);
+    // //console.log("NEW DATE", newDate1);
 
     const date = new Date(day1);
     const dateNumber = date.getDate();
     const month = months[date.getMonth()];
 
-    // console.log("3333", dateNumber);
-    // console.log("4444", month);
+    // //console.log("3333", dateNumber);
+    // //console.log("4444", month);
 
     return (
       <Flex flexDirection="column">
@@ -287,18 +314,18 @@ const DryRun = (props) => {
     const hourData = threeDaysData[0].hour;
 
     // Function for combining the data from two arrays
-    let combinedData = hourData.map((item, i) =>
-      Object.assign({}, item, ouraHourly[i])
-    );
+    // let combinedData = hourData.map((item, i) =>
+    //   Object.assign({}, item, ouraHourly[i])
+    // );
 
     let combinedData2 = ouraHourly.map((item, i) =>
       Object.assign({}, item, hourData[i])
     );
-    console.log("COMBINED DATA2", combinedData2);
+    //console.log("COMBINED DATA2", combinedData2);
 
-    // console.log("FORECAST THREE DAYS", threeDaysData);
-    // console.log("FORECAST ONE DAY", oneDayData);
-    // console.log("HOUR DATA", hourData);
+    // //console.log("FORECAST THREE DAYS", threeDaysData);
+    // //console.log("FORECAST ONE DAY", oneDayData);
+    // //console.log("HOUR DATA", hourData);
 
     return (
       <ComposedChart
@@ -313,13 +340,7 @@ const DryRun = (props) => {
         }}
         borderWidth={0}
       >
-        <XAxis
-          stroke="#90CDF4"
-          // ticks={[5, 11, 17, 23]}
-          // unit="H"
-          dataKey="ts"
-          fontSize="12px"
-        />
+        <XAxis stroke="#90CDF4" dataKey="ts" fontSize="12px" />
         <YAxis tick={false} />
         <Tooltip />
         <CartesianGrid stroke="#f5f5f5" stroke="none" />
@@ -347,13 +368,10 @@ const DryRun = (props) => {
   };
 
   const threeDaysData = weatherData.forecast.forecastday[0].hour;
-  // console.log("SSSSS", threeDaysData);
 
   const newR = threeDaysData;
 
   const trainingHours = newR.slice(6, 20);
-
-  // console.log("Reduced hours", trainingHours);
 
   let optimalHourDate = trainingHours.reduce((prev, curr) =>
     prev.chance_of_rain < curr.chance_of_rain ? prev : curr
