@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { usePrifina } from "@prifina/hooks";
 
-import OuraData from "demo-prifina/oura";
+import { usePrifina, Op } from "@prifina/hooks";
 
 import Oura from "@prifina/oura";
 
@@ -22,7 +20,7 @@ import {
 import useFetch from "./hooks/useFetch";
 import { API_KEY, API_BASE_URL } from "./config";
 import { days, months, dayLetter } from "./utils/period";
-import { activityData, ActivitySummary } from "./data";
+// import { activityData, ActivitySummary } from "./data";
 
 const containerStyle = {
   width: "300px",
@@ -50,39 +48,62 @@ const DryRun = (props) => {
   const processData = (data) => {
     setConnectorData(data);
 
-    let metMinArray = data.activity.met_1min;
-    // var result = Object.keys(data);
+    console.log("DATA", data);
+    let activities = data;
+    console.log("activities", activities);
 
-    let i;
-    let j;
-    let temporary;
-    let tempAvg;
-    let tempArray = [];
-    let chunk = 60;
+    //from data create 15 days of data
+    //logic for checking if it's mock up data - for the final
 
-    for (i = 0, j = metMinArray.length; i < j; i += chunk) {
-      temporary = metMinArray.slice(i, i + chunk);
-      // console.log("temp", temporary);
+    //create 15 days of data from one day data model
+    const makeRepeated = (arr, repeats) =>
+      Array.from({ length: repeats }, () => arr).flat();
 
-      const sum = temporary.reduce((a, b) => a + b, 0);
-      const avg = sum / temporary.length || 0;
+    let newArray = makeRepeated([activities], 15);
+    console.log("15daysofdata", newArray);
 
-      let sad = avg.toFixed(2);
+    const class_5min = activities.class_5min;
 
-      console.log("asdads", sad);
+    const class_5min2 = newArray.map((a) => a.class_5min);
+    console.log("class_5min", class_5min2);
 
-      tempArray.push(sad);
-      // console.log("tempavg", tempAvg);
-    }
-    ///assigning activity name to items in array
-    var filteredData = tempArray.map((item) => ({
-      metHourAvg: item,
-    }));
+    const day_start = activities.day_start;
 
-    console.log("tempavg2", filteredData);
+    const dayStart = new Date(day_start).getTime();
 
-    setOuraHourly(filteredData);
+    const parseData = (input) => {
+      let activities3 = [];
+
+      input.split("").forEach((val, i) => {
+        if (val >= 0)
+          activities3.push({ ts: new Date(dayStart + i * 5 * 60 * 1000), val });
+      });
+
+      return activities3;
+    };
+
+    let twoWeeksOfData = class_5min2.map((currentDataItem) =>
+      parseData(currentDataItem)
+    );
+
+    console.log("two", twoWeeksOfData);
+
+    // ------
+
+    // --------------
+
+    let activities2 = [];
+    class_5min.split("").forEach((val, i) => {
+      activities2.push({ ts: new Date(dayStart + i * 5 * 60 * 1000), val });
+    });
+
+    console.log("act2", activities2);
+
+    setConnectorData(activities2);
+
+    setOuraHourly(activities2);
   };
+
   console.log("CHECK CONNECTOR", connectorData);
 
   let defaultCity = city;
@@ -121,19 +142,51 @@ const DryRun = (props) => {
     // register datasource modules
     registerHooks(appID, [Oura]);
 
-    // get
-    // console.log("SLEEP QUALITY PROPS", data);
+    const d = new Date();
+    const currentMonth = d.getMonth();
+    d.setMonth(d.getMonth() - 1);
+    while (d.getMonth() === currentMonth) {
+      d.setDate(d.getDate() - 1);
+    }
+    let year = d.getFullYear();
+    let month = d.getMonth();
 
-    const result = await API[appID].Oura.queryActivitySummary({});
+    // if (
+    //   data.hasOwnProperty("settings") &&
+    //   data.settings.hasOwnProperty("year") &&
+    //   data.settings.year !== ""
+    // ) {
+    //   year = parseInt(data.settings.year);
+    //   month = parseInt(data.settings.month);
+    // }
+
+    const filter = {
+      [Op.and]: {
+        [year]: {
+          [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
+        },
+        [month]: {
+          [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
+        },
+        // 100: { [Op.eq]: { fn: "CAST", field: "steps", opts: "int" } },
+      },
+    };
+
+    console.log("FILTER", filter);
+
+    const result = await API[appID].Oura.queryActivitySummary({
+      filter: filter,
+    });
 
     console.log("realconnector", result.data.getDataObject.content);
-    console.log("DATA ", result.data.getDataObject.content);
-    processData(result.data.getDataObject.content);
+    console.log("DATA ", result.data.getDataObject.content.activity);
 
-    if (result.data.getDataObject.content.length > 0) {
+    // processData(result.data.getDataObject.content);
+    processData(result.data.getDataObject.content.activity);
+
+    if (result.data.getDataObject.content.activity.length > 0) {
       // setOuraHourly(result.data.getDataObject.content);
-      processData(result.data.getDataObject.content);
-
+      // processData(result.data.getDataObject.content);
       // processData(result2.data.getDataObject.content);
     }
   }, []);
@@ -151,8 +204,8 @@ const DryRun = (props) => {
   if (!weatherData && isLoading) return <h2>LOADING...</h2>;
   if (!weatherData) return null;
 
-  console.log("WEATHER DATA", weatherData);
-  console.log("CITY", city);
+  // console.log("WEATHER DATA", weatherData);
+  // console.log("CITY", city);
 
   const weatherChart = () => {
     const threeDaysData = weatherData.forecast.forecastday;
@@ -161,7 +214,7 @@ const DryRun = (props) => {
     const icon2 = threeDaysData[1].day.condition.icon;
     const icon3 = threeDaysData[2].day.condition.icon;
 
-    console.log("FORECAST THREE DAYS2", threeDaysData);
+    // console.log("FORECAST THREE DAYS2", threeDaysData);
 
     const day1 = threeDaysData[0].date;
     const day2 = threeDaysData[1].date;
@@ -181,15 +234,15 @@ const DryRun = (props) => {
     // var dayName2 = days[day2.getDay()];
     // var dayName3 = days[day3.getDay()];
 
-    console.log("Day222", dayName1);
-    console.log("NEW DATE", newDate1);
+    // console.log("Day222", dayName1);
+    // console.log("NEW DATE", newDate1);
 
     const date = new Date(day1);
     const dateNumber = date.getDate();
     const month = months[date.getMonth()];
 
-    console.log("3333", dateNumber);
-    console.log("4444", month);
+    // console.log("3333", dateNumber);
+    // console.log("4444", month);
 
     return (
       <Flex flexDirection="column">
@@ -237,17 +290,21 @@ const DryRun = (props) => {
     let combinedData = hourData.map((item, i) =>
       Object.assign({}, item, ouraHourly[i])
     );
-    console.log("COMBINED DATA", combinedData);
 
-    console.log("FORECAST THREE DAYS", threeDaysData);
-    console.log("FORECAST ONE DAY", oneDayData);
-    console.log("HOUR DATA", hourData);
+    let combinedData2 = ouraHourly.map((item, i) =>
+      Object.assign({}, item, hourData[i])
+    );
+    console.log("COMBINED DATA2", combinedData2);
+
+    // console.log("FORECAST THREE DAYS", threeDaysData);
+    // console.log("FORECAST ONE DAY", oneDayData);
+    // console.log("HOUR DATA", hourData);
 
     return (
       <ComposedChart
         width={293}
         height={92}
-        data={combinedData}
+        data={combinedData2}
         margin={{
           top: 10,
           right: 0,
@@ -258,8 +315,9 @@ const DryRun = (props) => {
       >
         <XAxis
           stroke="#90CDF4"
-          ticks={[5, 11, 17, 23]}
-          unit="H"
+          // ticks={[5, 11, 17, 23]}
+          // unit="H"
+          dataKey="ts"
           fontSize="12px"
         />
         <YAxis tick={false} />
@@ -275,7 +333,7 @@ const DryRun = (props) => {
         />
         <Line
           type="step"
-          dataKey="metHourAvg"
+          dataKey="val"
           name="Activity"
           stroke="#FFF500"
           dot={false}
@@ -289,13 +347,13 @@ const DryRun = (props) => {
   };
 
   const threeDaysData = weatherData.forecast.forecastday[0].hour;
-  console.log("SSSSS", threeDaysData);
+  // console.log("SSSSS", threeDaysData);
 
   const newR = threeDaysData;
 
   const trainingHours = newR.slice(6, 20);
 
-  console.log("Reduced hours", trainingHours);
+  // console.log("Reduced hours", trainingHours);
 
   let optimalHourDate = trainingHours.reduce((prev, curr) =>
     prev.chance_of_rain < curr.chance_of_rain ? prev : curr
