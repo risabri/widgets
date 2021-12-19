@@ -4357,6 +4357,11 @@
   dependencies:
     "@paciolan/remote-component" "^2.11.0"
 
+"@prifina/oura@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@prifina/oura/-/oura-0.0.9.tgz#d86bea0bb886fb4c5946286573def04e24fbf617"
+  integrity sha512-SeApno2IX2UtbRB0OwpJ4hGJduqN6ukXCNPBFFBUi155SgRrc1Hb/6GTLAbiPPeFBwlt1VQ3FTkZ3RZYAPL9zw==
+
 "@reach/alert@0.13.2":
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/@reach/alert/-/alert-0.13.2.tgz#71c4a848d51341f1d6d9eaae060975391c224870"

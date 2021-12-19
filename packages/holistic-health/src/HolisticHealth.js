@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { usePrifina } from "@prifina/hooks";
 
-import OuraData from "demo-prifina/oura";
+import { usePrifina, Op } from "@prifina/hooks";
+
+import Oura from "@prifina/oura";
 
 import {
   Flex,
-  ChakraProvider,
   Text,
   Box,
   IconButton,
@@ -36,8 +35,6 @@ import {
   CheckIcon,
 } from "./assets/icons";
 
-// import { data } from "./data";
-
 const containerStyle = {
   width: "300px",
   height: "300px",
@@ -46,6 +43,7 @@ const containerStyle = {
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
   padding: 7,
   flexDirection: "column",
+  paddingTop: 25,
 };
 
 const legendStyle = {
@@ -56,10 +54,7 @@ const circularProgressStyle = {
   position: "absolute",
   borderRadius: 10,
   thickness: 10,
-  // y: -1,
   transform: "rotate(180deg)",
-  // transform: "scaleX(-1)",
-  // transform: ["scaleX(-1)", "rotate(45deg)"],
 };
 
 const CustomButton = ({ icon, current, onClick, goal, unit }) => {
@@ -76,6 +71,7 @@ const CustomButton = ({ icon, current, onClick, goal, unit }) => {
       fontWeight="bold"
       bg="transparent"
       color="#4b4f56"
+      border={0}
       _hover={{ bg: "#39114F" }}
       _active={{
         bg: "#39114F",
@@ -93,11 +89,11 @@ const CustomButton = ({ icon, current, onClick, goal, unit }) => {
       onClick={onClick}
     >
       {icon}
-      <Flex paddingLeft="9px">
+      <Flex paddingLeft="9px" alignItems="baseline">
         <Text paddingRight="3px" fontSize="12px" color="white" fontWeight="700">
           {current}
         </Text>
-        <Text paddingRight="3px" fontSize="10px" color="white" fontWeight="400">
+        <Text paddingRight="3px" fontSize="9px" color="white" fontWeight="400">
           /{goal}
         </Text>
         <Text fontSize="10px" color="white" fontWeight="400">
@@ -148,40 +144,52 @@ const HolisticHealth = () => {
 
   const prifina = new Prifina({ appId: appID });
 
-  const [ouraDaily, setOuraDaily] = useState();
+  const [ouraActivity, setOuraActivity] = useState();
+  const [ouraSleep, setOuraSleep] = useState();
   const [lastObject, setLastObject] = useState();
+
   const [hours, setHours] = useState("9");
+  //32400
   const [calories, setCalories] = useState("1000");
   const [totalSteps, setTotalSteps] = useState("10000");
 
   const [achievedHours, setAchievedHours] = useState("8");
   const [achievedCalories, setAchievedCalories] = useState("2000");
-  const [achievedTotalSteps, setAchievedTotalSteps] = useState("10000");
+  const [achievedTotalSteps, setAchievedTotalSteps] = useState();
 
   const [weeklyAvgHours, setWeeklyAvgHours] = useState("7.5");
   const [weeklyAvgCalories, setWeeklyAvgCalories] = useState("2100");
   const [weeklyAvgSteps, setWeeklyAvgSteps] = useState("12000");
 
-  const processData = (data) => {
-    ///setting fetched data as ouraDaily
-    setOuraDaily(data);
+  ///function converts seconds to time format
+  function toTime(seconds) {
+    var date = new Date(null);
+    date.setSeconds(seconds);
+    return date.toISOString().substr(11, 8);
+  }
 
-    //filtering data
-    var result = Object.keys(data).map((key) => [Number(key), data[key]]);
+  const processActivityData = (data) => {
+    //console.log("PROCESS ACTIVITY DATA", data);
 
-    var newRes = result.pop();
+    //create 7 days of data from one day data model
+    const makeRepeated = (arr, repeats) =>
+      Array.from({ length: repeats }, () => arr).flat();
 
-    setLastObject(newRes[1]);
-    setAchievedHours(newRes[1].totalSleepTime);
-    setAchievedCalories(newRes[1].totalCalories);
-    setAchievedTotalSteps(newRes[1].totalSteps);
+    let newArray = makeRepeated([data], 7);
+    //console.log("new", newArray);
+    setOuraActivity(newArray);
 
-    const weekTotalHours = data.map((item) => item.totalSleepTime);
-    const weekTotalCalories = data.map((item) => item.totalCalories);
-    const weekTotalSteps = data.map((item) => item.totalSteps);
+    let totalSteps = newArray.map((a) => a.steps);
+    let totalCalories = newArray.map((a) => a.cal_total);
 
-    const hoursSum = weekTotalHours.reduce((a, b) => a + b, 0);
-    const hoursAvg = (hoursSum / weekTotalHours.length || 0).toFixed(1);
+    const sum = totalSteps.reduce((a, b) => a + b, 0);
+
+    setLastObject(newArray[6]);
+    setAchievedCalories(newArray[6].cal_total);
+    setAchievedTotalSteps(newArray[6].steps);
+
+    const weekTotalCalories = newArray.map((a) => a.cal_total);
+    const weekTotalSteps = newArray.map((a) => a.steps);
 
     const caloriesSum = weekTotalCalories.reduce((a, b) => a + b, 0);
     const caloriesAvg = Math.round(caloriesSum / weekTotalCalories.length || 0);
@@ -189,34 +197,84 @@ const HolisticHealth = () => {
     const stepsSum = weekTotalSteps.reduce((a, b) => a + b, 0);
     const stepsAvg = Math.round(stepsSum / weekTotalSteps.length || 0);
 
-    // var avg = sum / data.length;
-    setWeeklyAvgHours(hoursAvg);
     setWeeklyAvgCalories(caloriesAvg);
     setWeeklyAvgSteps(stepsAvg);
+  };
 
-    console.log("7 DAYS AVG HOURS", hoursAvg);
-    console.log("7 DAYS AVG CALORIES", caloriesAvg);
-    console.log("7 DAYS AVG STEPS", stepsAvg);
+  const processSleepData = (data) => {
+    //create 7 days of data from one day data model
+    const makeRepeated = (arr, repeats) =>
+      Array.from({ length: repeats }, () => arr).flat();
+
+    let newArray = makeRepeated([data], 7);
+    //console.log("7daysleepdata", newArray);
+
+    let sleep = newArray.map((a) => a.total);
+
+    const sleepSum = sleep.reduce((a, b) => a + b, 0);
+    const sleepAvg = sleepSum / sleep.length || 0;
+
+    const weeklyAvgHours = toTime(sleepAvg);
+
+    setWeeklyAvgHours(weeklyAvgHours);
+
+    setAchievedHours(newArray[6].total);
+
+    setOuraSleep(newArray);
   };
 
   const dataUpdate = async (data) => {
     // should check the data payload... :)
-    console.log("TIMELINE UPDATE ", data);
-    //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
-    //console.log("TIMELINE UPDATE ", typeof data.settings);
+    console.log("DATA UPDATE ", data);
 
     if (
       data.hasOwnProperty("settings") &&
       typeof data.settings === "object" &&
       data.settings.year !== ""
     ) {
-      //console.log("TIMELINE ", data.settings);
-
-      const result = await API[appID].OuraData.queryOuraDaily({});
-      console.log("DATA ", result.data.getS3Object.content);
-      if (result.data.getS3Object.content.length > 0) {
-        processData(result.data.getS3Object.content);
+      const d = new Date();
+      const currentMonth = d.getMonth();
+      d.setMonth(d.getMonth() - 1);
+      while (d.getMonth() === currentMonth) {
+        d.setDate(d.getDate() - 1);
       }
+      let year = d.getFullYear();
+      let month = d.getMonth();
+
+      if (
+        data.hasOwnProperty("settings") &&
+        data.settings.hasOwnProperty("year") &&
+        data.settings.year !== ""
+      ) {
+        year = parseInt(data.settings.year);
+        month = parseInt(data.settings.month);
+      }
+
+      const filter = {
+        [Op.and]: {
+          [year]: {
+            [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
+          },
+          [month]: {
+            [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
+          },
+        },
+      };
+
+      const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
+        filter: filter,
+      });
+
+      const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
+        filter: filter,
+      });
+
+      //needs to be handled in if loop doesn't work
+      // if (activityResult.data.getDataObject.content.length > 0) {
+      //   processActivityData(activityResult.data.getDataObject.content.activity);
+      // }
+      processSleepData(sleepResult.data.getDataObject.content);
+      processActivityData(activityResult.data.getDataObject.content.activity);
     }
   };
 
@@ -224,20 +282,54 @@ const HolisticHealth = () => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
     // register datasource modules
-    registerHooks(appID, [OuraData]);
-    // get
-    // console.log("TIMELINE PROPS DATA ", data);
+    registerHooks(appID, [Oura]);
 
-    const result = await API[appID].OuraData.queryOuraDaily({});
-    console.log("DATA ", result.data.getS3Object.content);
-    if (result.data.getS3Object.content.length > 0) {
-      processData(result.data.getS3Object.content);
+    const d = new Date();
+    const currentMonth = d.getMonth();
+    d.setMonth(d.getMonth() - 1);
+    while (d.getMonth() === currentMonth) {
+      d.setDate(d.getDate() - 1);
     }
+    let year = d.getFullYear();
+    let month = d.getMonth();
+
+    // if (
+    //   data.hasOwnProperty("settings") &&
+    //   data.settings.hasOwnProperty("year") &&
+    //   data.settings.year !== ""
+    // ) {
+    //   year = parseInt(data.settings.year);
+    //   month = parseInt(data.settings.month);
+    // }
+
+    const filter = {
+      [Op.and]: {
+        [year]: {
+          [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
+        },
+        [month]: {
+          [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
+        },
+      },
+    };
+
+    // console.log("FILTER", filter);
+
+    const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
+      filter: filter,
+    });
+
+    const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
+      filter: filter,
+    });
+
+    //needs to be handled in if loop doesn't work
+    // if (activityResult.data.getDataObject.content.length > 0) {
+    //   processActivityData(activityResult.data.getDataObject.content.activity);
+    // }
+    processSleepData(sleepResult.data.getDataObject.content);
+    processActivityData(activityResult.data.getDataObject.content.activity);
   }, []);
-
-  console.log("OURA DAILY", ouraDaily);
-
-  console.log("OURA DAILY MOST RECENT DAY", lastObject);
 
   const [step, setStep] = useState(0);
 
@@ -250,20 +342,22 @@ const HolisticHealth = () => {
       break;
     case 3:
       break;
-    case 3:
+    case 4:
       break;
     default:
   }
 
+  const hrsToSeconds = hours * 3600;
+
   ///CircleProgressBar precentage values
-  const hoursPrecentage = (achievedHours / hours) * 100;
+  const hoursPrecentage = (achievedHours / hrsToSeconds) * 100;
   const caloriesPrecentage = (achievedCalories / calories) * 100;
   const stepsPrecentage = (achievedTotalSteps / totalSteps) * 100;
 
   ///7 days averages
 
   return (
-    <ChakraProvider>
+    <>
       {step === 0 && (
         <Flex alt="container" style={containerStyle} flex={1}>
           <Text fontSize="16px" color="#3271E6" fontWeight="bold">
@@ -276,6 +370,9 @@ const HolisticHealth = () => {
                   Daily Goals
                 </Text>
                 <IconButton
+                  style={{
+                    border: 0,
+                  }}
                   icon={<EditIcon />}
                   onClick={() => {
                     setStep(4);
@@ -285,7 +382,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current={achievedHours}
+                  current={toTime(achievedHours)}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -303,7 +400,8 @@ const HolisticHealth = () => {
                 />
                 <CustomButton
                   icon={<WalkIcon />}
-                  current={achievedTotalSteps / 1000 + "k"}
+                  current={achievedTotalSteps}
+                  // current={achievedTotalSteps / 1000 + "k"}
                   goal={totalSteps}
                   unit="Steps"
                   onClick={() => {
@@ -324,7 +422,7 @@ const HolisticHealth = () => {
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
-                thickness="12px"
+                thickness="10px"
                 capIsRound
               />
               <CircularProgress
@@ -333,8 +431,9 @@ const HolisticHealth = () => {
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
-                thickness="14px"
+                thickness="13px"
                 capIsRound
+                marginTop="5px"
               />
               <CircularProgress
                 style={circularProgressStyle}
@@ -342,13 +441,16 @@ const HolisticHealth = () => {
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
-                thickness="17px"
+                thickness="13px"
                 capIsRound
+                marginTop="10px"
               />
-              <HealthIcon />
+              <div style={{ marginTop: 33 }}>
+                <HealthIcon />
+              </div>
             </Flex>
           </Flex>
-          <Flex alt="bottomContainer" paddingTop="20px" flexDirection="column">
+          <Flex alt="bottomContainer" paddingTop="35px" flexDirection="column">
             <Text color="white" fontSize="12px" fontWeight="700">
               7 day averages
             </Text>
@@ -384,6 +486,9 @@ const HolisticHealth = () => {
                   Daily Goals
                 </Text>
                 <IconButton
+                  style={{
+                    border: 0,
+                  }}
                   icon={<EditIcon />}
                   onClick={() => {
                     setStep(4);
@@ -393,155 +498,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current={achievedHours}
-                  goal={hours}
-                  unit="Hrs"
-                  onClick={() => {
-                    setStep(1);
-                  }}
-                />
-                <CustomButton
-                  icon={<FireIcon />}
-                  current={achievedCalories}
-                  goal={calories}
-                  unit="Kcal"
-                  onClick={() => {
-                    setStep(2);
-                  }}
-                />
-                <CustomButton
-                  icon={<WalkIcon />}
-                  current={achievedTotalSteps}
-                  goal={totalSteps}
-                  unit="Steps"
-                  onClick={() => {
-                    setStep(3);
-                  }}
-                />
-              </ButtonGroup>
-            </Flex>
-            <Flex
-              alt="rightSide"
-              alignItems="center"
-              justifyContent="center"
-              flex={2}
-            >
-              <CircularProgress
-                style={circularProgressStyle}
-                value={caloriesPrecentage}
-                size="113px"
-                trackColor="transparent"
-                color="#450323"
-                thickness="12px"
-                capIsRound
-              />
-              <CircularProgress
-                style={circularProgressStyle}
-                value={hoursPrecentage}
-                size="88px"
-                trackColor="transparent"
-                color="#E7D535"
-                thickness="14px"
-                capIsRound
-              />
-              <CircularProgress
-                style={circularProgressStyle}
-                value={stepsPrecentage}
-                size="66px"
-                trackColor="transparent"
-                color="#4F145E"
-                thickness="18px"
-                capIsRound
-              />
-              <SleepingEmoji />
-            </Flex>
-          </Flex>
-          <Flex
-            alt="bottomContainer"
-            paddingTop="20px"
-            flexDirection="row"
-            paddingRight="16px"
-          >
-            <BarChart
-              width={350}
-              height={103}
-              data={ouraDaily}
-              margin={{
-                top: 0,
-                right: 25,
-                left: -43,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray="0.1 3" />
-              <XAxis
-                dataKey="day"
-                fontSize={10}
-                color="white"
-                fontWeight="400"
-              />
-              <YAxis fontSize={10} />
-              <Tooltip />
-              <Bar
-                dataKey="lightSleepTime"
-                barSize={18.5}
-                stackId="a"
-                fill="#FDDF96"
-                name="Light"
-              />
-              <Bar
-                dataKey="REMSleepTime"
-                stackId="a"
-                fill="#FDB400"
-                name="REM"
-              />
-              <Bar
-                dataKey="deepSleepTime"
-                stackId="a"
-                fill="#624600"
-                name="Deep"
-              />
-              <Bar
-                dataKey="totalAwakeTime"
-                stackId="a"
-                fill="#FDF3DB"
-                name="Awake"
-              />
-              <Legend
-                layout="vertical"
-                verticalAlign="top"
-                align="right"
-                iconType="circle"
-                iconSize="6px"
-                width={80}
-                wrapperStyle={legendStyle}
-              />
-            </BarChart>
-          </Flex>
-        </Flex>
-      )}
-      {step === 2 && (
-        <Flex alt="container" style={containerStyle} flex={1}>
-          <Text fontSize="16px" color="#3271E6" fontWeight="bold">
-            Holistic Health
-          </Text>
-          <Flex alt="uppperContaner">
-            <Flex alt="leftSide" flexDirection="column" flex={2}>
-              <Flex justifyContent="space-between" alignItems="center">
-                <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
-                  Daily Goals
-                </Text>
-                <IconButton
-                  icon={<EditIcon />}
-                  onClick={() => {
-                    setStep(4);
-                  }}
-                />
-              </Flex>
-              <ButtonGroup spacing={0} flexDirection="column">
-                <CustomButton
-                  icon={<SleepingEmoji />}
-                  current={achievedHours}
+                  current={toTime(achievedHours)}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -580,7 +537,7 @@ const HolisticHealth = () => {
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
-                thickness="12px"
+                thickness="10px"
                 capIsRound
               />
               <CircularProgress
@@ -588,73 +545,78 @@ const HolisticHealth = () => {
                 value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
-                color="#3C370F"
-                thickness="14px"
+                color="#E7D535"
+                thickness="13px"
                 capIsRound
+                marginTop="5px"
               />
               <CircularProgress
                 style={circularProgressStyle}
                 value={stepsPrecentage}
                 size="66px"
                 trackColor="transparent"
-                color="#4F145E"
+                color="#AE35E7"
+                thickness="13px"
                 capIsRound
-                thickness="17px"
+                marginTop="10px"
               />
-              <FireIcon />
+              <div style={{ marginTop: 33 }}>
+                <SleepingEmoji />
+              </div>
             </Flex>
           </Flex>
           <Flex
             alt="bottomContainer"
-            paddingTop="20px"
+            paddingTop="35px"
             flexDirection="row"
             paddingRight="16px"
           >
             <BarChart
-              width={292}
+              width={350}
               height={103}
-              data={ouraDaily}
+              data={ouraSleep}
               margin={{
-                top: 7,
-                right: 5,
-                left: -23,
-                bottom: -15,
+                top: 0,
+                right: 25,
+                left: -25,
+                bottom: 0,
               }}
             >
               <CartesianGrid strokeDasharray="0.1 3" />
               <XAxis
-                dataKey="day"
+                dataKey="summary_date"
                 fontSize={10}
                 color="white"
                 fontWeight="400"
               />
               <YAxis fontSize={10} />
-              <Tooltip />
-              <defs>
-                <linearGradient
-                  id="colorUv"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="100%"
-                  spreadMethod="reflect"
-                >
-                  <stop offset="0" stopColor="#DC3284" />
-                  <stop offset="1" stopColor="#E10C73" />
-                </linearGradient>
-              </defs>
+              <Tooltip
+                contentStyle={{ background: "lightgray", fontSize: 10 }}
+              />
               <Bar
-                dataKey="totalCalories"
-                barSize={22}
+                dataKey="light"
+                barSize={18.5}
                 stackId="a"
-                fill="url(#colorUv)"
-                name="Calories"
+                fill="#FDDF96"
+                name="Light"
+              />
+              <Bar dataKey="rem" stackId="a" fill="#FDB400" name="REM" />
+              <Bar dataKey="deep" stackId="a" fill="#624600" name="Deep" />
+              <Bar dataKey="awake" stackId="a" fill="#FDF3DB" name="Awake" />
+              <Legend
+                layout="vertical"
+                verticalAlign="top"
+                align="right"
+                iconType="circle"
+                iconSize="6px"
+                width={80}
+                wrapperStyle={legendStyle}
               />
             </BarChart>
           </Flex>
         </Flex>
       )}
-      {step === 3 && (
+      {step === 2 && (
         <Flex alt="container" style={containerStyle} flex={1}>
           <Text fontSize="16px" color="#3271E6" fontWeight="bold">
             Holistic Health
@@ -666,6 +628,9 @@ const HolisticHealth = () => {
                   Daily Goals
                 </Text>
                 <IconButton
+                  style={{
+                    border: 0,
+                  }}
                   icon={<EditIcon />}
                   onClick={() => {
                     setStep(4);
@@ -675,7 +640,7 @@ const HolisticHealth = () => {
               <ButtonGroup spacing={0} flexDirection="column">
                 <CustomButton
                   icon={<SleepingEmoji />}
-                  current={achievedHours}
+                  current={toTime(achievedHours)}
                   goal={hours}
                   unit="Hrs"
                   onClick={() => {
@@ -713,8 +678,8 @@ const HolisticHealth = () => {
                 value={caloriesPrecentage}
                 size="113px"
                 trackColor="transparent"
-                color="#3C0D23"
-                thickness="12px"
+                color="#DC3284"
+                thickness="10px"
                 capIsRound
               />
               <CircularProgress
@@ -722,9 +687,10 @@ const HolisticHealth = () => {
                 value={hoursPrecentage}
                 size="88px"
                 trackColor="transparent"
-                color="#3C370F"
-                thickness="14px"
+                color="#E7D535"
+                thickness="13px"
                 capIsRound
+                marginTop="5px"
               />
               <CircularProgress
                 style={circularProgressStyle}
@@ -732,22 +698,25 @@ const HolisticHealth = () => {
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
+                thickness="13px"
                 capIsRound
-                thickness="17px"
+                marginTop="10px"
               />
-              <WalkIcon />
+              <div style={{ marginTop: 33 }}>
+                <FireIcon />
+              </div>
             </Flex>
           </Flex>
           <Flex
             alt="bottomContainer"
-            paddingTop="20px"
+            paddingTop="35px"
             flexDirection="row"
             paddingRight="16px"
           >
             <BarChart
               width={292}
               height={103}
-              data={ouraDaily}
+              data={ouraActivity}
               margin={{
                 top: 7,
                 right: 5,
@@ -757,13 +726,158 @@ const HolisticHealth = () => {
             >
               <CartesianGrid strokeDasharray="0.1 3" />
               <XAxis
-                dataKey="day"
+                dataKey="summary_date"
                 fontSize={10}
                 color="white"
                 fontWeight="400"
               />
               <YAxis fontSize={10} />
-              <Tooltip />
+              <Tooltip
+                contentStyle={{ background: "lightgray", fontSize: 10 }}
+              />
+              <defs>
+                <linearGradient
+                  id="colorUv"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="100%"
+                  spreadMethod="reflect"
+                >
+                  <stop offset="0" stopColor="#DC3284" />
+                  <stop offset="1" stopColor="#E10C73" />
+                </linearGradient>
+              </defs>
+              <Bar
+                dataKey="cal_total"
+                barSize={22}
+                stackId="a"
+                fill="url(#colorUv)"
+                name="Calories"
+              />
+            </BarChart>
+          </Flex>
+        </Flex>
+      )}
+      {step === 3 && (
+        <Flex alt="container" style={containerStyle} flex={1}>
+          <Text fontSize="16px" color="#3271E6" fontWeight="bold">
+            Holistic Health
+          </Text>
+          <Flex alt="uppperContaner">
+            <Flex alt="leftSide" flexDirection="column" flex={2}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text fontSize="12px" color="#F6F6F6" fontWeight="bold">
+                  Daily Goals
+                </Text>
+                <IconButton
+                  style={{
+                    border: 0,
+                  }}
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                />
+              </Flex>
+              <ButtonGroup spacing={0} flexDirection="column">
+                <CustomButton
+                  icon={<SleepingEmoji />}
+                  current={toTime(achievedHours)}
+                  goal={hours}
+                  unit="Hrs"
+                  onClick={() => {
+                    setStep(1);
+                  }}
+                />
+                <CustomButton
+                  icon={<FireIcon />}
+                  current={achievedCalories}
+                  goal={calories}
+                  unit="Kcal"
+                  onClick={() => {
+                    setStep(2);
+                  }}
+                />
+                <CustomButton
+                  icon={<WalkIcon />}
+                  current={achievedTotalSteps}
+                  goal={totalSteps}
+                  unit="Steps"
+                  onClick={() => {
+                    setStep(3);
+                  }}
+                />
+              </ButtonGroup>
+            </Flex>
+            <Flex
+              alt="rightSide"
+              alignItems="center"
+              justifyContent="center"
+              flex={2}
+            >
+              <CircularProgress
+                style={circularProgressStyle}
+                value={caloriesPrecentage}
+                size="113px"
+                trackColor="transparent"
+                color="#DC3284"
+                thickness="10px"
+                capIsRound
+              />
+              <CircularProgress
+                style={circularProgressStyle}
+                value={hoursPrecentage}
+                size="88px"
+                trackColor="transparent"
+                color="#E7D535"
+                thickness="13px"
+                capIsRound
+                marginTop="5px"
+              />
+              <CircularProgress
+                style={circularProgressStyle}
+                value={stepsPrecentage}
+                size="66px"
+                trackColor="transparent"
+                color="#AE35E7"
+                thickness="13px"
+                capIsRound
+                marginTop="10px"
+              />
+              <div style={{ marginTop: 33 }}>
+                <WalkIcon />
+              </div>
+            </Flex>
+          </Flex>
+          <Flex
+            alt="bottomContainer"
+            paddingTop="35px"
+            flexDirection="row"
+            paddingRight="16px"
+          >
+            <BarChart
+              width={292}
+              height={103}
+              data={ouraActivity}
+              margin={{
+                top: 7,
+                right: 5,
+                left: -23,
+                bottom: -15,
+              }}
+            >
+              <CartesianGrid strokeDasharray="0.1 3" />
+              <XAxis
+                dataKey="summary_date"
+                fontSize={10}
+                color="white"
+                fontWeight="400"
+              />
+              <YAxis fontSize={10} />
+              <Tooltip
+                contentStyle={{ background: "lightgray", fontSize: 10 }}
+              />
               <defs>
                 <linearGradient
                   id="colorUv"
@@ -778,7 +892,7 @@ const HolisticHealth = () => {
                 </linearGradient>
               </defs>
               <Bar
-                dataKey="totalSteps"
+                dataKey="steps"
                 barSize={22}
                 stackId="a"
                 fill="url(#colorUv)"
@@ -803,7 +917,6 @@ const HolisticHealth = () => {
               borderWidth="1px"
               borderColor="#6E587A"
               borderRadius="5px"
-              paddingTop="0px"
               paddingBottom="10px"
               paddingLeft="10px"
               paddingRight="10px"
@@ -819,6 +932,9 @@ const HolisticHealth = () => {
                 </Text>
                 <Flex>
                   <IconButton
+                    style={{
+                      border: 0,
+                    }}
                     icon={<CloseIcon />}
                     paddingRight="12px"
                     onClick={() => {
@@ -826,6 +942,9 @@ const HolisticHealth = () => {
                     }}
                   />
                   <IconButton
+                    style={{
+                      border: 0,
+                    }}
                     icon={<CheckIcon />}
                     onClick={() => {
                       setStep(0);
@@ -833,7 +952,7 @@ const HolisticHealth = () => {
                   />
                 </Flex>
               </Flex>
-              <Stack spacing={10}>
+              <Stack spacing={5}>
                 <Flex alt="input1" alignItems="baseline">
                   <Input
                     width="26px"
@@ -889,8 +1008,6 @@ const HolisticHealth = () => {
               alignItems="center"
               justifyContent="center"
               flex={2}
-              paddingBottom="16px"
-              paddingRight="7px"
             >
               <CircularProgress
                 style={circularProgressStyle}
@@ -898,7 +1015,7 @@ const HolisticHealth = () => {
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
-                thickness="12px"
+                thickness="10px"
                 capIsRound
               />
               <CircularProgress
@@ -907,8 +1024,9 @@ const HolisticHealth = () => {
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
-                thickness="14px"
+                thickness="13px"
                 capIsRound
+                marginTop="5px"
               />
               <CircularProgress
                 style={circularProgressStyle}
@@ -916,13 +1034,16 @@ const HolisticHealth = () => {
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
-                thickness="17px"
+                thickness="13px"
                 capIsRound
+                marginTop="10px"
               />
-              <HealthIcon />
+              <div style={{ marginTop: 33 }}>
+                <HealthIcon />
+              </div>
             </Flex>
           </Flex>
-          <Flex alt="bottomContainer" paddingTop="3px" flexDirection="column">
+          <Flex alt="bottomContainer" paddingTop="16px" flexDirection="column">
             <Text color="white" fontSize="12px" fontWeight="700">
               7 day averages
             </Text>
@@ -946,7 +1067,7 @@ const HolisticHealth = () => {
           </Flex>
         </Flex>
       )}
-    </ChakraProvider>
+    </>
   );
 };
 
