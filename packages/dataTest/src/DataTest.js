@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
+import Oura from "@prifina/oura";
 
 const Container = styled.div`
   height: 300px;
@@ -47,7 +48,7 @@ const DataTest = (props) => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
     // register datasource modules
-    registerHooks(appID, [Fitbit]);
+    registerHooks(appID, [Fitbit, Oura]);
   }, []);
 
   /*
@@ -176,13 +177,13 @@ const DataTest = (props) => {
             const filter = {
               [Op.and]: {
                 [2021]: {
-                  [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
+                  [Op.eq]: { fn: "YEAR", field: "s3_partition", opts: null },
                 },
-                [10]: {
-                  [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
+                [12]: {
+                  [Op.eq]: { fn: "MONTH", field: "s3_partition", opts: null },
                 },
-                [16]: {
-                  [Op.eq]: { fn: "DAY", field: "p_datetime", opts: null },
+                [13]: {
+                  [Op.eq]: { fn: "DAY", field: "s3_partition", opts: null },
                 },
               },
             };
@@ -199,12 +200,57 @@ const DataTest = (props) => {
       <div>
         <button
           onClick={() => {
-            API[appID].Fitbit.queryActivitySummariesAsync({}).then((res) => {
-              console.log("DATA2 ", res);
-            });
+            const filter = {
+              [Op.and]: {
+                [2021]: {
+                  [Op.eq]: { fn: "YEAR", field: "s3_partition", opts: null },
+                },
+                [12]: {
+                  [Op.eq]: { fn: "MONTH", field: "s3_partition", opts: null },
+                },
+                [13]: {
+                  [Op.gt]: { fn: "DAY", field: "s3_partition", opts: null },
+                },
+              },
+            };
+            API[appID].Fitbit.queryActivitySummariesAsync(filter).then(
+              (res) => {
+                console.log("DATA2 ", res);
+              }
+            );
           }}
         >
           queryActivitySummaries
+        </button>
+      </div>
+      <div>
+        <button
+          onClick={async () => {
+            /*
+            const filter = {
+              [Op.and]: {
+                [2021]: {
+                  [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
+                },
+                [10]: {
+                  [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
+                },
+                [16]: {
+                  [Op.eq]: { fn: "DAY", field: "p_datetime", opts: null },
+                },
+              },
+            };
+            */
+            const filter = {};
+            console.log(API[appID]);
+
+            const result = await API[appID].Oura.queryActivitySummary({
+              filter,
+            });
+            console.log("DATA ", result);
+          }}
+        >
+          queryOuraActivitySummary
         </button>
       </div>
     </Container>
