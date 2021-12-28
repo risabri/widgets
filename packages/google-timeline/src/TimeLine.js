@@ -84,7 +84,10 @@ const TimeLine = (props) => {
         filter: filter,
       });
       console.log("DATA ", result.data.getDataObject.content);
-      if (result.data.getDataObject.content.length > 0) {
+      if (
+        result.data.getDataObject.hasOwnProperty("content") &&
+        result.data.getDataObject.content.length > 0
+      ) {
         processData(result.data.getDataObject.content);
       }
     }
@@ -157,8 +160,16 @@ const TimeLine = (props) => {
     const result = await API[appID].GoogleTimeline.queryActivities({
       filter: filter,
     });
-    console.log("DATA ", result.data.getDataObject.content);
-    if (result.data.getDataObject.content.length > 0) {
+    console.log(
+      "DATA ",
+      result.data.getDataObject.content,
+      Object.keys(result.data.getDataObject),
+      result.data.getDataObject.hasOwnProperty("content")
+    );
+    if (
+      result.data.getDataObject.hasOwnProperty("content") &&
+      result.data.getDataObject.content.length > 0
+    ) {
       processData(result.data.getDataObject.content);
     }
   }, []);
