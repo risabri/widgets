@@ -9,22 +9,16 @@
   "publishConfig": {
     "access": "public"
   },
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+ 
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hamzahalilovic/widgets.git"
-  },
+  
   "dependencies": {
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/oura": "^0.0.9",
+    "@prifina/oura": "^0.0.18",
     "demo-prifina": "^0.0.2",
     "framer-motion": "^4",
     "recharts": "^2.0.10"
@@ -37,7 +31,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.61",
+    "@prifina/hooks": "^0.0.62",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-docs": "^6.3.4",
     "@storybook/addon-knobs": "^6.2.9",
@@ -70,7 +64,7 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
-    "build:dev": "cross-env NODE_ENV=development webpack --mode development --config config/webpack.dev-config.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --mode development --config ./config/webpack.dev-config.js",
     "start": "yarn build:dev && cross-env NODE_ENV=development webpack serve --config ./config/webpack.dev-config.js",
     "storybook": "start-storybook -p 9009 -s public",
     "test": "echo \"Error: run tests from root\" && exit 1"

@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "@prifina/google-timeline":"^0.0.12"
+    "@prifina/google-timeline":"^0.0.13"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",

@@ -6,7 +6,7 @@ import HolisticHealth from "./HolisticHealth";
 export const LocalComponent = (props) => {
   return (
     <PrifinaProvider stage={"dev"} Context={PrifinaContext}>
-      <HolisticHealth {...props} />
+      <HolisticHealth stage={"dev"} {...props} />
     </PrifinaProvider>
   );
 };

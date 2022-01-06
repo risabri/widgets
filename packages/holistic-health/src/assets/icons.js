@@ -7,7 +7,7 @@ export const SleepingEmoji = () => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0)">
+      <g clipPath="url(#clip0)">
         <path
           d="M8.5 16C12.9183 16 16.5 12.4183 16.5 8C16.5 3.58172 12.9183 0 8.5 0C4.08172 0 0.5 3.58172 0.5 8C0.5 12.4183 4.08172 16 8.5 16Z"
           fill="#FFCC4D"
@@ -81,8 +81,8 @@ export const FireIcon = () => (
           y2="1.00488"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C84E89" />
-          <stop offset="1" stop-color="#F15F79" />
+          <stop stopColor="#C84E89" />
+          <stop offset="1" stopColor="#F15F79" />
         </linearGradient>
       </defs>
     </svg>
@@ -128,8 +128,8 @@ export const HealthIcon = () => (
           y2="27.4998"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3573E7" />
-          <stop offset="1" stop-color="#1A5BD6" />
+          <stop stopColor="#3573E7" />
+          <stop offset="1" stopColor="#1A5BD6" />
         </linearGradient>
       </defs>
     </svg>

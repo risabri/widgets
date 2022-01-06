@@ -6,7 +6,7 @@ import DryRun from "./DryRun";
 export const LocalComponent = (props) => {
   return (
     <PrifinaProvider stage={"dev"} Context={PrifinaContext}>
-      <DryRun {...props} />
+      <DryRun stage={"dev"} {...props} />
     </PrifinaProvider>
   );
 };

@@ -6,11 +6,11 @@
   "publisher": "Prifina Inc",
   "icon": "assets/dryrun-icon.png",
   "bannerImage": "assets/dryrun-banner.png",
-  "theme": "dark/light",
-  "size": [{ "width": 300, "height": 300 }],
-  "dataConnectors": ["demo-prifina/oura"],
+  "dataConnectors": ["@prifina/oura"],
   "settings": [
-    { "field": "city", "value": "London", "label": "City", "type": "text" }
+    {"field":"sizes","value":"[{\"option\":\"300x300\",\"value\":\"300x300\"}]","label":"Sizes","type":"select"},
+      {"field":"theme","value": "[{\"option\":\"Light\",\"value\":\"light\"}]","label":"Theme","type":"select"},
+      {"field": "city", "value": "London", "label": "City", "type": "text"}
   ],
   "shortDescription": "Tired of running in bad weather? With Dry Run, utilize your activity data and you get a heads up when your typical time for a run collides with a sleet or a tropical storm.",
   "longDescription": "Dry Run wants to keep you dry while you exercise. By utilizing your activity habits and open weather data, Dry Run looks out for you and lets you know when it might make sense to deviate from your normal routines. Planned updates for Dry Run include utilizing other weather data types, such as allergens, air quality or pollen.",

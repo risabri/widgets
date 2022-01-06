@@ -6,10 +6,11 @@
   "publisher": "Prifina Inc",
   "icon": "assets/holistichealth-icon.png",
   "bannerImage": "assets/holistichealth-banner.png",
-  "theme": "dark/light",
-  "size": [{ "width": 300, "height": 300 }],
-  "dataConnectors": ["demo-prifina/oura"],
-  "settings": [{}],
+  "dataConnectors": ["@prifina/oura"],
+  "settings": [
+    {"field":"sizes","value":"[{\"option\":\"300x300\",\"value\":\"300x300\"}]","label":"Sizes","type":"select"},
+      {"field":"theme","value": "[{\"option\":\"Light\",\"value\":\"light\"}]","label":"Theme","type":"select"}
+  ],
   "shortDescription": "Track your activity from your wearables in one place, see what targets you have hit and view a snapshot of your daily goals.",
   "longDescription": "With Holistic Health, you can track your activity from all your wearables in one place, see what targets you have hit and view a snapshot of your daily goals. Utilizing your activity data (active minutes, steps, calories etc) from your wearable devices, you can quickly for an idea of your progress toward your goals and keep yourself accountable.",
   "dataTypes": "User-held data",

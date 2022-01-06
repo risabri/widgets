@@ -4,6 +4,7 @@ import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
 import Oura from "@prifina/oura";
 import Garmin from "@prifina/garmin";
+import GoogleTimeline from "@prifina/google-timeline/";
 
 const Container = styled.div`
   height: 300px;
@@ -65,13 +66,14 @@ const DataTest = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   // init provider api with your appID
-  const prifina = new Prifina({ appId: appID });
+  //const prifina = new Prifina({ appId: appID });
   const [functions, setFunctions] = useState([]);
   const [connectorFunction, setConnectorFunction] = useState(
     "Fitbit.queryActivities"
   );
   const [functionCondition, setFunctionCondition] = useState("eq");
   const [conditionValue, setConditionValue] = useState("");
+  const [fieldsValue, setFieldsValue] = useState("");
 
   const { s3Data, error, isLoading, setUrl } = UseFetch(null);
 
@@ -114,7 +116,7 @@ const DataTest = (props) => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
     // register datasource modules
-    registerHooks(appID, [Fitbit, Oura, Garmin]);
+    registerHooks(appID, [Fitbit, Oura, Garmin, GoogleTimeline]);
 
     //console.log(API[appID]);
     //console.log(API[appID].Fitbit);
@@ -128,8 +130,16 @@ const DataTest = (props) => {
     const garminFunctions = Object.keys(API[appID].Garmin).map((s) => {
       return "Garmin." + s;
     });
+    const googleFunctions = Object.keys(API[appID].GoogleTimeline).map((s) => {
+      return "GoogleTimeline." + s;
+    });
     setFunctions(
-      functions.concat(fitbitFunctions, ouraFunctions, garminFunctions)
+      functions.concat(
+        fitbitFunctions,
+        ouraFunctions,
+        garminFunctions,
+        googleFunctions
+      )
     );
 
     //Symbol.keyFor(logicalOP) + k;
@@ -291,6 +301,12 @@ const DataTest = (props) => {
         />
       </div>
       <div>
+        <input
+          type="text"
+          onChange={(event) => setFieldsValue(event.target.value)}
+        />
+      </div>
+      <div>
         <button
           onClick={async () => {
             const filter = {
@@ -299,11 +315,16 @@ const DataTest = (props) => {
               },
             };
             console.log("FILTER", filter);
+            let fields = null;
+            if (fieldsValue !== "") {
+              fields = fieldsValue;
+            }
             const query = connectorFunction.split(".");
             console.log(query);
             //console.log("QUERY", API[appID][query[0]][query[1]]);
             const result = await API[appID][query[0]][query[1]]({
               filter,
+              fields,
             });
             console.log("DATA ", new Date().getTime(), result);
             /*
@@ -316,145 +337,6 @@ const DataTest = (props) => {
           }}
         >
           RUN
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={async () => {
-            /*
-            const filter = {
-              [Op.and]: {
-                [2021]: {
-                  [Op.eq]: { fn: "YEAR", field: "s3_partition", opts: null },
-                },
-                [12]: {
-                  [Op.eq]: { fn: "MONTH", field: "s3_partition", opts: null },
-                },
-                [13]: {
-                  [Op.eq]: { fn: "DAY", field: "s3_partition", opts: null },
-                },
-              },
-            };
-            */
-            const filter = {
-              ["s3::date"]: {
-                [Op.eq]: "2021-12-13",
-              },
-            };
-            const result = await API[appID].Fitbit.queryActivitySummary({
-              filter,
-            });
-            console.log("DATA ", new Date().getTime(), result);
-          }}
-        >
-          queryActivitySummary
-        </button>
-      </div>
-      <div>Testing</div>
-      <div>
-        <button
-          onClick={() => {
-            /*
-            const filter = {
-              [Op.and]: {
-                [2021]: {
-                  [Op.eq]: { fn: "YEAR", field: "s3_partition", opts: null },
-                },
-                [12]: {
-                  [Op.eq]: { fn: "MONTH", field: "s3_partition", opts: null },
-                },
-                [13]: {
-                  [Op.gt]: { fn: "DAY", field: "s3_partition", opts: null },
-                },
-              },
-            };
-            */
-            const filter = {
-              ["s3::date"]: {
-                [Op.between]: ["2021-12-01", "2021-12-20"],
-              },
-            };
-
-            API[appID].Fitbit.queryActivitySummariesAsync({ filter }).then(
-              (res) => {
-                console.log("DATA2 ", new Date().getTime(), res);
-              }
-            );
-          }}
-        >
-          queryActivitySummaries
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            const filter = {
-              ["s3::date"]: {
-                [Op.in]: ["2021-12-01", "2021-12-20"],
-              },
-            };
-
-            API[appID].Fitbit.queryActivitySummariesAsync({ filter }).then(
-              (res) => {
-                console.log("DATA3 ", new Date().getTime(), res);
-              }
-            );
-          }}
-        >
-          queryActivitySummaries in filter
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            const filter = {
-              ["s3::date"]: {
-                [Op.like]: "2021-12-0%",
-              },
-            };
-
-            API[appID].Fitbit.queryActivitySummariesAsync({ filter }).then(
-              (res) => {
-                console.log("DATA3 ", new Date().getTime(), res);
-              }
-            );
-          }}
-        >
-          queryActivitySummaries like filter
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={async () => {
-            /*
-            const filter = {
-              [Op.and]: {
-                [2021]: {
-                  [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
-                },
-                [10]: {
-                  [Op.eq]: { fn: "MONTH", field: "p_datetime", opts: null },
-                },
-                [16]: {
-                  [Op.eq]: { fn: "DAY", field: "p_datetime", opts: null },
-                },
-              },
-            };
-            */
-            const filter = {
-              ["s3::date"]: {
-                [Op.eq]: "2021-12-13",
-              },
-            };
-            console.log(API[appID]);
-
-            const result = await API[appID].Oura.queryActivitySummary({
-              filter,
-            });
-            console.log("DATA ", new Date().getTime(), result);
-          }}
-        >
-          queryOuraActivitySummary
         </button>
       </div>
     </Container>

@@ -29,6 +29,9 @@ module.exports = {
 
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
+    new webpack.ProvidePlugin({
+      React: "react",
+    }),
   ],
   module: config.module,
   devServer: {

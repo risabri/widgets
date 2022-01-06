@@ -9,23 +9,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hamzahalilovic/widgets.git"
-  },
   "dependencies": {
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/oura": "^0.0.9",
-    "demo-prifina": "^0.0.2",
+    "@prifina/oura": "^0.0.18",
     "framer-motion": "^4",
     "moment": "^2.29.1",
     "recharts": "^2.0.10"
@@ -38,7 +29,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.61",
+    "@prifina/hooks": "^0.0.62",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-docs": "^6.3.4",
     "@storybook/addon-knobs": "^6.2.9",
@@ -77,7 +68,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "peerDependencies": {
-    "@prifina/hooks": "^0.0.61",
+    "@prifina/hooks": "^0.0.62",
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"

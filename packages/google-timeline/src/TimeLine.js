@@ -24,12 +24,23 @@ const TimeLine = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   // init provider api with your appID
-  const prifina = new Prifina({ appId: appID });
+  //const prifina = new Prifina({ appId: appID });
 
   const [timelineData, setTimeLineData] = useState({});
   const period = useRef("");
   const processData = (data) => {
     let activities = {};
+    // "p_timestamp,p_datetime,p_type,p_confidence"
+    for (let i = 1; i < data.length; i++) {
+      const d = data[i].split(",");
+      if (parseInt(d[3]) === 100) {
+        if (!activities.hasOwnProperty(d[2])) {
+          activities[d[2]] = 0;
+        }
+        activities[d[2]] += 1;
+      }
+    }
+    /*
     data.forEach((d) => {
       if (parseInt(d.p_confidence) === 100) {
         if (!activities.hasOwnProperty(d.p_type)) {
@@ -38,6 +49,8 @@ const TimeLine = (props) => {
         activities[d.p_type] += 1;
       }
     });
+    */
+
     const sortedKeys = Object.keys(activities).sort((a, b) =>
       activities[a] > activities[b] ? -1 : activities[b] > activities[a] ? 1 : 0
     );

@@ -25,7 +25,7 @@ const containerStyle = {
 };
 
 // unique appID for the widget....
-const appID = "o3CH1e2kbrLgBxjbG2iLzd";
+const appID = "xkn9NGTH6eNyWUbaLxtMe1";
 
 const App = (props) => {
   console.log("WEATHER WIDGET PROPS ", props);
@@ -36,10 +36,10 @@ const App = (props) => {
   //const city = "san francisco";
 
   // init hook and get provider api services...
-  const { onUpdate, Prifina } = usePrifina();
+  const { onUpdate } = usePrifina();
 
   // init provider api with your appID
-  const prifina = new Prifina({ appId: appID });
+  //const prifina = new Prifina({ appId: appID });
   let defaultCity = city;
   if (
     typeof data !== "undefined" &&
@@ -75,6 +75,7 @@ const App = (props) => {
 
   useEffect(() => {
     // init callback function for background updates/notifications
+    //console.log("UPDATE INIT ", typeof onUpdate);
     onUpdate(appID, dataUpdate);
   }, []);
 
@@ -297,7 +298,7 @@ const App = (props) => {
             hour12: true,
           });
           return (
-            <Flex flexDirection="column" alignItems="center">
+            <Flex key={"data-" + i} flexDirection="column" alignItems="center">
               <Text fontSize="10px" fontWeight="600" color="white">
                 {currentTime}
               </Text>
@@ -334,7 +335,7 @@ const App = (props) => {
             hour12: true,
           });
           return (
-            <Flex flexDirection="column" alignItems="center">
+            <Flex key={"wdata-" + i} flexDirection="column" alignItems="center">
               <Text fontSize="10px" fontWeight="600" color="white">
                 {currentTime}
               </Text>

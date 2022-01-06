@@ -139,14 +139,14 @@ const Card = ({ icon, title, subtitle, unit }) => {
 
 const appID = "sCUiMz2m9JsRSnRJ5favnP";
 
-const HolisticHealth = () => {
-  const { onUpdate, Prifina, API, registerHooks } = usePrifina();
+const HolisticHealth = (props) => {
+  const stage = props.stage || "prod";
 
-  const prifina = new Prifina({ appId: appID });
+  const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const [ouraActivity, setOuraActivity] = useState();
   const [ouraSleep, setOuraSleep] = useState();
-  const [lastObject, setLastObject] = useState();
+  //const [lastObject, setLastObject] = useState();
 
   const [hours, setHours] = useState("9");
   //32400
@@ -170,23 +170,40 @@ const HolisticHealth = () => {
 
   const processActivityData = (data) => {
     //console.log("PROCESS ACTIVITY DATA", data);
+    let newArray = [];
+    if (stage === "dev") {
+      //create 7 days of data from one day data model
+      const makeRepeated = (arr, repeats) =>
+        Array.from({ length: repeats }, () => arr).flat();
 
-    //create 7 days of data from one day data model
-    const makeRepeated = (arr, repeats) =>
-      Array.from({ length: repeats }, () => arr).flat();
+      newArray = makeRepeated([data], 7);
+      //console.log("new", newArray);
+    } else {
+      let activityData = [];
 
-    let newArray = makeRepeated([data], 7);
-    //console.log("new", newArray);
+      // 0-index is csv-header..
+      for (let i = 1; i < data.length; i++) {
+        // csv data is comma separated...
+        const r = data[i].split(",");
+        //const activityDay = r[0].split("T")[0];
+        const activityDay = r[0];
+        activityData.push({
+          summary_date: activityDay,
+          cal_total: parseInt(r[1]) || 0,
+          steps: parseInt(r[2]) || 0,
+        });
+      }
+
+      newArray = activityData;
+    }
+
+    console.log("ACTIVITY ", newArray);
+
     setOuraActivity(newArray);
+    //let totalSteps = newArray.map((a) => a.steps);
+    //let totalCalories = newArray.map((a) => a.cal_total);
 
-    let totalSteps = newArray.map((a) => a.steps);
-    let totalCalories = newArray.map((a) => a.cal_total);
-
-    const sum = totalSteps.reduce((a, b) => a + b, 0);
-
-    setLastObject(newArray[6]);
-    setAchievedCalories(newArray[6].cal_total);
-    setAchievedTotalSteps(newArray[6].steps);
+    //const sum = totalSteps.reduce((a, b) => a + b, 0);
 
     const weekTotalCalories = newArray.map((a) => a.cal_total);
     const weekTotalSteps = newArray.map((a) => a.steps);
@@ -195,86 +212,124 @@ const HolisticHealth = () => {
     const caloriesAvg = Math.round(caloriesSum / weekTotalCalories.length || 0);
 
     const stepsSum = weekTotalSteps.reduce((a, b) => a + b, 0);
+
     const stepsAvg = Math.round(stepsSum / weekTotalSteps.length || 0);
 
     setWeeklyAvgCalories(caloriesAvg);
     setWeeklyAvgSteps(stepsAvg);
+
+    const lastActivity = newArray[newArray.length - 1];
+    //setLastObject(lastActivity);
+    setAchievedCalories(lastActivity.cal_total);
+    setAchievedTotalSteps(lastActivity.steps);
   };
 
   const processSleepData = (data) => {
-    //create 7 days of data from one day data model
-    const makeRepeated = (arr, repeats) =>
-      Array.from({ length: repeats }, () => arr).flat();
+    let newArray = [];
+    if (stage === "dev") {
+      //create 7 days of data from one day data model
+      const makeRepeated = (arr, repeats) =>
+        Array.from({ length: repeats }, () => arr).flat();
 
-    let newArray = makeRepeated([data], 7);
-    //console.log("7daysleepdata", newArray);
+      newArray = makeRepeated([data], 7);
+      //console.log("7daysleepdata", newArray);
+    } else {
+      /*
+      "summary_date, 0
+      period_id, 1
+      is_longest, 2
+      timezone, 3
+      bedtime_end, 4
+      bedtime_start, 5
+      breath_average, 6
+      duration, 7
+      total, 8
+     awake, 9
+     rem, 10
+     deep, 11
+     light, 12
+     midpoint_time,efficiency,restless,onset_latency,hr_5min,hypnogram_5min,rmssd,rmssd_5min,
+     score,score_alignment,score_deep,score_disturbances,score_efficiency,score_latency,score_rem,score_total,
+     temperature_deviation,temperature_trend_deviation,bedtime_start_delta,bedtime_end_delta,midpoint_at_delta,
+     temperature_delta,hr_lowest,hr_average,user,day\"
+     */
+      let sleepData = [];
+      // 0-index is csv-header..
+      for (let i = 1; i < data.length; i++) {
+        // csv data is comma separated...
+        const r = data[i].split(",");
+        //const sleepDay = r[0].split("T")[0];
 
-    let sleep = newArray.map((a) => a.total);
+        const sleepDay = r[0];
+        if (
+          sleepData.some((d) => {
+            return d.summary_date === sleepDay;
+          })
+        ) {
+          sleepData[sleepDay].total += parseInt(r[1]);
+          sleepData[sleepDay].awake += parseInt(r[2]);
+          sleepData[sleepDay].rem += parseInt(r[3]);
+          sleepData[sleepDay].deep += parseInt(r[4]);
+          sleepData[sleepDay].light += parseInt(r[5]);
+        } else {
+          sleepData.push({
+            summary_date: sleepDay,
+            total: parseInt(r[1]) || 0,
+            awake: parseInt(r[2]) || 0,
+            rem: parseInt(r[3]) || 0,
+            deep: parseInt(r[4]) || 0,
+            light: parseInt(r[5]) || 0,
+          });
+        }
+      }
+      newArray = sleepData;
+    }
+
+    let sleep = newArray.map((a) => {
+      return a.total;
+    });
 
     const sleepSum = sleep.reduce((a, b) => a + b, 0);
+    // sleep days is not same as array length... if takes naps... but data was processed already
     const sleepAvg = sleepSum / sleep.length || 0;
+
+    console.log("SLEEP ", newArray);
+    //console.log("SLEEP ", sleep, sleepSum, sleepAvg);
 
     const weeklyAvgHours = toTime(sleepAvg);
 
     setWeeklyAvgHours(weeklyAvgHours);
-
-    setAchievedHours(newArray[6].total);
-
     setOuraSleep(newArray);
+    const lastSleep = newArray[newArray.length - 1];
+
+    setAchievedHours(lastSleep.total);
   };
 
-  const dataUpdate = async (data) => {
+  const dataUpdate = async (payload) => {
     // should check the data payload... :)
-    console.log("DATA UPDATE ", data);
+    console.log("DATA UPDATE ", payload);
+    // does not have settings....
+    /*
+    if (
+      payload.hasOwnProperty("settings") &&
+      typeof payload.settings === "object" 
+    ) {
+     // process settings
+    }
+    */
 
     if (
-      data.hasOwnProperty("settings") &&
-      typeof data.settings === "object" &&
-      data.settings.year !== ""
+      payload.hasOwnProperty("data") &&
+      payload.data.hasOwnProperty("content")
     ) {
-      const d = new Date();
-      const currentMonth = d.getMonth();
-      d.setMonth(d.getMonth() - 1);
-      while (d.getMonth() === currentMonth) {
-        d.setDate(d.getDate() - 1);
-      }
-      let year = d.getFullYear();
-      let month = d.getMonth();
-
-      if (
-        data.hasOwnProperty("settings") &&
-        data.settings.hasOwnProperty("year") &&
-        data.settings.year !== ""
-      ) {
-        year = parseInt(data.settings.year);
-        month = parseInt(data.settings.month);
+      // process async data
+      if (payload.data.dataconnector === "Oura/queryActivitySummariesAsync") {
+        processActivityData(payload.data.content);
       }
 
-      const filter = {
-        [Op.and]: {
-          [year]: {
-            [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
-          },
-          [month]: {
-            [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
-          },
-        },
-      };
-
-      const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
-        filter: filter,
-      });
-
-      const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
-        filter: filter,
-      });
-
-      //needs to be handled in if loop doesn't work
-      // if (activityResult.data.getDataObject.content.length > 0) {
-      //   processActivityData(activityResult.data.getDataObject.content.activity);
-      // }
-      processSleepData(sleepResult.data.getDataObject.content);
-      processActivityData(activityResult.data.getDataObject.content.activity);
+      if (payload.data.dataconnector === "Oura/querySleepSummariesAsync") {
+        processSleepData(payload.data.content);
+      }
     }
   };
 
@@ -285,50 +340,37 @@ const HolisticHealth = () => {
     registerHooks(appID, [Oura]);
 
     const d = new Date();
-    const currentMonth = d.getMonth();
-    d.setMonth(d.getMonth() - 1);
-    while (d.getMonth() === currentMonth) {
-      d.setDate(d.getDate() - 1);
-    }
-    let year = d.getFullYear();
-    let month = d.getMonth();
-
-    // if (
-    //   data.hasOwnProperty("settings") &&
-    //   data.settings.hasOwnProperty("year") &&
-    //   data.settings.year !== ""
-    // ) {
-    //   year = parseInt(data.settings.year);
-    //   month = parseInt(data.settings.month);
-    // }
+    // 8 days ago... because current day data may not exists yet...
+    const dd = d.setDate(d.getDate() - 8);
+    const dateStr = new Date(dd).toISOString().split("T")[0];
 
     const filter = {
-      [Op.and]: {
-        [year]: {
-          [Op.eq]: { fn: "YEAR", field: "summary_date", opts: null },
-        },
-        [month]: {
-          [Op.eq]: { fn: "MONTH", field: "summary_date", opts: null },
-        },
+      ["s3::date"]: {
+        [Op.gte]: dateStr,
       },
     };
 
-    // console.log("FILTER", filter);
-
     const activityResult = await API[appID].Oura.queryActivitySummariesAsync({
       filter: filter,
+      fields: "summary_date,cal_total,steps",
     });
 
     const sleepResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
+      fields: "summary_date,total,awake,rem,deep,light",
     });
 
     //needs to be handled in if loop doesn't work
     // if (activityResult.data.getDataObject.content.length > 0) {
     //   processActivityData(activityResult.data.getDataObject.content.activity);
     // }
-    processSleepData(sleepResult.data.getDataObject.content);
-    processActivityData(activityResult.data.getDataObject.content.activity);
+    // Async queries are not returing result sets...
+    //processSleepData(sleepResult.data.getDataObject.content);
+    //processActivityData(activityResult.data.getDataObject.content.activity);
+    if (stage === "dev") {
+      processSleepData(sleepResult.data.getDataObject.content);
+      processActivityData(activityResult.data.getDataObject.content.activity);
+    }
   }, []);
 
   const [step, setStep] = useState(0);
@@ -349,10 +391,10 @@ const HolisticHealth = () => {
 
   const hrsToSeconds = hours * 3600;
 
-  ///CircleProgressBar precentage values
-  const hoursPrecentage = (achievedHours / hrsToSeconds) * 100;
-  const caloriesPrecentage = (achievedCalories / calories) * 100;
-  const stepsPrecentage = (achievedTotalSteps / totalSteps) * 100;
+  ///CircleProgressBar Percentage values
+  const hoursPercentage = (achievedHours / hrsToSeconds) * 100;
+  const caloriesPercentage = (achievedCalories / calories) * 100;
+  const stepsPercentage = (achievedTotalSteps / totalSteps) * 100;
 
   ///7 days averages
 
@@ -418,7 +460,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={caloriesPrecentage}
+                value={caloriesPercentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -427,7 +469,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={hoursPrecentage}
+                value={hoursPercentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -437,7 +479,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={stepsPrecentage}
+                value={stepsPercentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -533,7 +575,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={caloriesPrecentage}
+                value={caloriesPercentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -542,7 +584,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={hoursPrecentage}
+                value={hoursPercentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -552,7 +594,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={stepsPrecentage}
+                value={stepsPercentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -675,7 +717,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={caloriesPrecentage}
+                value={caloriesPercentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -684,7 +726,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={hoursPrecentage}
+                value={hoursPercentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -694,7 +736,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={stepsPrecentage}
+                value={stepsPercentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -818,7 +860,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={caloriesPrecentage}
+                value={caloriesPercentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -827,7 +869,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={hoursPrecentage}
+                value={hoursPercentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -837,7 +879,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={stepsPrecentage}
+                value={stepsPercentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
@@ -1011,7 +1053,7 @@ const HolisticHealth = () => {
             >
               <CircularProgress
                 style={circularProgressStyle}
-                value={caloriesPrecentage}
+                value={caloriesPercentage}
                 size="113px"
                 trackColor="transparent"
                 color="#DC3284"
@@ -1020,7 +1062,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={hoursPrecentage}
+                value={hoursPercentage}
                 size="88px"
                 trackColor="transparent"
                 color="#E7D535"
@@ -1030,7 +1072,7 @@ const HolisticHealth = () => {
               />
               <CircularProgress
                 style={circularProgressStyle}
-                value={stepsPrecentage}
+                value={stepsPercentage}
                 size="66px"
                 trackColor="transparent"
                 color="#AE35E7"
