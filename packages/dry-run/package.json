@@ -16,10 +16,11 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/oura": "^0.0.18",
+    "@prifina/oura": "^0.0.19",
     "framer-motion": "^4",
     "moment": "^2.29.1",
     "recharts": "^2.0.10"
+
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
@@ -29,7 +30,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.62",
+    "@prifina/hooks": "^0.0.63",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-docs": "^6.3.4",
     "@storybook/addon-knobs": "^6.2.9",
@@ -47,8 +48,8 @@
     "html-webpack-plugin": "^5.0.0",
     "https-browserify": "^1.0.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "stream-http": "^3.1.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
@@ -68,8 +69,9 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "peerDependencies": {
-    "@prifina/hooks": "^0.0.62",
-    "react": "^17.0.1",
+    "@prifina/hooks": "^0.0.63",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"
   },

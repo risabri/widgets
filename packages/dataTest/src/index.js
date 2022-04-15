@@ -1,8 +1,6 @@
 /**
  * Entrypoint of the Remote Component.
  */
-//import { App } from "./App";
 
-//export default App;
-import DataTest from "./DataTest";
+import DataTest from "./DataTest.js";
 export default DataTest;

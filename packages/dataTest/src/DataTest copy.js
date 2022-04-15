@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
-import Fitbit from "@prifina/fitbit";
-import Oura from "@prifina/oura";
-import Garmin from "@prifina/garmin";
-import GoogleTimeline from "@prifina/google-timeline";
+//import Fitbit from "@prifina/fitbit";
+//import Oura from "@prifina/oura";
+//import Garmin from "@prifina/garmin";
+import GoogleTimeline from "@prifina/google-timeline/";
 
 const Container = styled.div`
   height: 300px;
@@ -68,12 +68,9 @@ const DataTest = (props) => {
   // init provider api with your appID
   //const prifina = new Prifina({ appId: appID });
   const [functions, setFunctions] = useState([]);
-  /*
   const [connectorFunction, setConnectorFunction] = useState(
     "Fitbit.queryActivities"
   );
-  */
-  const [connectorFunction, setConnectorFunction] = useState("");
   const [functionCondition, setFunctionCondition] = useState("eq");
   const [conditionValue, setConditionValue] = useState("");
   const [fieldsValue, setFieldsValue] = useState("");
@@ -120,7 +117,6 @@ const DataTest = (props) => {
     onUpdate(appID, dataUpdate);
     // register datasource modules
     registerHooks(appID, [Fitbit, Oura, Garmin, GoogleTimeline]);
-    //registerHooks(appID, [GoogleTimeline]);
 
     //console.log(API[appID]);
     //console.log(API[appID].Fitbit);
@@ -134,7 +130,6 @@ const DataTest = (props) => {
     const garminFunctions = Object.keys(API[appID].Garmin).map((s) => {
       return "Garmin." + s;
     });
-
     const googleFunctions = Object.keys(API[appID].GoogleTimeline).map((s) => {
       return "GoogleTimeline." + s;
     });
@@ -143,7 +138,6 @@ const DataTest = (props) => {
         fitbitFunctions,
         ouraFunctions,
         garminFunctions,
-
         googleFunctions
       )
     );

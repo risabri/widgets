@@ -9,7 +9,7 @@
   "dataConnectors": ["@prifina/oura"],
   "settings": [
     {"field":"sizes","value":"[{\"option\":\"300x300\",\"value\":\"300x300\"}]","label":"Sizes","type":"select"},
-      {"field":"theme","value": "[{\"option\":\"Light\",\"value\":\"light\"}]","label":"Theme","type":"select"},
+      {"field":"theme","value": "[{\"option\":\"Dark\",\"value\":\"dark\"}]","label":"Theme","type":"select"},
       {"field": "city", "value": "London", "label": "City", "type": "text"}
   ],
   "shortDescription": "Tired of running in bad weather? With Dry Run, utilize your activity data and you get a heads up when your typical time for a run collides with a sleet or a tropical storm.",

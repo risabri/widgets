@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
-import GoogleTimeline from "@prifina/google-timeline/";
+import GoogleTimeline from "@prifina/google-timeline";
 
 const Container = styled.div`
   height: 300px;
@@ -20,6 +20,8 @@ const appID = "1u3f465t4cNSWYiyKFVwBG";
 
 const TimeLine = (props) => {
   const { data } = props;
+
+  console.log("Widget props ", props);
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
@@ -28,11 +30,12 @@ const TimeLine = (props) => {
 
   const [timelineData, setTimeLineData] = useState({});
   const period = useRef("");
-  const processData = (data) => {
+  const processData = (payload) => {
+    console.log("TIMELINE PROCESS ", payload);
     let activities = {};
     // "p_timestamp,p_datetime,p_type,p_confidence"
-    for (let i = 1; i < data.length; i++) {
-      const d = data[i].split(",");
+    for (let i = 1; i < payload.length; i++) {
+      const d = payload[i].split(",");
       if (parseInt(d[3]) === 100) {
         if (!activities.hasOwnProperty(d[2])) {
           activities[d[2]] = 0;
@@ -40,16 +43,6 @@ const TimeLine = (props) => {
         activities[d[2]] += 1;
       }
     }
-    /*
-    data.forEach((d) => {
-      if (parseInt(d.p_confidence) === 100) {
-        if (!activities.hasOwnProperty(d.p_type)) {
-          activities[d.p_type] = 0;
-        }
-        activities[d.p_type] += 1;
-      }
-    });
-    */
 
     const sortedKeys = Object.keys(activities).sort((a, b) =>
       activities[a] > activities[b] ? -1 : activities[b] > activities[a] ? 1 : 0
@@ -63,12 +56,12 @@ const TimeLine = (props) => {
 
     setTimeLineData(sorted);
   };
-  const dataUpdate = async (data) => {
+  const dataUpdate = async (payload) => {
     // should check the data payload... :)
-    console.log("TIMELINE UPDATE ", data);
+    console.log("TIMELINE UPDATE ", payload);
     //console.log("TIMELINE UPDATE ", data.hasOwnProperty("settings"));
     //console.log("TIMELINE UPDATE ", typeof data.settings);
-
+    /* 
     if (
       data.hasOwnProperty("settings") &&
       typeof data.settings === "object" &&
@@ -104,10 +97,12 @@ const TimeLine = (props) => {
         processData(result.data.getDataObject.content);
       }
     }
+    */
   };
 
   useEffect(async () => {
     // init callback function for background updates/notifications
+
     onUpdate(appID, dataUpdate);
     // register datasource modules
     registerHooks(appID, [GoogleTimeline]);
@@ -122,8 +117,8 @@ const TimeLine = (props) => {
     }
     let year = d.getFullYear();
     let month = d.getMonth();
-
     if (
+      typeof data !== "undefined" &&
       data.hasOwnProperty("settings") &&
       data.settings.hasOwnProperty("year") &&
       data.settings.year !== ""
@@ -131,6 +126,9 @@ const TimeLine = (props) => {
       year = parseInt(data.settings.year);
       month = parseInt(data.settings.month);
     }
+
+    year = 2020;
+    month = 11;
 
     const filter = {
       [Op.and]: {
@@ -144,31 +142,8 @@ const TimeLine = (props) => {
       },
     };
 
-    /*
-    const filter = {
-      [year]: {
-        [Op.eq]: { fn: "YEAR", field: "p_datetime", opts: null },
-      },
-    };
-    */
-    /*
-{ "and": {2021: {"=":{xxxx} } }
-
-    const filter = {
-      [Op.and]: {
-        [year]: {
-          [Op.eq]: _fn("YEAR", "p_datetime"),
-        },
-        [month]: {
-          [Op.eq]: _fn("MONTH", "p_datetime"),
-        },
-        100: { [Op.eq]: _fn("CAST", "p_confidence", "int") },
-      },
-    };
-    */
-
+    console.log("Widget filter ", filter);
     period.current = year + "/" + month;
-    //console.log("FILTER ", filter, buildFilter(filter));
 
     const result = await API[appID].GoogleTimeline.queryActivities({
       filter: filter,
@@ -191,6 +166,7 @@ const TimeLine = (props) => {
     <Container>
       <div>
         <div>TOP 5 activities {period.current}</div>
+
         {Object.keys(timelineData).length > 0 && (
           <ol>
             {Object.keys(timelineData).map((t, k) => {

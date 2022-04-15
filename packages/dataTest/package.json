@@ -9,25 +9,14 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "dependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
     "@prifina/fitbit": "^0.0.16",
     "@prifina/garmin": "^0.0.7",
-    "@prifina/google-timeline": "^0.0.17",
-    "@prifina/oura": "^0.0.17",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-styled-components": "^1.10.7",
-    "moment-timezone": "^0.5.33",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "short-uuid": "^4.1.0",
-    "styled-components": "^5.1.0",
-    "terser": "^5.5.1"
+    "@prifina/google-timeline": "^0.0.18",
+    "@prifina/oura": "^0.0.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
@@ -55,8 +44,8 @@
     "html-webpack-plugin": "^5.0.0",
     "https-browserify": "^1.0.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "short-uuid": "^4.1.0",
     "stream-http": "^3.1.1",
     "styled-components": "^5.2.1",
@@ -76,8 +65,8 @@
     "storybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
-    "@prifina/hooks": "0.0.62",
-    "react": "^17.0.1",
+    "@prifina/hooks": "0.0.63",
+    "react": "^17.0.2",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"
   }

@@ -6,10 +6,8 @@
   "publisher": "Prifina Inc",
   "icon": "assets/weatherly-icon.png",
   "bannerImage": "assets/weatherly-banner.png", 
-  "dataConnectors": ["GoogleTimeline/queryActivities"],
+  "dataConnectors": ["@prifina/google-timeline","@prifina/oura","@prifina/fitbit","@prifina/garmin"],
   "settings": [
-    { "field": "year", "value": "2020", "label": "Year", "type": "text" },
-    { "field": "month", "value": "1", "label": "Month", "type": "text" },
     {"field":"sizes","value":"[{\"option\":\"300x300\",\"value\":\"300x300\"}]","label":"Sizes","type":"select"},
       {"field":"theme","value": "[{\"option\":\"Light\",\"value\":\"light\"}]","label":"Theme","type":"select"}
   ],
