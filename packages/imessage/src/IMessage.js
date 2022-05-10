@@ -153,6 +153,7 @@ const IMessage = (props) => {
           body: JSON.stringify(newMsg),
           sender: firstChat,
           receiver: currentUser.uuid,
+          //chatId: currentUser.uuid,
           chatId: firstChat,
         },
       }).then((res) => {

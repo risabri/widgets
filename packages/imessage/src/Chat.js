@@ -114,7 +114,7 @@ function Chat({ newChat, className }) {
         id: m.messageId,
         data: {
           timestamp: m.createdAt,
-          message: JSON.parse(m.body),
+          message: m.body,
           sender: m.sender,
           receiver: m.receiver,
           chatId: m.chatId,
@@ -127,8 +127,15 @@ function Chat({ newChat, className }) {
   useEffect(() => {
     console.log("CHAT SELECTED...", receiver);
     if (receiver?.chatId !== undefined && receiver.chatId !== "") {
+      /*
       const filter = {
         ["chatId"]: {
+          [Op.eq]: receiver.chatId,
+        },
+      };
+      */
+      const filter = {
+        ["sender"]: {
           [Op.eq]: receiver.chatId,
         },
       };
@@ -141,8 +148,13 @@ function Chat({ newChat, className }) {
         console.log("MSGS ", msgs);
         //{ id,user, contents: { timestamp, message,sender} },
 
+        // sort createdAt...
+        const sortedMsgs = msgs.data.getMsgs.sort((a, b) =>
+          a.createdAt > b.createdAt ? 1 : -1
+        );
+
         setMessages(
-          msgs.data.getMsgs.map((m) => ({
+          sortedMsgs.map((m) => ({
             id: m.messageId,
 
             data: {

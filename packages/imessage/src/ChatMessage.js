@@ -138,7 +138,14 @@ function Message({
 }
 
 const ChatMessage = (props, ref) => {
-  if (props.chat === props.contents.chatId) {
+  console.log("PROPS HERE ", props);
+  //sender: 'hamza-id', receiver: 'tero-id'
+
+  if (
+    props.chat === props.contents.chatId ||
+    (props.contents.sender === props.chat &&
+      props.contents.receiver === props.user.uuid)
+  ) {
     return <Message {...props} ref={ref} />;
   } else {
     return null;
