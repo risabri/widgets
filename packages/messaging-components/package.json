@@ -1,0 +1,41 @@
+{
+  "name": "@prifina-widgets/messaging-components",
+  "version": "0.0.0",
+  "description": "Messsaging components",
+  "author": "Tero <tero@prifina.com>",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && GENERATE_SOURCEMAP=false && yarn build:cjs",
+    "build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel ./src --out-dir ./dist/esm",
+    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel ./src --out-dir ./dist/cjs",
+    "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel ./src --out-dir ./dist/es",
+    "storybook": "start-storybook"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.17.8",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "babel-jest": "^27.1.1",
+    "babel-loader": "^8.2.2",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "styled-components": "^5.3.1",
+    "styled-system": "^5.1.5",
+    "react-dom": "^17.0.2"
+  }
+  
+}

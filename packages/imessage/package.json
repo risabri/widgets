@@ -1,7 +1,7 @@
 {
-  "name": "@prifina-widgets/dataTest",
+  "name": "@prifina-widgets/imessage-app",
   "version": "0.0.0",
-  "description": "Prifina Data Test Widget",
+  "description": "Prifina Chat app",
   "author": "Tero <tero@prifina.com>",
   "license": "MIT",
   "main": "dist/esm/index.js",
@@ -12,13 +12,8 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "@prifina/fitbit": "^0.0.16",
-    "@prifina/garmin": "^0.0.7",
-    "@prifina/google-timeline": "^0.0.18",
-    "@prifina/oura": "^0.0.19"
-  },
   "devDependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.82.0",
     "@babel/cli": "^7.12.13",
     "@babel/core": "^7.12.13",
     "@babel/plugin-proposal-class-properties": "^7.12.13",
@@ -29,12 +24,17 @@
     "@prifina/hooks": "0.0.63",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-docs": "^6.1.17",
-    "@storybook/addon-knobs": "^6.1.17",
+    "@storybook/addon-knobs": "^6.4.0",
     "@storybook/addon-links": "^6.1.17",
     "@storybook/addon-viewport": "^6.1.17",
     "@storybook/addons": "^6.1.17",
     "@storybook/react": "^6.1.17",
     "@svgr/webpack": "^5.5.0",
+    "apollo-link": "^1.2.14",
+    "apollo-link-context": "^1.0.20",
+    "apollo-link-http": "^1.5.17",
+    "aws-amplify": "^4.3.20",
+    "aws-appsync": "^4.1.5",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -69,5 +69,11 @@
     "react": "^17.0.2",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@prifina/messaging": "^0.0.18",
+    "timeago.js": "^4.0.2"
   }
 }
