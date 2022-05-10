@@ -144,7 +144,9 @@ const ChatMessage = (props, ref) => {
   if (
     props.chat === props.contents.chatId ||
     (props.contents.sender === props.chat &&
-      props.contents.receiver === props.user.uuid)
+      props.contents.receiver === props.user.uuid) ||
+    (props.contents.receiver === props.chat &&
+      props.contents.sender === props.user.uuid)
   ) {
     return <Message {...props} ref={ref} />;
   } else {
