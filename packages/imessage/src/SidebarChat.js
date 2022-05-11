@@ -65,8 +65,8 @@ function SidebarChat({ id, chatName, info, className }) {
       console.log("SIDEBAR NEW MSGS from Context", id, newMessage);
       let newMessages = [];
       newMessage.forEach((m) => {
-        if (m.chatId === id) {
-          const mIdx = newMessages.findIndex((mi) => mi.chatId === m.chatId);
+        if (m.sender === id) {
+          const mIdx = newMessages.findIndex((mi) => mi.sender === m.sender);
 
           if (mIdx === -1) {
             newMessages.push(m);
@@ -78,10 +78,12 @@ function SidebarChat({ id, chatName, info, className }) {
       const lastIndex = newMessages.length - 1;
       console.log("MSG IDX ", lastIndex, newMessages[lastIndex]);
       if (lastIndex > -1) {
-        setChatInfo({
-          message: newMessages[lastIndex].body,
-          timestamp: newMessages[lastIndex].createdAt,
-        });
+        setChatInfo([
+          {
+            message: newMessages[lastIndex].body,
+            timestamp: newMessages[lastIndex].createdAt,
+          },
+        ]);
       }
     }
   }, [id, newMessage]);

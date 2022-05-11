@@ -30,11 +30,19 @@ const IMessage = (props) => {
   const { data } = props;
   console.log("DATA PROPS ", data);
   // init hook and get provider api services...
-  const { currentUser, onUpdate, Prifina, API, registerHooks, registerClient } =
-    usePrifina();
+  const {
+    currentUser,
+    onUpdate,
+    Prifina,
+    API,
+    registerHooks,
+    registerClient,
+    unSubscribe,
+  } = usePrifina();
   const [hooksReady, setHooks] = useState(false);
   const [newChat, setNewChat] = useState(0);
   const chat = useRef({});
+  const subscriptionHandler = useRef(null);
   const [newMessage, setNewMessage] = useState([]);
   const [newChatMessage, setNewChatMessage] = useState([]);
 
@@ -50,52 +58,71 @@ const IMessage = (props) => {
     if (payload?.addMessage !== undefined) {
       const statusRes = JSON.parse(payload.addMessage.result);
       if (statusRes.cnt > 0) {
+        /* 
         if (statusRes.cnt === 1 && statusRes.chatId === chat.current.chatId) {
           //newChatMessages.push(mm);
           setNewMessage([statusRes]);
           setNewChatMessage([statusRes]);
-        } else {
-          API[appID].Messaging.queryGetUnreadMessages({}).then((m) => {
-            console.log("UNREAD ", m);
-            // console.log("UNREAD ", m.data);
-            //console.log("UNREAD ", Object.keys(m.data));
+        } else { */
+        API[appID].Messaging.queryGetUnreadMessages({}).then((m) => {
+          console.log("UNREAD ", m);
 
-            let newChatMessages = [];
-            let newMessages = [];
-            if (m.data.getUnreadMsgs.length > 0) {
-              m.data.getUnreadMsgs.forEach((mm) => {
-                //console.log("UNREAD UPDATE ", chat.current, mm);
-                if (
-                  chat.current?.chatId !== undefined &&
-                  mm.chatId === chat.current.chatId
-                ) {
-                  newChatMessages.push(mm);
-                }
+          // console.log("UNREAD ", m.data);
+          //console.log("UNREAD ", Object.keys(m.data));
 
-                newMessages.push(mm);
-              });
-            }
-            if (newMessages.length > 0) {
-              setNewMessage(newMessages);
-            }
-            if (newChatMessages.length > 0) {
-              setNewChatMessage(newChatMessages);
-            }
+          let newChatMessages = [];
+          let newMessages = [];
+          if (m.data.getUnreadMsgs.length > 0) {
+            m.data.getUnreadMsgs.forEach((mm) => {
+              console.log("UNREAD UPDATE ", chat.current, mm);
 
-            //setNewMessage(m.data.queryGetUnreadMessages);
-            //setNewChatMessage(m.data.queryGetUnreadMessages);
-          });
-        }
+              if (
+                chat.current?.chatId !== undefined &&
+                (mm.sender === chat.current.chatId ||
+                  m.chatId === currentUser.uuid)
+              ) {
+                newChatMessages.push(mm);
+              }
+
+              newMessages.push(mm);
+            });
+          }
+          if (newMessages.length > 0) {
+            setNewMessage(newMessages);
+          }
+          if (newChatMessages.length > 0) {
+            setNewChatMessage(newChatMessages);
+          }
+
+          //setNewMessage(m.data.queryGetUnreadMessages);
+          //setNewChatMessage(m.data.queryGetUnreadMessages);
+        });
+        //}
       }
     }
   };
   useEffect(() => {
     // init callback function for background updates/notifications
-    onUpdate(appID, dataUpdate);
+    console.log("SUBS HANDLER ", subscriptionHandler.current);
+    const onUpdateID = onUpdate(appID, dataUpdate);
     // register datasource modules
     registerHooks(appID, [IM]);
     registerClient([data.appSyncClient]);
-    setHooks(true);
+
+    API[appID].Messaging.subscribeMessagingStatus({
+      variables: {
+        receiver: currentUser.uuid,
+      },
+    }).then(() => {
+      subscriptionHandler.current = onUpdateID;
+      setHooks(true);
+    });
+
+    return () => {
+      console.log("HOOK UNLOAD....");
+      unSubscribe(appID, subscriptionHandler.current);
+      //const unSubscribe = useCallback((appID, onUpdateID, subscription) => {
+    };
   }, []);
 
   const initChat = (receiver) => {

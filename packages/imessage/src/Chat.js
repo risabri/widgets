@@ -224,8 +224,27 @@ function Chat({ newChat, className }) {
 
       //let msg = { messageId: variables.messageId, status: variables.status };
       //mutationUpdateMessageStatus
-
-      msgTimer = messages.map((m) => {
+      /*
+      data:
+chatId: "hamza-id"
+message: "hi"
+receiver: "hamza-id"
+sender: "tero-id"
+timestamp: 1652248162416
+[[Prototype]]: Object
+id: "0eec23f8-7994-42ce-ab08-aa3ca7ebf12a"
+*/
+      let sentMessages = [];
+      messages.forEach((m) => {
+        if (
+          m.data.receiver === sender.uuid &&
+          m.data.sender === receiver.chatId
+        ) {
+          sentMessages.push(m);
+        }
+      });
+      console.log("UPDATE MSG STATUS ", sentMessages);
+      msgTimer = sentMessages.map((m) => {
         return setTimeout(async () => {
           await API[appID].Messaging.mutationUpdateMessageStatus({
             variables: { messageId: m.id, status: 1 },

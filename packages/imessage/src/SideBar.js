@@ -97,10 +97,10 @@ function Sidebar({ className }) {
     const chatInfo = {};
     unreadMsgs.data.getUnreadMsgs.forEach((m) => {
       //console.log("UNREAD MSG ", m);
-      if (!chatInfo.hasOwnProperty(m.chatId)) {
-        chatInfo[m.chatId] = {};
+      if (!chatInfo.hasOwnProperty(m.sender)) {
+        chatInfo[m.sender] = {};
       }
-      chatInfo[m.chatId] = {
+      chatInfo[m.sender] = {
         message: m.body,
         timestamp: m.createdAt,
       };
