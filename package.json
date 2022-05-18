@@ -14,7 +14,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "cross-env": "^7.0.2",
-    "lerna": "^3.20.2",
+    "lerna": "^4.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "react": "^17.0.1",
